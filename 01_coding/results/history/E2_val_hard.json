@@ -1,0 +1,83 @@
+{
+ "exp_id": "E2",
+ "val_hard_acc": 0.6892,
+ "n": 1200,
+ "by_corruption": {
+  "blur": {
+   "acc": 0.5646,
+   "n": 395
+  },
+  "dark": {
+   "acc": 0.701,
+   "n": 408
+  },
+  "glare": {
+   "acc": 0.801,
+   "n": 397
+  }
+ },
+ "by_source": {
+  "aihub": {
+   "acc": 0.6267,
+   "n": 225
+  },
+  "kaggle": {
+   "acc": 0.7686,
+   "n": 700
+  },
+  "realwaste": {
+   "acc": 0.5382,
+   "n": 275
+  }
+ },
+ "by_class": {
+  "battery": {
+   "acc": 0.86,
+   "n": 100
+  },
+  "biological": {
+   "acc": 0.9,
+   "n": 100
+  },
+  "brown-glass": {
+   "acc": 0.6,
+   "n": 100
+  },
+  "cardboard": {
+   "acc": 0.59,
+   "n": 100
+  },
+  "clothes": {
+   "acc": 0.9,
+   "n": 100
+  },
+  "green-glass": {
+   "acc": 0.84,
+   "n": 100
+  },
+  "metal": {
+   "acc": 0.42,
+   "n": 100
+  },
+  "paper": {
+   "acc": 0.58,
+   "n": 100
+  },
+  "plastic": {
+   "acc": 0.38,
+   "n": 100
+  },
+  "shoes": {
+   "acc": 0.86,
+   "n": 100
+  },
+  "trash": {
+   "acc": 0.76,
+   "n": 100
+  },
+  "white-glass": {
+   "acc": 0.58,
+   "n": 100
+  }
+ }
+}

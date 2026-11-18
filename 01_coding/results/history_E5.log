@@ -1,0 +1,12 @@
+[E5] train 12000 / val 2327 / val_ext 500 / device cpu / threads 12
+  ep01 train 0.8663/0.7138  val 0.3946/0.8719  val_ext 0.6620  score 0.7670  (225s)
+  ep02 train 0.5579/0.8085  val 0.3629/0.8775  val_ext 0.7280  score 0.8028  (225s)
+  ep03 train 0.4689/0.8426  val 0.2974/0.8986  val_ext 0.7520  score 0.8253  (226s)
+  ep04 train 0.4112/0.8578  val 0.2783/0.9093  val_ext 0.7440  score 0.8267  (224s)
+  ep05 train 0.3498/0.8792  val 0.2673/0.9158  val_ext 0.7640  score 0.8399  (225s)
+  ep06 train 0.3109/0.8916  val 0.2579/0.9209  val_ext 0.7880  score 0.8545  (223s)
+  ep07 train 0.2754/0.9032  val 0.2783/0.9106  val_ext 0.7840  score 0.8473  (224s)
+  ep08 train 0.2477/0.9119  val 0.3056/0.9085  val_ext 0.8200  score 0.8642  (224s)
+  ep09 train 0.2238/0.9221  val 0.3412/0.9037  val_ext 0.8000  score 0.8519  (225s)
+  ep10 train 0.1942/0.9308  val 0.3230/0.9102  val_ext 0.8020  score 0.8561  (227s)
+[E5] done: best ep 8, score 0.8642, 37.7 min

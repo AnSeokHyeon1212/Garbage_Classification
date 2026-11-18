@@ -1,0 +1,67 @@
+[01:59] 야간 실험 시작
+[01:59] E4 시작 (시도 1) — hidden=1층(512→256, ReLU)
+[E4] train 12000 / val 2327 / val_ext 500 / device cpu / threads 12
+  ep01 train 0.8239/0.7276  val 0.3423/0.8908  val_ext 0.6740  score 0.7824  (234s)
+  ep02 train 0.5395/0.8206  val 0.3424/0.8870  val_ext 0.7260  score 0.8065  (230s)
+  ep03 train 0.4532/0.8457  val 0.3266/0.8887  val_ext 0.7320  score 0.8103  (244s)
+  ep04 train 0.3932/0.8650  val 0.2926/0.9020  val_ext 0.7460  score 0.8240  (238s)
+  ep05 train 0.3496/0.8783  val 0.2678/0.9132  val_ext 0.7620  score 0.8376  (228s)
+  ep06 train 0.3063/0.8952  val 0.2713/0.9115  val_ext 0.7840  score 0.8477  (231s)
+  ep07 train 0.2691/0.9071  val 0.2577/0.9128  val_ext 0.7400  score 0.8264  (228s)
+  ep08 train 0.2311/0.9211  val 0.2807/0.9110  val_ext 0.7740  score 0.8425  (224s)
+  ep09 train 0.2162/0.9241  val 0.3109/0.8977  val_ext 0.7840  score 0.8409  (224s)
+  early stop (patience 3)
+[E4] done: best ep 6, score 0.8477, 34.8 min
+E4 val_hard 0.7633 | 손상별 {'blur': np.float64(0.719), 'dark': np.float64(0.7353), 'glare': np.float64(0.8363)} | 출처별 {'aihub': np.float64(0.7511), 'kaggle': np.float64(0.8143), 'realwaste': np.float64(0.6436)}
+[02:35] E4 완료: val 0.9115 / val_ext 0.7840 / val_hard 0.7633 / S3 0.8196
+[02:35] E5 시작 (시도 1) — hidden=2층(512→256→128, ReLU)
+[E5] train 12000 / val 2327 / val_ext 500 / device cpu / threads 12
+  ep01 train 0.8663/0.7138  val 0.3946/0.8719  val_ext 0.6620  score 0.7670  (225s)
+  ep02 train 0.5579/0.8085  val 0.3629/0.8775  val_ext 0.7280  score 0.8028  (225s)
+  ep03 train 0.4689/0.8426  val 0.2974/0.8986  val_ext 0.7520  score 0.8253  (226s)
+  ep04 train 0.4112/0.8578  val 0.2783/0.9093  val_ext 0.7440  score 0.8267  (224s)
+  ep05 train 0.3498/0.8792  val 0.2673/0.9158  val_ext 0.7640  score 0.8399  (225s)
+  ep06 train 0.3109/0.8916  val 0.2579/0.9209  val_ext 0.7880  score 0.8545  (223s)
+  ep07 train 0.2754/0.9032  val 0.2783/0.9106  val_ext 0.7840  score 0.8473  (224s)
+  ep08 train 0.2477/0.9119  val 0.3056/0.9085  val_ext 0.8200  score 0.8642  (224s)
+  ep09 train 0.2238/0.9221  val 0.3412/0.9037  val_ext 0.8000  score 0.8519  (225s)
+  ep10 train 0.1942/0.9308  val 0.3230/0.9102  val_ext 0.8020  score 0.8561  (227s)
+[E5] done: best ep 8, score 0.8642, 37.7 min
+E5 val_hard 0.7683 | 손상별 {'blur': np.float64(0.719), 'dark': np.float64(0.7377), 'glare': np.float64(0.8489)} | 출처별 {'aihub': np.float64(0.7822), 'kaggle': np.float64(0.8086), 'realwaste': np.float64(0.6545)}
+[03:13] E5 완료: val 0.9085 / val_ext 0.8200 / val_hard 0.7683 / S3 0.8323
+[03:13]   비교 E4(S3 0.8196) vs E3(S3 0.7840): guard=True → 채택
+[03:13]   비교 E5(S3 0.8323) vs E4(S3 0.8196): guard=True → 채택
+[03:13] E6 시작 (시도 1) — act=gelu
+[E6] train 12000 / val 2327 / val_ext 500 / device cpu / threads 12
+  ep01 train 0.8362/0.7228  val 0.3637/0.8853  val_ext 0.6780  score 0.7816  (226s)
+  ep02 train 0.5340/0.8168  val 0.3744/0.8689  val_ext 0.7380  score 0.8035  (224s)
+  ep03 train 0.4404/0.8505  val 0.2851/0.8990  val_ext 0.7500  score 0.8245  (226s)
+  ep04 train 0.3797/0.8700  val 0.2739/0.9089  val_ext 0.7200  score 0.8144  (227s)
+  ep05 train 0.3121/0.8920  val 0.2702/0.9132  val_ext 0.7840  score 0.8486  (224s)
+  ep06 train 0.2820/0.9028  val 0.2504/0.9252  val_ext 0.7740  score 0.8496  (226s)
+  ep07 train 0.2406/0.9158  val 0.2715/0.9162  val_ext 0.7900  score 0.8531  (225s)
+  ep08 train 0.2228/0.9203  val 0.2895/0.9115  val_ext 0.7880  score 0.8497  (225s)
+  ep09 train 0.1970/0.9281  val 0.3779/0.8994  val_ext 0.7600  score 0.8297  (229s)
+  ep10 train 0.1739/0.9377  val 0.3211/0.9016  val_ext 0.7700  score 0.8358  (224s)
+  early stop (patience 3)
+[E6] done: best ep 7, score 0.8531, 37.7 min
+E6 val_hard 0.7617 | 손상별 {'blur': np.float64(0.7038), 'dark': np.float64(0.7426), 'glare': np.float64(0.8388)} | 출처별 {'aihub': np.float64(0.7822), 'kaggle': np.float64(0.8186), 'realwaste': np.float64(0.6)}
+[03:52] E6 완료: val 0.9162 / val_ext 0.7900 / val_hard 0.7617 / S3 0.8226
+[03:52]   비교 E6(S3 0.8226) vs E5(S3 0.8323): guard=True → 유지
+[03:52] E7 시작 (시도 1) — aug=degrade_strong(밝기 0.15~1.0)
+[E7] train 12000 / val 2327 / val_ext 500 / device cpu / threads 12
+  ep01 train 0.8814/0.7077  val 0.3888/0.8706  val_ext 0.6540  score 0.7623  (225s)
+  ep02 train 0.5705/0.8037  val 0.3535/0.8758  val_ext 0.7300  score 0.8029  (225s)
+  ep03 train 0.4832/0.8389  val 0.3119/0.8917  val_ext 0.7340  score 0.8129  (225s)
+  ep04 train 0.4257/0.8551  val 0.2851/0.9063  val_ext 0.7560  score 0.8312  (225s)
+  ep05 train 0.3675/0.8756  val 0.2659/0.9115  val_ext 0.7620  score 0.8367  (225s)
+  ep06 train 0.3336/0.8824  val 0.2587/0.9188  val_ext 0.7560  score 0.8374  (225s)
+  ep07 train 0.2862/0.8990  val 0.2646/0.9175  val_ext 0.7880  score 0.8527  (226s)
+  ep08 train 0.2685/0.9046  val 0.2774/0.9141  val_ext 0.7960  score 0.8550  (225s)
+  ep09 train 0.2434/0.9166  val 0.3891/0.8904  val_ext 0.7820  score 0.8362  (229s)
+  ep10 train 0.2196/0.9203  val 0.3104/0.9042  val_ext 0.7900  score 0.8471  (227s)
+[E7] done: best ep 8, score 0.8550, 37.9 min
+E7 val_hard 0.7667 | 손상별 {'blur': np.float64(0.7038), 'dark': np.float64(0.7475), 'glare': np.float64(0.8489)} | 출처별 {'aihub': np.float64(0.76), 'kaggle': np.float64(0.8157), 'realwaste': np.float64(0.6473)}
+[04:30] E7 완료: val 0.9141 / val_ext 0.7960 / val_hard 0.7667 / S3 0.8256
+[04:30]   비교 E7(S3 0.8256) vs E5(S3 0.8323): guard=True → 유지
+[04:30] 단일 모델 탐색 종료. 최고 = E5

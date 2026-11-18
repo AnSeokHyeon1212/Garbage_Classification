@@ -1,0 +1,29 @@
+{
+  "seed": 42,
+  "model": "resnet18",
+  "img_size": 160,
+  "freeze": "backbone",
+  "optimizer": "adamw",
+  "lr": 0.001,
+  "weight_decay": 0.0001,
+  "batch": 32,
+  "epochs": 10,
+  "patience": 3,
+  "aug": [
+    "degrade"
+  ],
+  "train_data": "mix",
+  "max_per_class": 1000,
+  "threads": 12,
+  "num_workers": 0,
+  "exp_id": "E5",
+  "base_exp": "E3",
+  "changed_var": "hidden",
+  "value": "2층(512→256→128, ReLU)",
+  "notes": "E3 + 은닉층 2개(256→128, ReLU)",
+  "hidden": [
+    256,
+    128
+  ],
+  "act": "relu"
+}

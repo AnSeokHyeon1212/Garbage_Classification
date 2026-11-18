@@ -23,3 +23,12 @@
 | D19 | 11/18 | 학습 구성안: 클래스당 train 1,000장 (Kaggle 약 53% + 외부 약 47%), val_ext = RealWaste·AI Hub에서 클래스당 50장 먼저 떼어 고정. Kaggle val/test는 그대로 | 실제 test가 지저분·애매한 사진 → 외부 비중 확대, CPU 시간 고려 | ✅ 11/18 승인 |
 | D20 | 11/18 | CPU 고속 설정: 비교 실험은 160px + 백본 동결(헤드만 학습), torch 스레드 12 측정 후 적용. 최고 설정만 224px·부분 미세조정으로 최종 학습 | 1 epoch 15분 실측(D5 해소) | ✅ |
 | D21 | 11/18 | glass 색 문제(D12) 해소: 외부 glass는 AI Hub 직접촬영(색 구분)만 사용, V2·RealWaste glass는 제외 | AI Hub 색 라벨 있음 | ✅ |
+| D22 | 11/18 | E2 완료(mix): val 0.896 / val_ext 0.724 → 채택. 외부 혼합으로 val_ext +33.6%p, Kaggle val −3.6%p | experiments.csv | ✅ |
+| D23 | 11/19 | 증강 = 학습 중 실시간 degrade(p=0.5, 어둡게 밝기 0.3~1.0 또는 흐림 σ0.5~2.0). E3 채택(val_ext 0.744) | 사용자 요청(어두움·흐림 대비) | ✅ |
+| D24 | 11/19 | **val_hard** 1,200장 고정 생성(Kaggle val 700 + val_ext 500에 흐림·어둡게·빛번짐 손상, 160px). 학습 증강보다 강하거나 없는 손상. 최종 선택 기준 **S3 = (val+val_ext+val_hard)/3**, 채택 = S3 +1%p & clothes·shoes val −3%p 이내 | 사용자 요청(검증 변별력). 조기종료는 (val+val_ext)/2 유지 | ✅ |
+| D25 | 11/19 | 남은 TRAIN 풀에서 **test_ext**(외부 9클래스 360장, 최종 1회용)와 **meta_train**(12클래스×100, 스태킹 학습용) 고정 분리. phash 중복 검사 통과 | 사용자 요청(test에 외부 사진 포함). VAL·TEST로 메타 학습 금지 | ✅ |
+| D26 | 11/19 | clothing-dataset-small은 Kaggle clothes/shoes와 99.3% 중복 → 사용 안 함 | 팀장 측정 | ✅ |
+| D27 | 11/19 | 야간 탐색 결과: 은닉 2층 헤드(E5) 채택, GELU(E6)·강한 어둡게(E7) 기각, layer4 동결 해제(E8) 채택, 224px(E9, (val+val_ext)/2 기준 사전 등록) 채택 | `01_coding/results/overnight_summary.md` | ✅ |
+| D28 | 11/19 | 스태킹(E9+E8, Linear 24→12) S3 +0.02%p로 미채택. 확률 평균은 S3 +1.2%p지만 상승분이 160px val_hard에 치우침((val+val_ext)/2 +0.4%p) → **최종 = E9 단일 모델** | stacking_results.json, 사전 규칙 | ✅ |
+| D29 | 11/19 | **최종 TEST 1회 사용 완료 (E9): Kaggle test 0.9394 (n=2,328), test_ext 0.9083 (n=360)**. 이후 TEST 재평가 금지 | final_test.json | ✅ |
+| D30 | 11/19 | 제출 노트북 = `01_coding/notebooks/03_results.ipynb`(nbformat으로 작성·실행, 저장된 결과만 읽음). marimo 미설치로 D2의 export 대신 사용. 학습 코드는 gc_lib.py 모듈 | 환경 확인 | ⏳ 제출 형식(모듈 vs 셀) 확인 필요 |

@@ -30,6 +30,8 @@
 - [11/18] 이후 순서 (각 1변수, 직전 최고 대비): E2 데이터=혼합 → T-04 증강(좌우반전→회전→RandomResizedCrop→ColorJitter(hue≤0.05)→GaussianBlur) → T-05 lr(1e-2,1e-3,1e-4) → wd(1e-4,1e-3,1e-2) → 과적합 대응(layer4 동결 해제, dropout)
   - 모델 선택 기준: val_acc와 val_ext_acc 평균. 모든 실험에 val_ext_acc 기록
   - T-06: 최고 설정 224px로 최종 학습 → **Kaggle test 1회** → `marimo export ipynb --include-outputs` → git 커밋은 팀장 승인 후
+- [11/19] 추가 검증셋·선택 규칙 (D24·D25): `build_val_hard.py` → val_hard 1,200장(흐림·어둡게·빛번짐), `build_holdouts.py` → test_ext 360장·meta_train 1,200장. 최종 선택 = S3 = (val+val_ext+val_hard)/3, +1%p & clothes·shoes −3%p 가드
+- [11/19] 야간 실험 (팀장 직접 실행 승인): E4 은닉1층 → E5 은닉2층 → E6 GELU → E7 강한 어둡게 → E8 layer4 해제 → E9 224px → 스태킹 비교 → T-06 TEST 1회
 
 ## 📤 작업 보고
 - [11/16] T-01: ✅ 완료 — `notebooks/01_data.py`(marimo), 실행 결과 `results/01_data.html`
@@ -53,11 +55,18 @@
   - train_mix 출처: Kaggle 6,396 / AI Hub 2,285 / RealWaste 1,959 / V2 1,360. 클래스당 1,000장. 부족분: biological RealWaste 359/361 → Kaggle 2장으로 채움(Kaggle 581)
   - 출처별·클래스별 표: `results/mix_counts.csv`
   - 샘플 육안 확인: 유리 3색 라벨은 대체로 맞음. AI Hub는 바닥(보도블록·아스팔트) 배경이라 Kaggle(단색 배경)과 도메인이 다름
-- [11/18] E2 (E1 대비 train_data=mix만 변경): ⏳ 실행 중. 선택 기준 = (val + val_ext)/2
+- [11/18] E2 (E1 대비 train_data=mix만 변경): ✅ 완료(사용자 실행) — best ep3, val 0.8956 / val_ext 0.724 / val_hard 0.689. 채택
+- [11/19] E3 (aug=degrade): ✅ 완료(사용자 실행) — val 0.893 / val_ext 0.744 / val_hard 0.715 (S3 0.784). 채택
+- [11/19] 야간 실험 E4~E9 (팀장 실행, `overnight.py`·`overnight2.py`): ✅ 완료. 상세 `results/overnight_summary.md`, 로그 `results/overnight_log.txt`
+  - E4 은닉1층 S3 0.820 채택 / **E5 은닉2층 0.832 채택** / E6 GELU 0.823 유지 / E7 degrade_strong 0.826 유지(val_ext 하락) / **E8 layer4 해제 0.870 채택** / **E9 224px 0.891 채택** (val 0.949, val_ext 0.890, val_hard 0.834)
+  - val_hard 손상별 E3→E9: 흐림 0.658→0.780, 어둡게 0.691→0.828, 빛번짐 0.796→0.894
+  - 스태킹 E9+E8: S3 0.8914 (단일 0.8912) → 미채택. `results/stacking_results.json`
+- [11/19] T-06: ✅ 완료 — **E9 최종 TEST 1회: Kaggle test 0.9394 (n=2,328), test_ext 0.9083 (n=360; AI Hub 0.967, RealWaste 0.850)**. 약점 white-glass 0.759, cardboard 0.888 (Kaggle test), plastic 0.775 (test_ext). `results/final_test.json`, `final_test_confusion.csv`, `final_test_ext_confusion.csv`
+  - 제출 노트북 `notebooks/03_results.ipynb` (출력 포함), 그림 `figures/overnight_compare.png`, `figures/E9_curve.png`
 
 ## ❓ 질문
 - [11/18] val_ext에 clothes·shoes가 없어서 (val+val_ext)/2 기준은 이 두 클래스를 val로만 평가합니다. 이대로 진행할지, V2 clothes/shoes 비중복분(거의 없음)이나 다른 소스를 찾을지 결정 부탁드립니다.
-- [11/18] 제출 노트북: 학습 코드가 `gc_lib.py` 모듈에 있습니다(Windows DataLoader 때문). T-06에서 제출용 노트북에 모듈 코드를 셀로 펼쳐 넣을지, 모듈을 같이 제출할지 결정 부탁드립니다.
+- [11/18] (11/19 갱신: 결과 노트북은 `03_results.ipynb`로 작성됨) 제출 노트북: 학습 코드가 `gc_lib.py` 모듈에 있습니다(Windows DataLoader 때문). T-06에서 제출용 노트북에 모듈 코드를 셀로 펼쳐 넣을지, 모듈을 같이 제출할지 결정 부탁드립니다.
 - ~~[11/16] 데이터 위치:~~ (해결: D6) 지시 경로대로 `archive/garbage_classification`을 직접 참조했고 `data/`로 복사하지 않음(archive/도 .gitignore 대상). 복사가 필요하면 지시 부탁드립니다.
 - ~~[11/16] CPU로는 1 epoch에~~ (해결: D20) 15분 → 비교 실험 1개(예: 5 epoch + val)마다 약 1.5시간 걸림. 제안(미실행·미실측): ① Colab GPU로 전환 ② CPU 유지 시 비교 실험은 img 128px + 백본 동결로 하고, 유망 설정만 224px로 학습. 결정 부탁드립니다.
 - ~~[11/16] torch가 논리 코어~~ (해결: T-02 측정, 12스레드 적용) 12개 중 6스레드만 사용 중. `torch.set_num_threads(12)`와 DataLoader `num_workers>0`(Dataset을 .py 모듈로 분리해야 함) 효과는 미측정입니다. T-02 전에 측정할지 확인 부탁드립니다.

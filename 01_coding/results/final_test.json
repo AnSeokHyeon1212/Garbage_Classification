@@ -1,0 +1,116 @@
+{
+ "model": "E9",
+ "evaluated_once": true,
+ "test": {
+  "acc": 0.9394,
+  "n": 2328,
+  "by_class": {
+   "battery": {
+    "acc": 0.9577,
+    "n": 142
+   },
+   "biological": {
+    "acc": 0.973,
+    "n": 148
+   },
+   "brown-glass": {
+    "acc": 0.9231,
+    "n": 91
+   },
+   "cardboard": {
+    "acc": 0.8881,
+    "n": 134
+   },
+   "clothes": {
+    "acc": 0.9625,
+    "n": 799
+   },
+   "green-glass": {
+    "acc": 0.9574,
+    "n": 94
+   },
+   "metal": {
+    "acc": 0.9304,
+    "n": 115
+   },
+   "paper": {
+    "acc": 0.9177,
+    "n": 158
+   },
+   "plastic": {
+    "acc": 0.9077,
+    "n": 130
+   },
+   "shoes": {
+    "acc": 0.9731,
+    "n": 297
+   },
+   "trash": {
+    "acc": 0.9423,
+    "n": 104
+   },
+   "white-glass": {
+    "acc": 0.7586,
+    "n": 116
+   }
+  },
+  "by_source": {
+   "kaggle": {
+    "acc": 0.9394,
+    "n": 2328
+   }
+  }
+ },
+ "test_ext": {
+  "acc": 0.9083,
+  "n": 360,
+  "by_class": {
+   "battery": {
+    "acc": 1.0,
+    "n": 40
+   },
+   "brown-glass": {
+    "acc": 0.95,
+    "n": 40
+   },
+   "cardboard": {
+    "acc": 0.825,
+    "n": 40
+   },
+   "green-glass": {
+    "acc": 0.975,
+    "n": 40
+   },
+   "metal": {
+    "acc": 0.975,
+    "n": 40
+   },
+   "paper": {
+    "acc": 0.925,
+    "n": 40
+   },
+   "plastic": {
+    "acc": 0.775,
+    "n": 40
+   },
+   "trash": {
+    "acc": 0.825,
+    "n": 40
+   },
+   "white-glass": {
+    "acc": 0.925,
+    "n": 40
+   }
+  },
+  "by_source": {
+   "aihub": {
+    "acc": 0.9667,
+    "n": 180
+   },
+   "realwaste": {
+    "acc": 0.85,
+    "n": 180
+   }
+  }
+ }
+}

@@ -1,0 +1,24 @@
+[01:58] 야간 실험 시작
+[01:59] 1차 실행 실패: stdout cp949 인코딩 오류(UnicodeEncodeError) → PYTHONIOENCODING=utf-8로 재실행
+[01:59] 야간 실험 시작
+[01:59] E4 시작 (시도 1) — hidden=1층(512→256, ReLU)
+[02:35] E4 완료: val 0.9115 / val_ext 0.7840 / val_hard 0.7633 / S3 0.8196
+[02:35] E5 시작 (시도 1) — hidden=2층(512→256→128, ReLU)
+[03:13] E5 완료: val 0.9085 / val_ext 0.8200 / val_hard 0.7683 / S3 0.8323
+[03:13]   비교 E4(S3 0.8196) vs E3(S3 0.7840): guard=True → 채택
+[03:13]   비교 E5(S3 0.8323) vs E4(S3 0.8196): guard=True → 채택
+[03:13] E6 시작 (시도 1) — act=gelu
+[03:52] E6 완료: val 0.9162 / val_ext 0.7900 / val_hard 0.7617 / S3 0.8226
+[03:52]   비교 E6(S3 0.8226) vs E5(S3 0.8323): guard=True → 유지
+[03:52] E7 시작 (시도 1) — aug=degrade_strong(밝기 0.15~1.0)
+[04:30] E7 완료: val 0.9141 / val_ext 0.7960 / val_hard 0.7667 / S3 0.8256
+[04:30]   비교 E7(S3 0.8256) vs E5(S3 0.8323): guard=True → 유지
+[04:30] 단일 모델 탐색 종료. 최고 = E5
+[04:31] 야간 실험 2차 시작 (E8 layer4, E9 224px)
+[04:31] E8 시작 (시도 1) — freeze=layer4
+[05:15] E8 완료: val 0.9269 / val_ext 0.8540 / val_hard 0.8292 / S3 0.8700
+[05:15]   비교 E8(S3 0.8700) vs E5(S3 0.8323): guard=True → 채택
+[05:15] E9 시작 (시도 1) — img_size=224
+[06:30] E9 완료: val 0.9493 / val_ext 0.8900 / val_hard 0.8342 / S3 0.8912
+[06:30]   비교 E9((val+val_ext)/2 0.9197, val_hard 0.8342) vs E8(0.8904, val_hard 0.8292): guard=True → 채택
+[06:30] 2차 종료. 최고 = E9

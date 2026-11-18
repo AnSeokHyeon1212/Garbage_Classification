@@ -1,2 +1,10 @@
 exp_id,date,base_exp,changed_var,value,model,img_size,epochs,batch,lr,optimizer,weight_decay,aug,train_acc,val_acc,train_loss,val_loss,best_epoch,test_acc,test_used,val_ext_acc,select_score,n_train,train_data,freeze,epochs_run,time_min,notes
 E1,2026-11-18,,baseline,kaggle<=1000/cls,resnet18,160,10,32,0.001,adamw,0.0001,none,0.9423,0.9317,0.1975,0.2197,6,,0,0.388,0.9317,7749,kaggle,backbone,9,36.6,"베이스라인: Kaggle만, 백본 동결, 증강 없음 / val_ext는 학습 후 best ckpt로 사후 평가(선택 기준은 val만)"
+E2,2026-11-18,E1,train_data,mix(train_mix.csv),resnet18,160,10,32,0.001,adamw,0.0001,none,0.8364,0.8956,0.4866,0.3347,3,,0,0.724,0.8098,12000,mix,backbone,6,33.2,"Kaggle+V2+RealWaste+AI Hub 혼합 12,000장. 선택=val·val_ext 평균"
+E3,2026-11-19,E2,aug,degrade,resnet18,160,10,32,0.001,adamw,0.0001,degrade,0.8362,0.893,0.4886,0.3301,5,,0,0.744,0.8185,12000,mix,backbone,8,43.0,E2 + 실시간 증강 degrade(p=0.5: 밝기 0.3~1.0 또는 GaussianBlur σ0.5~2)
+E4,2026-11-19,E3,hidden,"1층(512→256, ReLU)",resnet18,160,10,32,0.001,adamw,0.0001,degrade,0.8952,0.9115,0.3063,0.2713,6,,0,0.784,0.8477,12000,mix,backbone,9,34.8,"E3 + 은닉층 1개(256, ReLU)"
+E5,2026-11-19,E3,hidden,"2층(512→256→128, ReLU)",resnet18,160,10,32,0.001,adamw,0.0001,degrade,0.9119,0.9085,0.2477,0.3056,8,,0,0.82,0.8642,12000,mix,backbone,10,37.7,"E3 + 은닉층 2개(256→128, ReLU)"
+E6,2026-11-19,E5,act,gelu,resnet18,160,10,32,0.001,adamw,0.0001,degrade,0.9158,0.9162,0.2406,0.2715,7,,0,0.79,0.8531,12000,mix,backbone,10,37.7,E5 구조 + GELU (ReLU→GELU만 변경)
+E7,2026-11-19,E5,aug,degrade_strong(밝기 0.15~1.0),resnet18,160,10,32,0.001,adamw,0.0001,degrade_strong,0.9046,0.9141,0.2685,0.2774,8,,0,0.796,0.855,12000,mix,backbone,10,37.9,E5 + 어둡게 범위 확대(0.3→0.15)
+E8,2026-11-19,E5,freeze,layer4,resnet18,160,10,32,0.001,adamw,0.0001,degrade,0.9488,0.9269,0.1606,0.2609,6,,0,0.854,0.8905,12000,mix,layer4,9,43.6,E5 + layer4 동결 해제(layer4+헤드 학습)
+E9,2026-11-19,E8,img_size,224,resnet18,224,10,32,0.001,adamw,0.0001,degrade,0.9713,0.9493,0.094,0.2134,10,0.9394,1,0.89,0.9196,12000,mix,layer4,10,73.5,"E8 + 입력 224px (선택 기준 (val+val_ext)/2, val_hard 참고) / 최종 TEST 1회: E9, Kaggle test 0.9394, test_ext 0.9083"

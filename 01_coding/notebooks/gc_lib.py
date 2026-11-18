@@ -65,7 +65,7 @@ class GarbageDataset(Dataset):
 
 
 def build_transforms(img_size: int, aug: list[str] | tuple = ()):
-    """aug 이름: hflip, rotate, rrc, color, blur. 빈 목록이면 Resize+Normalize만."""
+    """aug 이름: hflip, rotate, rrc, color, blur, degrade. 빈 목록이면 Resize+Normalize만."""
     aug = list(aug)
     tf = []
     if "rrc" in aug:
@@ -80,6 +80,12 @@ def build_transforms(img_size: int, aug: list[str] | tuple = ()):
         tf.append(transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.1, hue=0.05))
     if "blur" in aug:
         tf.append(transforms.RandomApply([transforms.GaussianBlur(5, sigma=(0.1, 2.0))], p=0.3))
+    if "degrade" in aug or "degrade_strong" in aug:  # 조건 ③: 50% 확률로 '어둡게' 또는 '흐리게' 중 하나
+        lo = 0.15 if "degrade_strong" in aug else 0.3     # strong: 더 어두운 쪽까지 (E7)
+        tf.append(transforms.RandomApply([transforms.RandomChoice([
+            transforms.ColorJitter(brightness=(lo, 1.0)),       # 밝기 lo~100% (어둡게만)
+            transforms.GaussianBlur(5, sigma=(0.5, 2.0)),
+        ])], p=0.5))
     tf += [transforms.ToTensor(), transforms.Normalize(MEAN, STD)]
     train_tf = transforms.Compose(tf)
     eval_tf = transforms.Compose([transforms.Resize((img_size, img_size)), transforms.ToTensor(),
@@ -109,7 +115,31 @@ def make_loader(df, tf, batch, shuffle, workers):
 
 
 # ---------------------------------------------------------------- 모델
-def build_model(name: str = "resnet18", freeze: str = "backbone", dropout: float = 0.0):
+ACTS = {"relu": nn.ReLU, "gelu": nn.GELU}
+
+
+def build_head(in_f: int, hidden=(), act: str = "relu", dropout: float = 0.0) -> nn.Module:
+    """분류 헤드. hidden=() → Linear 하나(기존과 동일). hidden=(256,) → 512→256→12, (256,128) → 512→256→128→12."""
+    if not hidden:
+        return nn.Sequential(nn.Dropout(dropout), nn.Linear(in_f, len(CLASSES))) if dropout > 0 \
+            else nn.Linear(in_f, len(CLASSES))
+    layers, d = [], in_f
+    for h in hidden:
+        layers += [nn.Linear(d, h), ACTS[act]()]
+        if dropout > 0:
+            layers.append(nn.Dropout(dropout))
+        d = h
+    layers.append(nn.Linear(d, len(CLASSES)))
+    return nn.Sequential(*layers)
+
+
+def model_from_cfg(cfg: dict) -> nn.Module:
+    return build_model(cfg["model"], cfg.get("freeze", "backbone"), cfg.get("dropout", 0.0),
+                       tuple(cfg.get("hidden", ())), cfg.get("act", "relu"))
+
+
+def build_model(name: str = "resnet18", freeze: str = "backbone", dropout: float = 0.0,
+                hidden=(), act: str = "relu"):
     """freeze: 'backbone'(fc만 학습) | 'layer4'(layer4+fc 학습) | 'none'(전체 학습)"""
     if name == "resnet18":
         model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
@@ -118,8 +148,7 @@ def build_model(name: str = "resnet18", freeze: str = "backbone", dropout: float
     else:
         raise ValueError(name)
     in_f = model.fc.in_features
-    model.fc = nn.Sequential(nn.Dropout(dropout), nn.Linear(in_f, len(CLASSES))) if dropout > 0 \
-        else nn.Linear(in_f, len(CLASSES))
+    model.fc = build_head(in_f, hidden, act, dropout)
     for pname, p in model.named_parameters():
         if freeze == "none":
             p.requires_grad = True
@@ -213,7 +242,7 @@ def run_experiment(cfg: dict, log=print) -> dict:
     val_loader = make_loader(val_df, eval_tf, cfg["batch"] * 2, False, w)
     ext_loader = make_loader(val_ext_df, eval_tf, cfg["batch"] * 2, False, w) if val_ext_df is not None else None
 
-    model = build_model(cfg["model"], cfg.get("freeze", "backbone"), cfg.get("dropout", 0.0)).to(device)
+    model = model_from_cfg(cfg).to(device)
     criterion = nn.CrossEntropyLoss(label_smoothing=cfg.get("label_smoothing", 0.0))
     params = [p for p in model.parameters() if p.requires_grad]
     if cfg["optimizer"] == "adamw":
@@ -289,7 +318,7 @@ def run_experiment(cfg: dict, log=print) -> dict:
 def eval_ckpt(exp_id: str, df: pd.DataFrame, cfg: dict):
     """저장된 best ckpt를 다른 평가셋(df)으로 평가. test에는 쓰지 말 것(최종 1회 제외)."""
     device = torch.device("cpu")
-    model = build_model(cfg["model"], cfg.get("freeze", "backbone"), cfg.get("dropout", 0.0))
+    model = model_from_cfg(cfg)
     model.load_state_dict(torch.load(CKPT / f"{exp_id}.pth", map_location=device))
     _, eval_tf = build_transforms(cfg["img_size"])
     loader = make_loader(df, eval_tf, 64, False, cfg.get("num_workers", 0))
