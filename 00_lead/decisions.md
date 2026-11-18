@@ -31,4 +31,6 @@
 | D27 | 11/19 | 야간 탐색 결과: 은닉 2층 헤드(E5) 채택, GELU(E6)·강한 어둡게(E7) 기각, layer4 동결 해제(E8) 채택, 224px(E9, (val+val_ext)/2 기준 사전 등록) 채택 | `01_coding/results/overnight_summary.md` | ✅ |
 | D28 | 11/19 | 스태킹(E9+E8, Linear 24→12) S3 +0.02%p로 미채택. 확률 평균은 S3 +1.2%p지만 상승분이 160px val_hard에 치우침((val+val_ext)/2 +0.4%p) → **최종 = E9 단일 모델** | stacking_results.json, 사전 규칙 | ✅ |
 | D29 | 11/19 | **최종 TEST 1회 사용 완료 (E9): Kaggle test 0.9394 (n=2,328), test_ext 0.9083 (n=360)**. 이후 TEST 재평가 금지 | final_test.json | ✅ |
-| D30 | 11/19 | 제출 노트북 = `01_coding/notebooks/03_results.ipynb`(nbformat으로 작성·실행, 저장된 결과만 읽음). marimo 미설치로 D2의 export 대신 사용. 학습 코드는 gc_lib.py 모듈 | 환경 확인 | ⏳ 제출 형식(모듈 vs 셀) 확인 필요 |
+| D30 | 11/19 | ~~제출 노트북 = `01_coding/notebooks/03_results.ipynb`~~ (D32로 대체)(nbformat으로 작성·실행, 저장된 결과만 읽음). marimo 미설치로 D2의 export 대신 사용. 학습 코드는 gc_lib.py 모듈 | 환경 확인 | ⏳ 제출 형식(모듈 vs 셀) 확인 필요 |
+| D31 | 11/19 | **결정 A: 최종 제출 모델 = E9 단일** 확정. 검증셋 오답 E9 372 / 확률 평균 322 / 스태킹 349 (4,027장). 평균의 이득은 val(p=0.04)·val_hard(160px, E8에 유리)에 몰리고 val_ext는 55→54로 동일, 사전 기준 미달, TEST 재사용 불가 → 보고서에 대안 분석으로만 기재 | `results/ensemble_compare.json`, `figures/ensemble_confusion.png`, `notebooks/04_final_analysis.ipynb` | ✅ 사용자 결정 |
+| D32 | 11/19 | 제출 구성 확정 (D30 대체): 최종 분석 노트북 = **`01_coding/notebooks/04_final_analysis.ipynb` 하나** (셀마다 목적 주석, 저장된 결과만 읽음). 학습·평가 코드는 `notebooks/*.py`. 결과물은 `01_coding/RESULT/`(data_split·experiments·final_test·ensemble·figures·logs)로 정리. 데이터 출처·라이선스는 루트 README | 사용자 요청 | ✅ |

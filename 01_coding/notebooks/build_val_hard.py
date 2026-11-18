@@ -6,7 +6,7 @@
   * blur : GaussianBlur 반경 2.0~3.0 (학습 degrade의 σ0.5~2, kernel 5보다 강함)
   * dark : 밝기 0.15~0.35배 (학습 degrade의 0.3~1.0보다 어두움)
   * glare: 무작위 위치에 흰 원형 빛번짐(반경 25~45%, 강도 0.6~0.9) — 학습 증강에 없음
-- 출력: external_data/val_hard/<label>/<i>.png, 01_coding/results/val_hard.csv
+- 출력: external_data/val_hard/<label>/<i>.png, 01_coding/RESULT/data_split/val_hard.csv
 - 원본 split.csv, val_ext.csv는 읽기만 함. Kaggle test는 사용하지 않음.
 """
 import random
@@ -22,7 +22,7 @@ import gc_lib as G
 
 SEED, SIZE = 42, 160
 OUT_DIR = G.ROOT / "external_data" / "val_hard"
-OUT_CSV = G.RESULTS / "val_hard.csv"
+OUT_CSV = G.DATA_DIR / "val_hard.csv"
 
 
 def glare(img: Image.Image, rng: random.Random) -> Image.Image:

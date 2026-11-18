@@ -3,7 +3,7 @@
 - 한 번에 하나씩 학습. 각 실험 후 val_hard 평가 → S3 = (val + val_ext + val_hard)/3
 - 채택 규칙: 현재 최고보다 S3 +1%p 이상 & clothes/shoes val -3%p 이내. E7은 val_ext도 하락 없어야 함
 - 07:50까지 끝나지 않을 실험(예상 55분)은 시작하지 않음. 오류는 1회 재시도 후 건너뜀
-- 진행 상태: results/overnight_state.json (중단 시 다시 실행하면 완료된 실험은 건너뜀)
+- 진행 상태: RESULT/experiments/overnight_state.json (중단 시 다시 실행하면 완료된 실험은 건너뜀)
 """
 import datetime as dt
 import json
@@ -20,7 +20,7 @@ from run_exp import EXPS
 
 CUTOFF = dt.datetime(2026, 11, 19, 7, 50)
 EST_MIN = 55
-STATE = G.RESULTS / "overnight_state.json"
+STATE = G.EXP_DIR / "overnight_state.json"
 
 
 def now():
@@ -30,7 +30,7 @@ def now():
 def say(msg):
     line = f"[{now():%H:%M}] {msg}"
     print(line, flush=True)
-    with open(G.RESULTS / "overnight_log.txt", "a", encoding="utf-8") as f:
+    with open(G.LOG_DIR / "overnight_log.txt", "a", encoding="utf-8") as f:
         f.write(line + "\n")
 
 
@@ -71,7 +71,7 @@ def run(cfg, st):
     for attempt in (1, 2):
         try:
             say(f"{e} 시작 (시도 {attempt}) — {cfg['changed_var']}={cfg['value']}")
-            with open(G.RESULTS / f"history_{e}.log", "w", encoding="utf-8") as f:
+            with open(G.LOG_DIR / f"history_{e}.log", "w", encoding="utf-8") as f:
                 def log(s):
                     print(s, flush=True)
                     f.write(s + "\n")
@@ -86,7 +86,7 @@ def run(cfg, st):
             return True
         except Exception as ex:  # noqa: BLE001
             say(f"{e} 오류 (시도 {attempt}): {ex!r}")
-            with open(G.RESULTS / f"error_{e}.txt", "a", encoding="utf-8") as f:
+            with open(G.LOG_DIR / f"error_{e}.txt", "a", encoding="utf-8") as f:
                 f.write(traceback.format_exc() + "\n")
             st["failed"][e] = repr(ex)
             save_state(st)

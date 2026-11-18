@@ -21,13 +21,18 @@ from torchvision import models, transforms
 
 ROOT = Path(__file__).resolve().parents[2]
 CODING = ROOT / "01_coding"
-RESULTS = CODING / "results"
-FIGURES = CODING / "figures"
-HISTORY = RESULTS / "history"
-CKPT = CODING / "checkpoints"
-SPLIT_CSV = RESULTS / "split.csv"
-VAL_EXT_CSV = RESULTS / "val_ext.csv"
-EXP_CSV = RESULTS / "experiments.csv"
+RESULTS = CODING / "RESULT"            # 결과 루트 (코드 외 산출물 전부)
+DATA_DIR = RESULTS / "data_split"      # 고정 분할·데이터 목록 (split, train_mix, val_ext, val_hard, test_ext, meta_train)
+EXP_DIR = RESULTS / "experiments"      # experiments.csv, history/, 상태·스태킹 json
+FINAL_DIR = RESULTS / "final_test"     # 최종 TEST 1회 결과
+ENS_DIR = RESULTS / "ensemble"         # E9 단일·평균·스태킹 비교
+LOG_DIR = RESULTS / "logs"             # 학습 로그
+FIGURES = RESULTS / "figures"
+HISTORY = EXP_DIR / "history"
+CKPT = CODING / "checkpoints"          # git 제외
+SPLIT_CSV = DATA_DIR / "split.csv"
+VAL_EXT_CSV = DATA_DIR / "val_ext.csv"
+EXP_CSV = EXP_DIR / "experiments.csv"
 
 CLASSES = ["battery", "biological", "brown-glass", "cardboard", "clothes", "green-glass",
            "metal", "paper", "plastic", "shoes", "trash", "white-glass"]
@@ -105,7 +110,7 @@ def load_train_df(cfg: dict) -> pd.DataFrame:
         split = pd.read_csv(SPLIT_CSV)
         return sample_per_class(split[split["split"] == "train"], cfg.get("max_per_class"), cfg["seed"])
     if cfg["train_data"] == "mix":
-        return pd.read_csv(RESULTS / "train_mix.csv")
+        return pd.read_csv(DATA_DIR / "train_mix.csv")
     raise ValueError(cfg["train_data"])
 
 
@@ -224,7 +229,7 @@ def append_experiment(row: dict):
 
 def run_experiment(cfg: dict, log=print) -> dict:
     """cfg 하나로 학습 → best ckpt 저장(선택 점수 기준) → history/클래스별 정확도/experiments.csv 기록."""
-    for d in (RESULTS, FIGURES, HISTORY, CKPT):
+    for d in (RESULTS, FIGURES, HISTORY, CKPT, LOG_DIR):
         d.mkdir(parents=True, exist_ok=True)
     seed_everything(cfg["seed"])
     torch.set_num_threads(cfg.get("threads", torch.get_num_threads()))

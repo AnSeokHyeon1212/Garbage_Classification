@@ -1,5 +1,5 @@
 """T-06 최종 평가 (딱 한 번): python final_test.py <EXP_ID | stack>
-- 실행 전 확인: experiments.csv의 test_used가 모두 0, results/final_test.json 없음 → 아니면 중단
+- 실행 전 확인: experiments.csv의 test_used가 모두 0, RESULT/final_test/final_test.json 없음 → 아니면 중단
 - 평가: Kaggle TEST(split.csv, 2,328장) + test_ext(외부 9클래스 360장)을 한 번에 평가
 - 기록: final_test.json(전체/클래스별/출처별), final_test_confusion.csv, experiments.csv 해당 행 test_acc·test_used=1
   'stack'이면 stacking_results.json의 best 행에 기록하고 notes에 스태킹임을 남긴다
@@ -17,13 +17,13 @@ from stacking import probs
 
 
 def main(target):
-    out = G.RESULTS / "final_test.json"
+    out = G.FINAL_DIR / "final_test.json"
     exp = pd.read_csv(G.EXP_CSV)
     assert not out.exists(), "final_test.json이 이미 있음: TEST는 이미 1회 사용됨"
     assert (exp.test_used.fillna(0) == 0).all(), "experiments.csv에 test_used=1 행이 있음"
     torch.set_num_threads(12)
     split = pd.read_csv(G.SPLIT_CSV)
-    sets = {"test": split[split.split == "test"], "test_ext": pd.read_csv(G.RESULTS / "test_ext.csv")}
+    sets = {"test": split[split.split == "test"], "test_ext": pd.read_csv(G.DATA_DIR / "test_ext.csv")}
 
     if target == "stack":
         ck = torch.load(G.CKPT / "STACK.pth")
@@ -46,7 +46,7 @@ def main(target):
         res[k] = dict(acc=round(d.ok.mean(), 4), n=len(d),
                       by_class={c: dict(acc=round(g.ok.mean(), 4), n=len(g)) for c, g in d.groupby("label")},
                       by_source={s: dict(acc=round(g.ok.mean(), 4), n=len(g)) for s, g in d.groupby("source")})
-        pd.crosstab(d.label, d.pred).to_csv(G.RESULTS / f"final_{k}_confusion.csv", encoding="utf-8-sig")
+        pd.crosstab(d.label, d.pred).to_csv(G.FINAL_DIR / f"final_{k}_confusion.csv", encoding="utf-8-sig")
         print(k, res[k]["acc"], "n", len(d))
     json.dump(res, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 

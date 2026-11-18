@@ -1,0 +1,70 @@
+{
+ "note": "검증셋만 사용. val_hard는 val·val_ext를 손상시킨 셋이라 독립 아님, 160px라 E8에 유리",
+ "sets": {
+  "val": {
+   "n": 2327,
+   "errors": {
+    "single": 118,
+    "avg": 102,
+    "stack": 101
+   },
+   "mcnemar_vs_single": {
+    "avg": {
+     "only_single": 20,
+     "only_other": 36,
+     "p": 0.044
+    },
+    "stack": {
+     "only_single": 31,
+     "only_other": 48,
+     "p": 0.0712
+    }
+   }
+  },
+  "val_ext": {
+   "n": 500,
+   "errors": {
+    "single": 55,
+    "avg": 54,
+    "stack": 65
+   },
+   "mcnemar_vs_single": {
+    "avg": {
+     "only_single": 11,
+     "only_other": 12,
+     "p": 1.0
+    },
+    "stack": {
+     "only_single": 23,
+     "only_other": 13,
+     "p": 0.1325
+    }
+   }
+  },
+  "val_hard": {
+   "n": 1200,
+   "errors": {
+    "single": 199,
+    "avg": 166,
+    "stack": 183
+   },
+   "mcnemar_vs_single": {
+    "avg": {
+     "only_single": 29,
+     "only_other": 62,
+     "p": 0.0007
+    },
+    "stack": {
+     "only_single": 49,
+     "only_other": 65,
+     "p": 0.1598
+    }
+   }
+  }
+ },
+ "total_errors": {
+  "single": 372,
+  "avg": 322,
+  "stack": 349
+ }
+}

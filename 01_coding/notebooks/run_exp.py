@@ -1,4 +1,4 @@
-"""실험 실행: python run_exp.py E1 [E2 ...]  (백그라운드 실행용. 결과는 experiments.csv / history/ / figures/)"""
+"""실험 실행: python run_exp.py E1 [E2 ...]  (백그라운드 실행용. 결과는 RESULT/experiments, RESULT/figures)"""
 import sys
 from pathlib import Path
 

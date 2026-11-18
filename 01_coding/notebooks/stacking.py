@@ -6,7 +6,7 @@
 - 비교: 같은 val / val_ext / val_hard에서 최고 단일 · 확률 평균 · 스태킹 → S3
 - 채택: 스태킹 S3 >= 최고 단일 S3 + 0.01 일 때만. 아니면 단일 모델 유지
 - TEST·test_ext는 사용하지 않음
-출력: results/stacking_results.json, checkpoints/STACK.pth (메타 가중치)
+출력: RESULT/experiments/stacking_results.json, checkpoints/STACK.pth (메타 가중치)
 """
 import json
 import sys
@@ -43,9 +43,9 @@ def main(args):
     torch.manual_seed(42)
     split = pd.read_csv(G.SPLIT_CSV)
     sets = {"val": split[split.split == "val"], "val_ext": pd.read_csv(G.VAL_EXT_CSV),
-            "val_hard": pd.read_csv(G.RESULTS / "val_hard.csv")}
-    meta_df = pd.read_csv(G.RESULTS / "meta_train.csv")
-    st = json.load(open(G.RESULTS / "overnight_state.json", encoding="utf-8"))
+            "val_hard": pd.read_csv(G.DATA_DIR / "val_hard.csv")}
+    meta_df = pd.read_csv(G.DATA_DIR / "meta_train.csv")
+    st = json.load(open(G.EXP_DIR / "overnight_state.json", encoding="utf-8"))
     done = ["E3"] + [e for e in st["done"] if e != "E3"] + ["E2"]
     best = args[0] if args else st["best"]
     lab = {k: torch.tensor([G.CLASS_TO_IDX[c] for c in d.label]) for k, d in sets.items()}
@@ -97,7 +97,7 @@ def main(args):
     out = dict(best=best, partner=partner, error_overlap=overlaps, meta_train_n=len(meta_df),
                meta_train_loss=round(float(loss), 4), results=res, decision=decision,
                rule="스태킹 S3 >= 단일 S3 + 0.01 이면 스태킹 채택")
-    json.dump(out, open(G.RESULTS / "stacking_results.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    json.dump(out, open(G.EXP_DIR / "stacking_results.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print("결정:", decision)
 
 

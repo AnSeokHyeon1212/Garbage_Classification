@@ -35,4 +35,4 @@ if __name__ == "__main__":
     res = [one_epoch(6, 0), one_epoch(12, 0)]
     best_t = min(res, key=lambda r: r["epoch_sec"])["threads"]
     res.append(one_epoch(best_t, 4))
-    (G.RESULTS / "thread_bench.json").write_text(json.dumps(res, indent=2), encoding="utf-8")
+    (G.EXP_DIR / "thread_bench.json").write_text(json.dumps(res, indent=2), encoding="utf-8")

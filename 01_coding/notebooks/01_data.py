@@ -37,7 +37,7 @@ def _(mo):
     # T-01 데이터 확인 + 분할 고정 + CPU 속도 실측
 
     - 데이터: Kaggle `mostafaabla/garbage-classification` (12 클래스) → `archive/garbage_classification/`
-    - 산출물: `01_coding/results/split.csv`, `01_coding/results/class_counts.csv`, `01_coding/figures/class_dist.png`, `01_coding/results/cpu_timing.json`
+    - 산출물: `01_coding/RESULT/data_split/split.csv`, `RESULT/data_split/class_counts.csv`, `RESULT/figures/class_dist.png`, `RESULT/experiments/cpu_timing.json`
     - **split.csv는 한 번 만들면 다시 만들지 않는다.** 파일이 있으면 읽어서 검증만 한다.
     - test 데이터는 이 노트북에서 학습·평가 어디에도 쓰지 않는다.
     """)
@@ -59,8 +59,9 @@ def _(Path, mo):
     CFG = {
         "seed": 42,
         "data_dir": ROOT / "archive" / "garbage_classification",
-        "results_dir": ROOT / "01_coding" / "results",
-        "figures_dir": ROOT / "01_coding" / "figures",
+        "results_dir": ROOT / "01_coding" / "RESULT" / "data_split",
+        "exp_dir": ROOT / "01_coding" / "RESULT" / "experiments",
+        "figures_dir": ROOT / "01_coding" / "RESULT" / "figures",
         "split_ratio": (0.70, 0.15, 0.15),  # train / val / test
         "source": "kaggle",
         # CPU 속도 실측용
@@ -246,7 +247,7 @@ def _(mo):
     - **학습 1 step**: 예측(forward) → 손실 계산 → 기울기 초기화 → 역전파(backward) → 가중치 갱신(step).
 
     측정 조건: CPU, fp32, batch 32, num_workers 0, train만 사용(val/test 미사용). 시간 측정 목적이라 정확도는 참고용이다.
-    결과는 `results/cpu_timing.json`에 저장하고, 파일이 있으면 다시 측정하지 않는다(재실행 시 30분 이상 걸릴 수 있음).
+    결과는 `RESULT/experiments/cpu_timing.json`에 저장하고, 파일이 있으면 다시 측정하지 않는다(재실행 시 30분 이상 걸릴 수 있음).
     """)
     return
 
@@ -272,7 +273,7 @@ def _(Dataset, Image, ROOT):
 
 @app.cell
 def _(CFG, CLASSES, DataLoader, GarbageDataset, json, models, nn, df_split, seed_everything, time, torch, transforms):
-    timing_path = CFG["results_dir"] / "cpu_timing.json"
+    timing_path = CFG["exp_dir"] / "cpu_timing.json"
     if timing_path.exists():
         timing = json.loads(timing_path.read_text(encoding="utf-8"))
         print("기존 측정 결과 사용:", timing_path)

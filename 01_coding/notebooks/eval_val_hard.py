@@ -1,5 +1,5 @@
 """저장된 best ckpt를 val_hard(고정 손상 검증셋)로 평가: python eval_val_hard.py E1 E2 ...
-출력: results/history/<exp>_val_hard.json (전체 / 손상별 / 출처별 / 클래스별 정확도와 표본 수)
+출력: RESULT/experiments/history/<exp>_val_hard.json (전체 / 손상별 / 출처별 / 클래스별 정확도와 표본 수)
 학습 없음, test 사용 안 함.
 """
 import json
@@ -16,7 +16,7 @@ import gc_lib as G
 @torch.no_grad()
 def main(exp_ids):
     torch.set_num_threads(12)
-    df = pd.read_csv(G.RESULTS / "val_hard.csv")
+    df = pd.read_csv(G.DATA_DIR / "val_hard.csv")
     for e in exp_ids:
         cfg = json.load(open(G.HISTORY / f"{e}_cfg.json", encoding="utf-8"))
         _, eval_tf = G.build_transforms(cfg["img_size"])  # 224 모델은 160px val_hard를 224로 키워 평가(참고용)

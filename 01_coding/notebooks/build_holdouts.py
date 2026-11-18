@@ -37,12 +37,12 @@ def aihub_files() -> pd.DataFrame:
 
 
 def main():
-    out_t, out_m = G.RESULTS / "test_ext.csv", G.RESULTS / "meta_train.csv"
+    out_t, out_m = G.DATA_DIR / "test_ext.csv", G.DATA_DIR / "meta_train.csv"
     if out_t.exists() or out_m.exists():
         print("이미 있음(고정) — 재생성하지 않음")
         return
     split = pd.read_csv(G.SPLIT_CSV)
-    mix = pd.read_csv(G.RESULTS / "train_mix.csv")
+    mix = pd.read_csv(G.DATA_DIR / "train_mix.csv")
     vext = pd.read_csv(G.VAL_EXT_CSV)
     used = set(mix.path) | set(vext.path)
 
@@ -50,7 +50,7 @@ def main():
                     ignore_index=True)[["path", "label", "source"]]
     ext = ext[~ext.path.isin(used)].reset_index(drop=True)
 
-    cache_path = G.RESULTS / "phash_cache.json"
+    cache_path = G.DATA_DIR / "phash_cache.json"
     cache = json.loads(cache_path.read_text())
     n0 = len(cache)
     he = phash_all(ext.path.tolist(), cache)

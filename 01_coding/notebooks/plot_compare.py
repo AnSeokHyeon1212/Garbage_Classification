@@ -1,5 +1,5 @@
 """야간 실험 비교 그림 1장: python plot_compare.py E3 E4 E5 ...
-figures/overnight_compare.png — 왼쪽 train·val loss, 오른쪽 val·val_ext accuracy (실험별 색)
+RESULT/figures/overnight_compare.png — 왼쪽 train·val loss, 오른쪽 val·val_ext accuracy (실험별 색)
 개별 곡선 PNG는 채택된 모델만 G.plot_curve(<id>)로 따로 저장한다.
 """
 import sys

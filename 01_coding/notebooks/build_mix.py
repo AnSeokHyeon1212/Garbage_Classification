@@ -1,4 +1,4 @@
-"""T-03 외부 데이터 통합 → results/train_mix.csv, results/val_ext.csv (split.csv는 읽기만)
+"""T-03 외부 데이터 통합 → RESULT/data_split/train_mix.csv, val_ext.csv (split.csv는 읽기만)
 
 1) 후보 수집: V2 original, RealWaste, AI Hub 직접촬영(zip에서 필요한 만큼만 꺼내 external_data/aihub/에 짧은 변 384px로 저장)
 2) phash: Kaggle 전체(train/val/test) 대비 + 외부끼리. hamming<=4
@@ -138,7 +138,7 @@ def main():
                     ignore_index=True)
     print("외부 후보:", ext.groupby("source").size().to_dict(), flush=True)
 
-    cache_path = G.RESULTS / "phash_cache.json"
+    cache_path = G.DATA_DIR / "phash_cache.json"
     cache = json.loads(cache_path.read_text()) if cache_path.exists() else {}
     hk = phash_all(split["path"].tolist(), cache)
     he = phash_all(ext["path"].tolist(), cache)
@@ -175,7 +175,7 @@ def main():
 
     report = ext.pivot_table(index=["source", "label"], columns="status", values="path", aggfunc="count",
                              fill_value=0)
-    report.to_csv(G.RESULTS / "dedup_report.csv", encoding="utf-8-sig")
+    report.to_csv(G.DATA_DIR / "dedup_report.csv", encoding="utf-8-sig")
     print(report, flush=True)
 
     pool = ext[ext["status"] == "keep"].copy()
@@ -217,7 +217,7 @@ def main():
     assert not set(train_mix.path) & set(val_ext.path)
     assert not set(val_ext.path) & set(split.path)
     assert set(train_mix[train_mix.source == "kaggle"].path) <= set(k_train.path)  # Kaggle val/test 미포함
-    train_mix.to_csv(G.RESULTS / "train_mix.csv", index=False, encoding="utf-8")
+    train_mix.to_csv(G.DATA_DIR / "train_mix.csv", index=False, encoding="utf-8")
     val_ext.to_csv(G.VAL_EXT_CSV, index=False, encoding="utf-8")
 
     counts = pd.concat([train_mix, val_ext]).pivot_table(index="label", columns=["split", "source"],
@@ -225,7 +225,7 @@ def main():
     counts["train_total"] = counts["train"].sum(axis=1)
     counts["val_ext_total"] = counts["val_ext"].sum(axis=1)
     counts.loc["합계"] = counts.sum()
-    counts.to_csv(G.RESULTS / "mix_counts.csv", encoding="utf-8-sig")
+    counts.to_csv(G.DATA_DIR / "mix_counts.csv", encoding="utf-8-sig")
     print(counts, flush=True)
     print("부족분:", short or "없음", flush=True)
     print(f"train_mix {len(train_mix)} / val_ext {len(val_ext)}", flush=True)

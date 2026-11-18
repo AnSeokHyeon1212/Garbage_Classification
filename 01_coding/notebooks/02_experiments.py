@@ -46,7 +46,7 @@ def _(mo):
 
 @app.cell
 def _(G, pd):
-    pd.read_json(G.RESULTS / "thread_bench.json")
+    pd.read_json(G.EXP_DIR / "thread_bench.json")
     return
 
 
@@ -117,7 +117,7 @@ def _(mo):
 
 @app.cell
 def _(G, pd):
-    pd.read_csv(G.RESULTS / "dedup_report.csv")
+    pd.read_csv(G.DATA_DIR / "dedup_report.csv")
     return
 
 
@@ -131,7 +131,7 @@ def _(mo):
 
 @app.cell
 def _(G, pd):
-    _tm = pd.read_csv(G.RESULTS / "train_mix.csv")
+    _tm = pd.read_csv(G.DATA_DIR / "train_mix.csv")
     _ve = pd.read_csv(G.VAL_EXT_CSV)
     _all = pd.concat([_tm, _ve])
     mix_table = _all.pivot_table(index="label", columns=["split", "source"], values="path",

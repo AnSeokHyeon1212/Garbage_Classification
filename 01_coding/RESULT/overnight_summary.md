@@ -43,14 +43,14 @@ val_hard 손상별 (E3 → E5 → E8 → E9): 흐림 0.658→0.719→0.792→0.7
 - E9는 10 epoch 상한에서 best → 추가 학습 여지. 실험별 단일 시드(42)라 1~2%p 차이는 노이즈 범위일 수 있음
 
 ## 산출물
-- 체크포인트 `checkpoints/E1~E9.pth`, `STACK.pth` · epoch 기록 `results/history/E*.csv` · val_hard `history/E*_val_hard.json`
-- 그림 `figures/overnight_compare.png`, `figures/E9_curve.png` (+기존 E1~E3 곡선)
-- 스태킹 `results/stacking_results.json` · 최종 `results/final_test.json`, `final_test_confusion.csv`, `final_test_ext_confusion.csv`
-- 제출 노트북 `notebooks/03_results.ipynb` (저장된 결과만 읽어 실행, 출력 포함)
-- 로그 `results/overnight_log.txt`
+- 체크포인트 `01_coding/checkpoints/E1~E9.pth`, `STACK.pth` · epoch 기록 `RESULT/experiments/history/E*.csv` · val_hard `history/E*_val_hard.json`
+- 그림 `RESULT/figures/overnight_compare.png`, `RESULT/figures/E9_curve.png` (+기존 E1~E3 곡선)
+- 스태킹 `RESULT/experiments/stacking_results.json` · 최종 `RESULT/final_test/final_test.json`, `final_test_confusion.csv`, `final_test_ext_confusion.csv`
+- 제출 노트북 `notebooks/04_final_analysis.ipynb` (저장된 결과만 읽어 실행, 출력 포함)
+- 로그 `RESULT/logs/overnight_log.txt`
 
 ## 남은 제출 작업
-- 03_results.ipynb 검토 후 제출본 확정 (학습 코드를 노트북 셀로 넣을지 결정)
+- 04_final_analysis.ipynb로 제출본 확정 (결정 A: E9 단일)
 - Word 보고서, GitHub 커밋 (외부 이미지·체크포인트 업로드 금지 확인)
 - decisions.md·01_coding README에 val_hard·S3 규칙·E4~E9 결과 반영
 - TEST는 사용 완료 — 다시 평가하지 말 것 (`final_test.py`가 차단)
