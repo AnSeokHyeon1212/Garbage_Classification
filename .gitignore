@@ -4,3 +4,12 @@ data/
 *.pt
 __pycache__/
 .ipynb_checkpoints/
+archive/
+external_data/
+archive(1)/
+realwaste/
+download/
+__marimo__/
+aihub/
+232.*/
+01_coding/results/phash_cache.json

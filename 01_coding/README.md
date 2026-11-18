@@ -8,7 +8,63 @@
   - 완료 기준: split.csv 행 수 = 전체 이미지 수, 1 epoch 시간 보고
   - 금지: torch/torchvision 외 학습 패키지. split.csv 생성 후 변경 금지. test 사용 금지
   - 마감: 11/16(월) 밤
+  - 추가: 데이터 경로 = `archive/garbage_classification` (12폴더, 15,515장). split.csv에 `source` 컬럼(kaggle) 포함
+- [11/16] T-04 예고 (T-02 베이스라인 후): 증강 1개씩 추가 실험
+  - 순서: 좌우반전 → 회전(±15~30°) → RandomResizedCrop → ColorJitter → GaussianBlur
+  - 각 실험은 직전 최고 설정 대비 1변수만 변경, experiments.csv에 `changed_var=aug` 기록
+  - 증강 예시 이미지 그리드 1장 저장: figures/aug_examples.png (보고서용)
+
+- [11/18] ⚡ 오늘 일정 (D19·D20 승인). 제출 = 내일. 컷오프: 11/19 09시
+- [11/18] T-02: 베이스라인 E1 (Kaggle만)
+  - 데이터: split.csv의 train에서 클래스당 최대 1,000장 샘플(seed=42, 부족하면 전부). val = Kaggle val 그대로
+  - 설정: resnet18(pretrained), 160px, 백본 동결(fc만 학습), AdamW lr=1e-3, wd=1e-4, batch 32, epochs 10, early stop patience 3, 증강 없음(Resize+Normalize)
+  - 먼저 torch.set_num_threads(12) 효과 측정(1 epoch 시간) → 빠르면 적용
+  - 산출물: experiments.csv에 E1 행, figures/E1_curve.png(train/val loss·acc), 클래스별 val 정확도
+- [11/18] T-03: 외부 데이터 통합 (T-02 학습 도는 동안 병행)
+  - 소스: V2 `archive(1)/original`, RealWaste `realwaste/realwaste-main/RealWaste`, AI Hub 직접촬영 zip(TS_2/VS_2: 유리병 갈색·녹색·투명, 건전지, 철캔_3) — zip은 풀지 말고 필요한 장수만 zipfile로 꺼내 `external_data/`에 저장
+  - 클래스 매핑: Food Organics→biological, Misc Trash→trash, Cardboard/Metal/Paper/Plastic→동명, 투명→white-glass, 건전지→battery, 철캔→metal. 제외: V2·RealWaste glass, Vegetation, Textile(샘플 확인 전까지 제외)
+  - 중복 제거: imagehash(phash)로 Kaggle **전체(train·val·test)** 대비 + 외부끼리. 기준 hamming≤4 & 같은 클래스 → 제거, 다른 클래스 근접은 제외 처리 후 개수 보고
+  - 순서: ① val_ext 먼저: RealWaste·AI Hub에서 클래스당 50장 고정 ② 나머지에서 D19 표대로 train 샘플(seed=42)
+  - D19 표 (train): battery K500+AI500 / biological K579+V2 60+RW361 / brown K425+AI575 / green K440+AI560 / white K450+AI550 / cardboard K400+V2 300+RW300 / clothes K1000 / metal K400+V2 200+RW300+AI100 / paper K400+V2 300+RW300 / plastic K400+V2 300+RW300 / shoes K1000 / trash K400+V2 200+RW400. 부족하면 Kaggle로 채움
+  - 산출물: results/train_mix.csv, results/val_ext.csv (path,label,split,source), 출처별·클래스별 개수 표. **split.csv는 수정 금지**
+- [11/18] 이후 순서 (각 1변수, 직전 최고 대비): E2 데이터=혼합 → T-04 증강(좌우반전→회전→RandomResizedCrop→ColorJitter(hue≤0.05)→GaussianBlur) → T-05 lr(1e-2,1e-3,1e-4) → wd(1e-4,1e-3,1e-2) → 과적합 대응(layer4 동결 해제, dropout)
+  - 모델 선택 기준: val_acc와 val_ext_acc 평균. 모든 실험에 val_ext_acc 기록
+  - T-06: 최고 설정 224px로 최종 학습 → **Kaggle test 1회** → `marimo export ipynb --include-outputs` → git 커밋은 팀장 승인 후
 
 ## 📤 작업 보고
+- [11/16] T-01: ✅ 완료 — `notebooks/01_data.py`(marimo), 실행 결과 `results/01_data.html`
+  - `results/split.csv` (path,label,split,source): 15,515행 = 전체 이미지 수. train 10,860 / val 2,327 / test 2,328. seed=42 stratified. source=kaggle. 경로는 루트 기준 상대경로(`archive/garbage_classification/...`)
+  - `results/class_counts.csv`, `figures/class_dist.png`: 최다 clothes 5,325(34.3%), 최소 brown-glass 607(3.9%) → 불균형 8.77배
+  - 이미지 점검: 깨진 파일 0, 색 모드 RGB 15,481 / P(팔레트) 34 → 로딩 시 `.convert("RGB")` 처리
+  - CPU 실측 `results/cpu_timing.json`: resnet18(pretrained) 224px, batch 32, fp32, num_workers 0, torch 6스레드 → **train 1 epoch 899초(15.0분), 12.1 img/s**. (참고: 1 epoch 후 train acc 0.771, val/test 미평가)
+  - 환경: Python 3.14, torch 2.15.0+cpu, torchvision 0.29.2+cpu. pandas 3.1.1은 Windows 애플리케이션 제어 정책이 DLL을 막아 실패 → **pandas 3.0.6으로 설치**
+  - test 미사용. split.csv는 노트북 재실행 시에도 재생성되지 않도록 되어 있음(있으면 읽기만 함)
+- [11/18] T-02: ✅ 완료 — 코드 `notebooks/gc_lib.py`(train_one_epoch/evaluate/run_experiment), `notebooks/run_exp.py`(실험 CFG), 결과 노트북 `notebooks/02_experiments.py`
+  - 스레드 측정 `results/thread_bench.json` (E1 조건 train 1 epoch, 7,749장): 6스레드 218초 → **12스레드 139초(-36%) → 적용**. num_workers 4는 144초로 이득 없음 → 0 유지
+  - E1 (Kaggle train 클래스당 ≤1,000 = 7,749장, resnet18 160px 백본 동결, AdamW 1e-3, wd 1e-4, batch 32, 증강 없음): ep9에서 early stop, **best ep6 val_acc 0.9317** (train 0.9423, val loss 0.2197). 36.6분(T-03과 CPU를 같이 써서 epoch당 190~410초)
+  - 산출물: `results/experiments.csv` E1 행, `figures/E1_curve.png`, `results/history/E1.csv`, 클래스별 val 정확도 `results/history/E1_val_per_class.csv`
+  - 클래스별 val: 낮음 white-glass 0.80 / plastic 0.81 / metal 0.84 / cardboard 0.85, 높음 biological 0.99 / clothes 0.98 / shoes 0.96
+  - **E1 val_ext 0.388** (학습 후 best ckpt로 사후 평가, `results/history/E1_val_ext.json`). Kaggle val 0.93과 차이가 큼 → Kaggle만으로는 외부 사진에 일반화가 안 됨. 클래스별: white-glass 0.10, cardboard 0.12, trash 0.16 최저 / brown-glass 0.72 최고
+  - 곡선: ep4 이후 train acc는 계속 오르는데 val은 0.92~0.93에서 정체 → 약한 과적합 시작
+- [11/18] T-03: ✅ 완료 — `notebooks/build_mix.py` → `results/train_mix.csv` 12,000장, `results/val_ext.csv` 500장 (path,label,split,source). split.csv 수정 없음
+  - AI Hub: zip 6개에서 필요량의 약 1.35배만 꺼내 짧은 변 384px로 줄여 `external_data/aihub/<클래스>/`에 저장(원본 2.5~6MB/장). 깨진 파일 1장(녹색) 제외
+  - 중복 제거 `results/dedup_report.csv` (phash, hamming≤4, 외부 후보 13,493장): Kaggle과 같은 클래스 중복 **3,427**(거의 전부 V2), Kaggle과 다른 클래스 근접 19, 외부끼리 중복 16, 외부끼리 다른 클래스 근접 26 → 모두 제외, 남은 10,005장 중에서 샘플
+  - val_ext: 클래스당 50장 × 10 클래스 = 500 (AI Hub 225 / RealWaste 275, metal은 RW 25+AI 25). **clothes·shoes는 RealWaste·AI Hub에 없어 val_ext에 없음**
+  - train_mix 출처: Kaggle 6,396 / AI Hub 2,285 / RealWaste 1,959 / V2 1,360. 클래스당 1,000장. 부족분: biological RealWaste 359/361 → Kaggle 2장으로 채움(Kaggle 581)
+  - 출처별·클래스별 표: `results/mix_counts.csv`
+  - 샘플 육안 확인: 유리 3색 라벨은 대체로 맞음. AI Hub는 바닥(보도블록·아스팔트) 배경이라 Kaggle(단색 배경)과 도메인이 다름
+- [11/18] E2 (E1 대비 train_data=mix만 변경): ⏳ 실행 중. 선택 기준 = (val + val_ext)/2
 
 ## ❓ 질문
+- [11/18] val_ext에 clothes·shoes가 없어서 (val+val_ext)/2 기준은 이 두 클래스를 val로만 평가합니다. 이대로 진행할지, V2 clothes/shoes 비중복분(거의 없음)이나 다른 소스를 찾을지 결정 부탁드립니다.
+- [11/18] 제출 노트북: 학습 코드가 `gc_lib.py` 모듈에 있습니다(Windows DataLoader 때문). T-06에서 제출용 노트북에 모듈 코드를 셀로 펼쳐 넣을지, 모듈을 같이 제출할지 결정 부탁드립니다.
+- ~~[11/16] 데이터 위치:~~ (해결: D6) 지시 경로대로 `archive/garbage_classification`을 직접 참조했고 `data/`로 복사하지 않음(archive/도 .gitignore 대상). 복사가 필요하면 지시 부탁드립니다.
+- ~~[11/16] CPU로는 1 epoch에~~ (해결: D20) 15분 → 비교 실험 1개(예: 5 epoch + val)마다 약 1.5시간 걸림. 제안(미실행·미실측): ① Colab GPU로 전환 ② CPU 유지 시 비교 실험은 img 128px + 백본 동결로 하고, 유망 설정만 224px로 학습. 결정 부탁드립니다.
+- ~~[11/16] torch가 논리 코어~~ (해결: T-02 측정, 12스레드 적용) 12개 중 6스레드만 사용 중. `torch.set_num_threads(12)`와 DataLoader `num_workers>0`(Dataset을 .py 모듈로 분리해야 함) 효과는 미측정입니다. T-02 전에 측정할지 확인 부탁드립니다.
+
+## 📝 보고서용 메모
+- 분할: stratified 70/15/15 (seed=42) → 세 세트의 클래스 비율이 거의 같음 (`results/class_counts.csv`)
+- 불균형 8.77배(clothes/brown-glass) → Accuracy만 보면 다수 클래스에 유리할 수 있음. 클래스별 정확도·혼동행렬을 함께 제시할 것
+- 도메인 차이: Kaggle만 학습한 E1이 Kaggle val 0.932 vs 외부 사진 val_ext 0.388 → 외부 데이터 혼합(E2)의 근거. E1↔E2 비교가 보고서 핵심 표
+- 외부 데이터 정제: V2 후보의 약 53%(3,427/6,426)가 Kaggle과 phash 중복 → 중복 제거 없이 합치면 val/test 누출 위험
+- CPU 최적화: torch 스레드 6→12로 epoch 시간 36% 단축, 백본 동결+160px로 224px 전체 학습 대비 약 6.5배 빠름(899초 → 139초, 조건이 달라 단순 비교 주의)

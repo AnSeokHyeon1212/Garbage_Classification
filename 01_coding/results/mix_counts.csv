@@ -1,0 +1,16 @@
+﻿split,train,train,train,train,val_ext,val_ext,train_total,val_ext_total
+source,aihub,kaggle,realwaste,v2,aihub,realwaste,,
+label,,,,,,,,
+battery,500,500,0,0,50,0,1000,50
+biological,0,581,359,60,0,50,1000,50
+brown-glass,575,425,0,0,50,0,1000,50
+cardboard,0,400,300,300,0,50,1000,50
+clothes,0,1000,0,0,0,0,1000,0
+green-glass,560,440,0,0,50,0,1000,50
+metal,100,400,300,200,25,25,1000,50
+paper,0,400,300,300,0,50,1000,50
+plastic,0,400,300,300,0,50,1000,50
+shoes,0,1000,0,0,0,0,1000,0
+trash,0,400,400,200,0,50,1000,50
+white-glass,550,450,0,0,50,0,1000,50
+합계,2285,6396,1959,1360,225,275,12000,500

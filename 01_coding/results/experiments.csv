@@ -1,0 +1,2 @@
+exp_id,date,base_exp,changed_var,value,model,img_size,epochs,batch,lr,optimizer,weight_decay,aug,train_acc,val_acc,train_loss,val_loss,best_epoch,test_acc,test_used,val_ext_acc,select_score,n_train,train_data,freeze,epochs_run,time_min,notes
+E1,2026-11-18,,baseline,kaggle<=1000/cls,resnet18,160,10,32,0.001,adamw,0.0001,none,0.9423,0.9317,0.1975,0.2197,6,,0,0.388,0.9317,7749,kaggle,backbone,9,36.6,"베이스라인: Kaggle만, 백본 동결, 증강 없음 / val_ext는 학습 후 best ckpt로 사후 평가(선택 기준은 val만)"

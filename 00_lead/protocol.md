@@ -6,13 +6,14 @@
 - 분할: `01_coding/results/split.csv` 고정 (seed=42, stratified, train/val/test = 70/15/15). 한번 만들면 변경 금지
 - 튜닝은 val만. **test는 최종 1회** (실행 후 experiments.csv에 `test_used=1` 기록)
 - 실험은 한 번에 한 변수만 변경
-- 외부 데이터: 출처·라이선스 기록, train에만 추가, imagehash 중복 제거
+- 외부 데이터: 출처·라이선스 기록, imagehash 중복 제거(Kaggle과도 비교). train에만 추가 — **예외(D8): 소량 고정 `val_ext`** (튜닝 참고용, split.csv에 `split=val_ext`)
+- split.csv 컬럼: `path,label,split,source` (split ∈ train/val/test/val_ext)
 - 노트북: marimo `.py`로 작성 → 제출 전 `marimo export ipynb <파일>.py -o <파일>.ipynb --include-outputs`
 - 우선순위: 필수(과적합·HP·증강) > HP 비교 표·그래프 > 외부 데이터 > TTA·앙상블
 - 각 agent는 자기 폴더에만 쓰기. 팀장은 팀원 README의 "📥 팀장 지시"에만 추가
 
 ## 2. experiments.csv 컬럼
-`exp_id, date, base_exp, changed_var, value, model, img_size, epochs, batch, lr, optimizer, weight_decay, aug, train_acc, val_acc, train_loss, val_loss, best_epoch, test_acc, test_used, notes`
+`exp_id, date, base_exp, changed_var, value, model, img_size, epochs, batch, lr, optimizer, weight_decay, aug, data, train_acc, val_acc, val_ext_acc, train_loss, val_loss, best_epoch, test_acc, test_used, epoch_sec, notes`
 
 ## 3. 팀원 README 양식
 ```

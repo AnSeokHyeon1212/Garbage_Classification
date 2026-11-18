@@ -1,0 +1,12 @@
+[E1] train 7749 / val 2327 / val_ext 0 / device cpu / threads 12
+  ep01 train 0.7576/0.7775  val 0.3581/0.9007  val_ext nan  score 0.9007  (225s)
+  ep02 train 0.3529/0.8938  val 0.2931/0.9141  val_ext nan  score 0.9141  (410s)
+  ep03 train 0.2828/0.9104  val 0.2591/0.9205  val_ext nan  score 0.9205  (296s)
+  ep04 train 0.2422/0.9252  val 0.2441/0.9269  val_ext nan  score 0.9269  (205s)
+  ep05 train 0.2191/0.9325  val 0.2330/0.9269  val_ext nan  score 0.9269  (204s)
+  ep06 train 0.1975/0.9423  val 0.2197/0.9317  val_ext nan  score 0.9317  (217s)
+  ep07 train 0.1786/0.9466  val 0.2473/0.9218  val_ext nan  score 0.9218  (218s)
+  ep08 train 0.1655/0.9534  val 0.2246/0.9317  val_ext nan  score 0.9317  (193s)
+  ep09 train 0.1560/0.9534  val 0.2286/0.9244  val_ext nan  score 0.9244  (218s)
+  early stop (patience 3)
+[E1] done: best ep 6, score 0.9317, 36.6 min

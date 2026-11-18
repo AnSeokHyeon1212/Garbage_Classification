@@ -1,0 +1,16 @@
+{
+  "val_ext_loss": 2.5626,
+  "val_ext_acc": 0.388,
+  "per_class": {
+    "battery": 0.42,
+    "biological": 0.52,
+    "brown-glass": 0.72,
+    "cardboard": 0.12,
+    "green-glass": 0.6,
+    "metal": 0.46,
+    "paper": 0.4,
+    "plastic": 0.38,
+    "trash": 0.16,
+    "white-glass": 0.1
+  }
+}
