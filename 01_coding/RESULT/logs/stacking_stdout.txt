@@ -1,8 +1,0 @@
-best E9 partner E8 오답 겹침 {'E8': 0.5722543597221375}
-single_E9 {'val': 0.9493, 'val_ext': 0.89, 'val_hard': 0.8342, 's3': 0.8912}
-avg_E9+E8 {'val': 0.9562, 'val_ext': 0.892, 'val_hard': 0.8617, 's3': 0.9033}
-stack_E9+E8 {'val': 0.9566, 'val_ext': 0.87, 'val_hard': 0.8475, 's3': 0.8914}
-D:\데이터 분석\빅데이터_프로그래밍\01_coding\notebooks\stacking.py:98: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
-Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
-  meta_train_loss=round(float(loss), 4), results=res, decision=decision,
-결정: single

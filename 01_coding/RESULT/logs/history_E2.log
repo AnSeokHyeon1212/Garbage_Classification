@@ -1,3 +1,0 @@
-[E2] train 12000 / val 2327 / val_ext 500 / device cpu / threads 12
-  ep01 train 0.8982/0.7174  val 0.4136/0.8767  val_ext 0.6560  score 0.7663  (507s)
-  ep02 train 0.5538/0.8173  val 0.3691/0.8835  val_ext 0.6880  score 0.7858  (495s)

@@ -35,6 +35,8 @@
 
 - [11/19] 📁 폴더 정리: `results/`·`figures/` → `RESULT/` 하위(`data_split/`, `experiments/`, `final_test/`, `ensemble/`, `figures/`, `logs/`)로 이동. 아래 보고의 `results/…` 경로는 이동 전 기준. 경로 상수는 `gc_lib.py`. 최종 노트북은 `notebooks/final_model.ipynb` 하나 (전처리~최종 모델 학습~평가, 비교 실험 내용 제외. `03_results`·`04_final_analysis`는 삭제)
 
+- [11/19] ⚠️ **사전학습 미세조정 금지 → 이전 연구(E1~E9) 전부 폐기 (D34).** 아래 E1~E9·T-06 보고는 폐기된 기록. 재연구 계획: `docs/superpowers/plans/2026-11-19-scratch-cnn-research.md`
+
 ## 📤 작업 보고
 - [11/16] T-01: ✅ 완료 — `notebooks/01_data.py`(marimo), 실행 결과 `results/01_data.html`
   - `results/split.csv` (path,label,split,source): 15,515행 = 전체 이미지 수. train 10,860 / val 2,327 / test 2,328. seed=42 stratified. source=kaggle. 경로는 루트 기준 상대경로(`archive/garbage_classification/...`)

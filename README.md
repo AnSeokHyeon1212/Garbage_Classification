@@ -2,22 +2,12 @@
 
 > 전체 현황판 — **팀장만 수정**. 마지막 갱신: 2026-11-19(목)
 
-## 최종 결과
-- **최종 모델 E9**: ImageNet ResNet18 (torchvision) + MLP 헤드(512→256→128→12, ReLU), layer4·헤드만 학습, 입력 224px, 어둡게·흐림 실시간 증강, 학습 12,000장(클래스당 1,000)
-- **최종 TEST (1회 평가)**: Kaggle test **0.9394** (2,328장) · 외부 test_ext **0.9083** (360장, 9클래스)
-- 검증: val 0.949 / val_ext 0.890 / val_hard(손상 사진) 0.834
-- **최종 노트북: [`01_coding/notebooks/final_model.ipynb`](01_coding/notebooks/final_model.ipynb)** — 데이터 분할·외부 데이터 통합·중복 제거 → 검증셋 구성 → 전처리·증강 → 모델 정의·학습 → 학습 곡선 → 검증·최종 TEST 혼동행렬까지 한 파일에 담음 (셀마다 목적 주석)
-- 실험 요약: [`01_coding/RESULT/overnight_summary.md`](01_coding/RESULT/overnight_summary.md), 결정 기록: [`00_lead/decisions.md`](00_lead/decisions.md)
-
-| 실험 | 변경 (직전 최고 대비 1변수) | val | val_ext | val_hard | 판정 |
-|---|---|---|---|---|---|
-| E1 | 베이스라인 (Kaggle만, 백본 동결, 160px) | 0.932 | 0.388 | 0.613 | — |
-| E2 | 학습 데이터 → Kaggle+외부 혼합 | 0.896 | 0.724 | 0.689 | 채택 |
-| E3 | 어둡게·흐림 증강 | 0.893 | 0.744 | 0.715 | 채택 |
-| E4 / E5 | 은닉층 1층 / 2층 | 0.912 / 0.909 | 0.784 / 0.820 | 0.763 / 0.768 | E5 채택 |
-| E6 / E7 | GELU / 더 강한 어둡게 증강 | 0.916 / 0.914 | 0.790 / 0.796 | 0.762 / 0.767 | 기각 |
-| E8 | layer4 동결 해제 | 0.927 | 0.854 | 0.829 | 채택 |
-| **E9** | **입력 224px** | **0.949** | **0.890** | **0.834** | **최종** |
+## 현재 상태 (11/19 재연구 중)
+- 대회 규칙상 사전학습 모델 미세조정이 허용되지 않아, ImageNet 사전학습 ResNet18로 진행한 이전 연구를 **전부 폐기**했다 (`00_lead/decisions.md` D34).
+- 작은 ResNet을 `torch.nn`으로 직접 구현하고 Colab GPU에서 **처음부터 학습**하는 재연구를 진행 중이다. 계획: [`docs/superpowers/plans/2026-11-19-scratch-cnn-research.md`](docs/superpowers/plans/2026-11-19-scratch-cnn-research.md)
+- 데이터 분할·외부 데이터 통합·검증셋 구성(아래)은 그대로 쓴다.
+- 최종 노트북: [`01_coding/notebooks/final_model.ipynb`](01_coding/notebooks/final_model.ipynb) (데이터 준비 → 모델 → 학습 → 튜닝 과정 → 최종 평가)
+- 데이터: Google Drive 공개 폴더 https://drive.google.com/drive/folders/19R4yPCNI2B204UuINfGlBx4IZ7N2j9XB (AI Hub 폴더는 약관상 비공개)
 
 ## 데이터 출처
 학습·평가에 쓴 이미지는 아래 4개 공개 데이터셋에서 가져왔다. **이미지 파일은 저장소에 올리지 않는다** (라이선스·용량). 저장소에는 파일 경로 목록 CSV(`01_coding/RESULT/data_split/`)만 있다.
@@ -44,7 +34,7 @@
 | test_ext | 360 | AI Hub 180 · RealWaste 180 (9클래스) | **최종 1회** |
 
 ## 규칙
-- PyTorch·torchvision만 사용 (YOLO·timm 등 금지) · 고정 분할 · 한 번에 한 변수 변경 · 최종 TEST 1회 (`final_test.py`가 재실행 차단)
+- PyTorch만 사용 (torchvision은 이미지 변환 transforms만; 사전학습 모델·`torchvision.models`·YOLO·timm 등 금지) · 고정 분할 · 한 번에 한 변수 변경 · 최종 TEST 1회 (`final_test.py`가 재실행 차단)
 - 로컬 CPU 학습 (GPU 없음)
 
 ## 폴더
