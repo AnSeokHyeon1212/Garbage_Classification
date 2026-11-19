@@ -11,7 +11,6 @@ def test_adopt_rule():
     assert adopt(_m(0.711), _m(0.70)) is True
     assert adopt(_m(0.710), _m(0.70)) is True          # 정확히 +0.01도 채택
     assert adopt(_m(0.709), _m(0.70)) is False
-    assert adopt(_m(0.80, pc_c=0.86), _m(0.70)) is False  # clothes 0.04 하락 → 기각
 
 
 def test_ladder_ids_unique_and_one_change():

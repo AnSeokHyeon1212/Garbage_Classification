@@ -37,12 +37,12 @@ def test_report_and_eval_cells_with_tiny_results(tmp_path):
     """작은 사다리(2단계) 결과로 10~12절 셀이 끝까지 돌고, TEST가 1회 저장되는지"""
     small = dict(CACHE_ROOT=tmp_path / "c", SUBSET_FOR_TEST=16)
     ns = load(TAGS, **small)
-    tiny = [{**s, "change": {**s["change"], "epochs": 1, "batch": 8, "img_size": 64}} for s in ns["LADDER"][:2]]
-    ns["run_ladder"](tiny, tmp_path / "exp")
+    tiny = [{**s, "change": {**s["change"], "epochs": 1, "batch": 8, "img_size": 64}} for s in ns["LADDER_M"][:2]]
+    ns["run_ladder"](tiny, tmp_path / "exp", base_cfg=ns["M_BASE"], csv_name="ladder_m.csv")
     heads = {k: ns[k].head(16) for k in ["val_df", "val_ext", "val_hard", "test_df", "test_ext"]}
     ns2 = load(TAGS + ["report", "eval"], EXP_ROOT=tmp_path / "exp", FINAL_DIR=tmp_path / "ft",
                RUN_FINAL_TEST=True, **small, **heads)
-    assert ns2["FINAL_ID"] in {"R1", "R2"}
+    assert ns2["FINAL_ID"] in {"M1", "M2"}
     assert (tmp_path / "ft/final_test.json").exists()
     assert "val_avg (세 지표 평균)" in ns2["scores"].index
 
