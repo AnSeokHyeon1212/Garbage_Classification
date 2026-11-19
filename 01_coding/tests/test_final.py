@@ -33,7 +33,7 @@ def test_confusion_shape():
     assert list(cm.columns) == ns["CLASSES"] and list(cm.index) == ["battery", "biological"]
 
 
-def test_report_and_eval_cells_with_tiny_results(tmp_path):
+def test_report_and_eval_round2_tiny(tmp_path):
     """작은 사다리(2단계) 결과로 10~12절 셀이 끝까지 돌고, TEST가 1회 저장되는지"""
     small = dict(CACHE_ROOT=tmp_path / "c", SUBSET_FOR_TEST=16)
     ns = load(TAGS, **small)
@@ -45,8 +45,24 @@ def test_report_and_eval_cells_with_tiny_results(tmp_path):
     assert ns2["FINAL_ID"] in {"M1", "M2"}
     assert (tmp_path / "ft/final_test.json").exists()
     assert "val_avg (세 지표 평균)" in ns2["scores"].index
+    assert "aihub_metal_as_glass_battery" in ns2 and isinstance(ns2["source_acc"], pd.DataFrame)
+    assert isinstance(ns2["metal_pred"], pd.DataFrame)     # AI Hub metal이 무엇으로 예측됐는지 (없으면 빈 표)
 
 
 def test_report_cells_survive_without_results(tmp_path):
     ns = load(TAGS + ["report"], EXP_ROOT=tmp_path)     # 실험 결과가 아직 없는 상태
     assert ns["FINAL_ID"] is None
+
+
+R1_CSV = (
+    "id,change,why,val,val_ext,val_hard,val_avg,best_epoch,epochs_run,minutes,adopted,best_after\n"
+    "R1,{},기준,0.8,0.5,0.6,0.6333,10,17,5.0,True,R1\n"
+)
+
+
+def test_report_round1_only(tmp_path):
+    (tmp_path / "ladder.csv").write_text(R1_CSV, encoding="utf-8")
+    shown = []
+    ns = load(TAGS + ["report"], EXP_ROOT=tmp_path, display=lambda *a, **k: shown.extend(a))
+    assert ns["FINAL_ID"] is None and len(ns["ladder_df_r1"]) == 1
+    assert any(isinstance(o, pd.DataFrame) and "R1" in o.get("id", pd.Series(dtype=str)).tolist() for o in shown)

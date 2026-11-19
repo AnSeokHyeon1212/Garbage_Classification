@@ -1,6 +1,8 @@
 """Task 4: 채택 규칙(클래스 조건 없음), 2차 사다리 M1~M9, aug_add, ladder_m.csv"""
 import json
 
+import pandas as pd
+
 from nbcells import load
 
 TAGS = ["data", "cache", "model", "train", "ladder"]
@@ -31,3 +33,7 @@ def test_round2_does_not_touch_round1(tmp_path):
     (tmp_path / "exp/R1/cfg.json").write_text('{"old": 1}'); (tmp_path / "exp/R1/metrics.json").write_text("{}")
     tiny = [{**ns["LADDER_M"][0], "change": {"train_data": "mix2", "epochs": 1, "batch": 8, "img_size": 64}}]
     ns["run_ladder"](tiny, tmp_path / "exp", base_cfg=ns["M_BASE"], csv_name="ladder_m.csv")
+    assert json.load(open(tmp_path / "exp/R1/cfg.json")) == {"old": 1}
+    assert "R1" not in ns["pd"].read_csv(tmp_path / "exp/ladder_m.csv").id.tolist()
+    assert json.load(open(tmp_path / "exp/R1/cfg.json")) == {"old": 1}
+    assert "R1" not in pd.read_csv(tmp_path / "exp/ladder_m.csv").id.tolist()
