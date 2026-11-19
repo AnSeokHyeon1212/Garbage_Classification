@@ -1,0 +1,39 @@
+﻿set,label,reason,n
+val_ext,brown-glass,유리 작음·색 불일치,22
+val_ext,green-glass,유리 작음·색 불일치,19
+val_ext,white-glass,유리 작음·색 불일치,33
+val_ext,biological,육안 제외,1
+val_ext,cardboard,육안 제외,11
+val_ext,metal,육안 제외,8
+val_ext,paper,육안 제외,7
+val_ext,plastic,육안 제외,1
+val_ext,trash,육안 제외,1
+test_ext,brown-glass,유리 작음·색 불일치,14
+test_ext,green-glass,유리 작음·색 불일치,16
+test_ext,white-glass,유리 작음·색 불일치,23
+test_ext,cardboard,육안 제외,13
+test_ext,metal,육안 제외,2
+test_ext,paper,육안 제외,3
+test_ext,trash,육안 제외,1
+train_mix,brown-glass,유리 작음·색 불일치,265
+train_mix,green-glass,유리 작음·색 불일치,221
+train_mix,white-glass,유리 작음·색 불일치,328
+train_mix,paper,육안 제외,76
+train_mix,cardboard,v2 cardboard,300
+test_ext,brown-glass,보충(aihub),14
+test_ext,cardboard,보충(realwaste),13
+test_ext,green-glass,보충(aihub),16
+test_ext,metal,보충(aihub),2
+test_ext,paper,보충(realwaste),3
+test_ext,trash,보충(realwaste),1
+test_ext,white-glass,보충(aihub),23
+val_ext,biological,보충(realwaste),0
+val_ext,brown-glass,보충(aihub),22
+val_ext,cardboard,보충(realwaste),11
+val_ext,green-glass,보충(aihub),19
+val_ext,metal,보충(aihub),8
+val_ext,paper,보충(realwaste),7
+val_ext,plastic,보충(realwaste),1
+val_ext,trash,보충(realwaste),0
+val_ext,white-glass,보충(aihub),33
+val_hard,(외부),재생성,101

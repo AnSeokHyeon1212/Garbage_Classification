@@ -1,0 +1,361 @@
+path,label,split,source
+external_data/aihub/battery/285341@2_08001_220825_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/285420@1_08001_220825_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/285425@3_08001_220825_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/289564@5_08001_220825_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/289627@2_08001_220825_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/289639@5_08001_220825_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/291061@3_08001_220825_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/291087@1_08001_220825_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/298945@2_08001_220826_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/298971@4_08001_220826_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/305068@4_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/307857@1_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/310903@2_08001_220826_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/310909@5_08001_220826_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/314063@2_08001_220830_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/316964@2_08001_220826_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/317176@5_08001_220826_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/319446@4_08001_220825_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/322584@2_08001_220827_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/322727@2_08001_220827_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/326645@1_08001_220830_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/331192@3_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/331230@2_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/337615@5_08001_220830_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/337716@5_08001_220830_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/337842@4_08001_220830_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/337872@3_08001_220830_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/389662@5_08001_220828_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/389709@2_08001_220828_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/389727@2_08001_220828_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/390130@3_08001_220828_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/395058@3_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/395107@4_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/395115@5_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/395321@3_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/395431@2_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/395446@3_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/395502@4_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/395674@5_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/battery/395699@2_08001_220829_P1_T1.jpg,battery,test_ext,aihub
+external_data/aihub/brown-glass/264080@4_07001_220823_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/308222@1_07001_220829_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/335300@1_07001_220827_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/405964@3_07001_220903_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/431265@5_07001_20220831_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/432629@3_07001_220829_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/435105@1_07001_220907_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/438892@3_07001_220902_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/445563@1_07001_220903_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/501554@2_07001_220831_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/507725@2_07001_220914_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/509451@4_07001_220915_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/523105@4_07001_220916_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/543326@5_07001_220905_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/551672@2_07001_220919_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/556077@4_07001_220907_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/556301@3_07001_220907_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/570474@4_07001_220920_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/582317@3_07001_220919_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/598338@4_07001_220921_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/598392@2_07001_220921_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/598422@2_07001_220921_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/617486@4_07001_220907_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/646961@2_07001_220922_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/647730@3_07001_220922_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub/brown-glass/649235@4_07001_220914_P1_T1.jpg,brown-glass,test_ext,aihub
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_100.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_12.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_14.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_142.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_147.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_148.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_160.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_191.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_204.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_208.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_23.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_269.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_286.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_287.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_290.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_312.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_317.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_318.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_358.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_370.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_391.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_406.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_41.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_416.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_44.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_444.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_96.jpg,cardboard,test_ext,realwaste
+external_data/aihub/green-glass/321386@5_07002_220827_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/340151@3_07002_220831_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/404287@2_07002_220826_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/538520@2_07002_220905_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/559543@4_07002_220913_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/575073@2_07002_220917_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/611231@4_07002_220914_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/643038@5_07002_220920_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/662630@1_07002_220926_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/700599@3_07002_220922_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/709280@2_07002_220923_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/709311@2_07002_220923_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/717377@4_07002_220929_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/723293@4_07002_220926_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/752963@4_07002_221004_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/752978@1_07002_221004_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/764208@2_07002_221006_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/764213@3_07002_221006_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/769024@1_07002_221006_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/772085@5_07002_221007_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/781303@1_07002_221009_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/806746@3_07002_221011_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/807308@5_07002_221011_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/green-glass/829590@1_07002_221004_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub/metal/951477@3_01001_221011_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/951671@3_01001_221011_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/951675@4_01001_221011_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/951760@2_01001_221011_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/951765@3_01001_221011_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/951815@1_01001_221011_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/951936@4_01001_221011_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/952078@2_01001_221011_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/952243@4_01001_221011_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/952280@1_01001_221011_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/952295@5_01001_221011_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/952453@3_01001_221012_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/954344@1_01001_221012_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/955013@3_01001_221013_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/955036@2_01001_221013_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/955044@5_01001_221013_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/955079@5_01001_221013_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub/metal/955191@2_01001_221013_P1_T1.jpg,metal,test_ext,aihub
+realwaste/realwaste-main/RealWaste/Metal/Metal_1.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_147.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_164.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_215.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_224.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_228.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_248.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_301.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_351.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_426.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_441.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_46.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_462.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_535.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_543.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_590.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_7.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_711.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_87.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Metal/Metal_90.jpg,metal,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_115.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_136.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_142.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_144.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_15.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_152.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_153.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_163.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_192.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_197.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_20.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_202.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_203.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_21.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_240.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_258.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_272.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_290.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_311.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_312.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_315.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_316.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_332.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_338.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_347.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_353.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_409.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_421.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_429.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_446.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_479.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_480.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_485.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_488.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_79.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_81.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_85.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_109.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_112.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_190.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_210.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_211.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_216.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_219.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_253.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_27.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_322.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_329.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_337.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_363.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_396.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_401.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_415.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_476.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_478.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_505.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_591.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_607.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_630.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_636.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_681.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_699.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_716.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_717.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_719.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_735.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_746.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_775.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_778.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_82.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_822.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_869.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_871.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_882.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_891.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_893.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Plastic/Plastic_910.jpg,plastic,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_120.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_121.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_148.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_150.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_158.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_177.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_192.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_202.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_205.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_209.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_224.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_233.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_254.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_262.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_271.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_278.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_290.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_292.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_293.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_295.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_318.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_337.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_354.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_359.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_370.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_376.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_394.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_407.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_411.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_428.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_440.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_441.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_446.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_457.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_470.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_484.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_69.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_95.jpg,trash,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_99.jpg,trash,test_ext,realwaste
+external_data/aihub/white-glass/280468@1_07003_220824_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/289398@3_07003_220825_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/289452@3_07003_220825_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/329600@5_07003_220829_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/348960@3_07003_220817_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/424693@5_07003_20220824_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/468174@5_07003_220903_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/484426@4_07003_220830_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/488592@5_07003_220912_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/501380@5_07003_220831_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/504483@4_07003_220901_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/513877@4_07003_220914_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/528311@3_07003_220915_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/555355@1_07003_220902_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/577396@4_07003_220917_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/597122@1_07003_220921_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub/white-glass/610803@4_07003_220915_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/565200@1_07001_220920_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/311280@4_07001_220829_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/311195@1_07001_220829_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/416686@4_07001_220901_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/495373@2_07001_220831_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/501543@4_07001_220831_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/448408@3_07001_220907_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/501534@5_07001_220831_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/617524@5_07001_220907_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/364630@4_07001_220901_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/392558@1_07001_220901_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/393683@3_07001_220902_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/528663@4_07001_220915_P1_T1.jpg,brown-glass,test_ext,aihub
+external_data/aihub_extra/brown-glass/467852@5_07001_220903_P1_T1.jpg,brown-glass,test_ext,aihub
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_261.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_108.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_421.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_133.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_447.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_24.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_177.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_338.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_397.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_192.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_315.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_162.jpg,cardboard,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Cardboard/Cardboard_87.jpg,cardboard,test_ext,realwaste
+external_data/aihub_extra/green-glass/530816@4_07002_220915_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/580212@4_07002_220919_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/301885@5_07002_220826_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/700530@3_07002_220922_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/759584@1_07002_221003_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/676960@4_07002_220923_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/781331@1_07002_221009_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/433111@2_07002_220829_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/765582@5_07002_221006_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/426780@4_07002_20220829_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/367038@3_07002_220819_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/738447@2_07002_220928_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/625147@3_07002_220923_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/611046@5_07002_220914_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/777035@3_07002_221007_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/green-glass/556451@4_07002_220907_P1_T1.jpg,green-glass,test_ext,aihub
+external_data/aihub_extra/metal/673220@1_01001_220922_P1_T1.jpg,metal,test_ext,aihub
+external_data/aihub_extra/metal/685180@4_01001_220915_P1_T1.jpg,metal,test_ext,aihub
+realwaste/realwaste-main/RealWaste/Paper/Paper_420.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_149.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Paper/Paper_121.jpg,paper,test_ext,realwaste
+realwaste/realwaste-main/RealWaste/Miscellaneous Trash/Miscellaneous Trash_91.jpg,trash,test_ext,realwaste
+external_data/aihub_extra/white-glass/539089@3_07003_220905_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/348672@4_07003_220817_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/555576@4_07003_220902_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/367098@4_07003_220819_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/643220@1_07003_220920_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/483037@4_07003_220829_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/449246@4_07003_220907_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/496663@2_07003_220831_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/645373@3_07003_220907_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/582046@4_07003_220921_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/262325@1_07003_220823_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/643798@5_07003_220907_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/578637@1_07003_220921_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/579228@3_07003_220921_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/648002@3_07003_220922_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/643842@5_07003_220907_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/643834@3_07003_220907_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/311469@3_07003_220829_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/639291@4_07003_220919_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/639686@3_07003_220919_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/339057@5_07003_220831_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/439002@2_07003_220902_P1_T1.jpg,white-glass,test_ext,aihub
+external_data/aihub_extra/white-glass/648948@2_07003_220922_P1_T1.jpg,white-glass,test_ext,aihub
