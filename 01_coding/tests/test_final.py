@@ -66,3 +66,16 @@ def test_report_round1_only(tmp_path):
     ns = load(TAGS + ["report"], EXP_ROOT=tmp_path, display=lambda *a, **k: shown.extend(a))
     assert ns["FINAL_ID"] is None and len(ns["ladder_df_r1"]) == 1
     assert any(isinstance(o, pd.DataFrame) and "R1" in o.get("id", pd.Series(dtype=str)).tolist() for o in shown)
+
+
+def test_eval_raises_when_best_pth_missing(tmp_path):
+    """최종 실험의 best.pth가 없으면 다른 가중치로 조용히 대체하지 말고 FileNotFoundError를 낸다"""
+    small = dict(CACHE_ROOT=tmp_path / "c", SUBSET_FOR_TEST=16)
+    ns = load(TAGS, **small)
+    tiny = [{**s, "change": {**s["change"], "epochs": 1, "batch": 8, "img_size": 64}} for s in ns["LADDER_M"][:1]]
+    ns["run_ladder"](tiny, tmp_path / "exp", base_cfg=ns["M_BASE"], csv_name="ladder_m.csv")
+    for p in (tmp_path / "exp").glob("*/best.pth"):
+        p.unlink()
+    heads = {k: ns[k].head(16) for k in ["val_df", "val_ext", "val_hard", "test_df", "test_ext"]}
+    with pytest.raises(FileNotFoundError, match="best.pth"):
+        load(TAGS + ["report", "eval"], EXP_ROOT=tmp_path / "exp", FINAL_DIR=tmp_path / "ft", **small, **heads)

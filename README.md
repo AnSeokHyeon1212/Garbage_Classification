@@ -45,7 +45,7 @@
 
 ## 규칙
 - PyTorch만 사용 (torchvision은 이미지 변환 transforms만; 사전학습 모델·`torchvision.models`·YOLO·timm 등 금지) · 고정 분할 · 한 번에 한 변수 변경 · 최종 TEST 1회 (`final_test.py`가 재실행 차단)
-- 1차까지는 로컬 CPU, 재연구는 Colab GPU에서 학습
+- 폐기한 이전 사전학습 연구는 로컬 CPU에서, 처음부터 학습하는 R·M 사다리는 Colab GPU에서 학습
 
 ## 폴더
 - `00_lead/` 팀장: decisions, plan, prompt_log, protocol

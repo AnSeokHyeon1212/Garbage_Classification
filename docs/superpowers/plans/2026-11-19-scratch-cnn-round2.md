@@ -248,7 +248,7 @@ def test_cell_purpose_and_no_jargon():
 1. GitHub push 승인 → Colab에서 노트북 열기 → 런타임 **T4 GPU**.
 2. `RUN_EXPERIMENTS=True`, `STOP_BEFORE="M2"`로 M1만 실행해 epoch당 시간 확인.
 3. `STOP_BEFORE=None`으로 나머지 실행 (끊기면 같은 셀 재실행).
-4. 끝나면 Drive `experiments/ladder_m.csv`와 M*/metrics.json을 로컬 `RESULT/experiments/`로 가져와 분석.
+4. 끝나면 Drive `experiments/` 폴더 전체(ladder.csv, ladder_m.csv, R*/·M*/의 cfg.json·history.csv·metrics.json·best.pth)를 로컬 `RESULT/experiments/`로 가져와 분석. (로컬 보고 셀이 cfg.json·history.csv·best.pth도 읽는다)
 
 ### Task 8: 최종 TEST 1회 + 결론
 `RUN_FINAL_TEST=True`로 한 번 → False. 결론 셀 작성, README·decisions 결과 반영, Drive에 `final_model.pth` 업로드, push(승인 후).
