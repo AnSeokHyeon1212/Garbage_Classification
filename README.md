@@ -6,7 +6,7 @@
 - **최종 모델 E9**: ImageNet ResNet18 (torchvision) + MLP 헤드(512→256→128→12, ReLU), layer4·헤드만 학습, 입력 224px, 어둡게·흐림 실시간 증강, 학습 12,000장(클래스당 1,000)
 - **최종 TEST (1회 평가)**: Kaggle test **0.9394** (2,328장) · 외부 test_ext **0.9083** (360장, 9클래스)
 - 검증: val 0.949 / val_ext 0.890 / val_hard(손상 사진) 0.834
-- 최종 분석 노트북: [`01_coding/notebooks/04_final_analysis.ipynb`](01_coding/notebooks/04_final_analysis.ipynb) (손실 곡선·혼동행렬·클래스별 정밀도/재현율·대안 비교)
+- **최종 노트북: [`01_coding/notebooks/final_model.ipynb`](01_coding/notebooks/final_model.ipynb)** — 데이터 분할·외부 데이터 통합·중복 제거 → 검증셋 구성 → 전처리·증강 → 모델 정의·학습 → 학습 곡선 → 검증·최종 TEST 혼동행렬까지 한 파일에 담음 (셀마다 목적 주석)
 - 실험 요약: [`01_coding/RESULT/overnight_summary.md`](01_coding/RESULT/overnight_summary.md), 결정 기록: [`00_lead/decisions.md`](00_lead/decisions.md)
 
 | 실험 | 변경 (직전 최고 대비 1변수) | val | val_ext | val_hard | 판정 |
@@ -49,9 +49,9 @@
 
 ## 폴더
 - `00_lead/` 팀장: decisions, plan, prompt_log, protocol
-- `01_coding/notebooks/` 코드: `04_final_analysis.ipynb`(최종 분석), `gc_lib.py`(데이터셋·모델·학습 루프), `run_exp.py`·`overnight*.py`(실험 실행), `build_*.py`(데이터 구성), `final_test.py`(TEST 1회), `ensemble_compare.py`·`stacking.py`(대안 비교)
+- `01_coding/notebooks/` 코드: `final_model.ipynb`(최종 노트북: 전처리~학습~평가), `gc_lib.py`(데이터셋·모델·학습 루프), `run_exp.py`·`overnight*.py`(실험 실행), `build_*.py`(데이터 구성), `final_test.py`(TEST 1회), `ensemble_compare.py`·`stacking.py`(대안 비교)
 - `01_coding/RESULT/` 결과: 아래 하위 폴더 ([`RESULT/README.md`](01_coding/RESULT/README.md))
-  - `data_split/` 분할·데이터 목록 CSV · `experiments/` 실험표·epoch 기록 · `final_test/` 최종 TEST · `ensemble/` 대안 비교 · `figures/` 그림 · `logs/` 학습 로그
+  - `data_split/` 분할·데이터 목록 CSV · `final_model/` 최종 모델 설정·학습 기록 · `experiments/` 실험표·epoch 기록 · `final_test/` 최종 TEST · `ensemble/` 대안 비교 · `figures/` 그림 · `logs/` 학습 로그
 - `02_research/` 리서치·보고서
 - 저장소 제외: 원본·외부 이미지(`archive/`, `external_data/` 등), 체크포인트(`*.pth`)
 
