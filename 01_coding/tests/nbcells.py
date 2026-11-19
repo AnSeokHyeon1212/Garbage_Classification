@@ -25,6 +25,7 @@ def load(tags, **overrides) -> dict:
             t = c.metadata.get("tags", [])
             if "setup" not in t and any(x in tags for x in t):
                 exec(c.source, ns)
+                ns.update(overrides)  # 셀이 같은 전역(예: EXP_ROOT)을 다시 정해도 테스트 값 유지
     finally:
         os.chdir(cwd)
     return ns
