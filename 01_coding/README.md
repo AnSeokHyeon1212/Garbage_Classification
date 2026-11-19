@@ -37,6 +37,8 @@
 
 - [11/19] ⚠️ **사전학습 미세조정 금지 → 이전 연구(E1~E9) 전부 폐기 (D34).** 아래 E1~E9·T-06 보고는 폐기된 기록. 재연구 계획: `docs/superpowers/plans/2026-11-19-scratch-cnn-research.md`
 
+- [11/20] 2차 튜닝 준비 (D35): 데이터 정리(`tools/`, `RESULT/data_split/*_clean.csv`) → 학습 27,050 / val_ext 498 / test_ext 360 / val_hard 1,198. 채택 규칙에서 clothes·shoes 조건 제거(val_avg +0.01 이상), letterbox 전처리·증강·클래스 가중치·배경 점검 지표, 사다리 M1~M9(`ladder_m.csv`). Colab에서 실행 예정, 최종 TEST는 아직 하지 않음
+
 ## 📤 작업 보고
 - [11/16] T-01: ✅ 완료 — `notebooks/01_data.py`(marimo), 실행 결과 `results/01_data.html`
   - `results/split.csv` (path,label,split,source): 15,515행 = 전체 이미지 수. train 10,860 / val 2,327 / test 2,328. seed=42 stratified. source=kaggle. 경로는 루트 기준 상대경로(`archive/garbage_classification/...`)
@@ -67,6 +69,8 @@
   - 스태킹 E9+E8: S3 0.8914 (단일 0.8912) → 미채택. `results/stacking_results.json`
 - [11/19] T-06: ✅ 완료 — **E9 최종 TEST 1회: Kaggle test 0.9394 (n=2,328), test_ext 0.9083 (n=360; AI Hub 0.967, RealWaste 0.850)**. 약점 white-glass 0.759, cardboard 0.888 (Kaggle test), plastic 0.775 (test_ext). `results/final_test.json`, `final_test_confusion.csv`, `final_test_ext_confusion.csv`
   - 제출 노트북 `notebooks/final_model.ipynb` (출력 포함, 셀별 주석), 그림 `figures/overnight_compare.png`, `figures/E9_curve.png`
+
+- [11/20] 문서·노트북 정리 ✅ — 1차 튜닝 R1~R12(정리 전 데이터) 최고 R9 val_avg 0.502 (val 0.816 / val_ext 0.184 / val_hard 0.506). 외부 혼합 R2는 val_ext 0.144 → 0.772였으나 clothes·shoes 조건으로 기각. 이후 데이터 정리(`tools/`는 기록용, 196GB 원본 필요)와 2차 사다리 M1~M9 준비를 마쳤고 실행은 Colab에서 할 예정. 새 외부 출처(TrashBusters MIT, Kaggle Recyclable and Household Waste 라이선스 미확인, ShoeSandalBoot 라이선스 표기 없음)는 루트 README 데이터 출처 표에 기재
 
 ## ❓ 질문
 - [11/18] val_ext에 clothes·shoes가 없어서 (val+val_ext)/2 기준은 이 두 클래스를 val로만 평가합니다. 이대로 진행할지, V2 clothes/shoes 비중복분(거의 없음)이나 다른 소스를 찾을지 결정 부탁드립니다.

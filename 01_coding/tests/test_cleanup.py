@@ -30,3 +30,15 @@ def test_old_results_removed():
 def test_fixed_splits_kept():
     for f in ["split", "train_mix", "val_ext", "val_hard", "test_ext"]:
         assert (ROOT / f"01_coding/RESULT/data_split/{f}.csv").exists()
+
+
+NB = ROOT / "01_coding/notebooks/final_model.ipynb"
+
+
+def test_cell_purpose_and_no_jargon():
+    import re
+    import nbformat
+    nb = nbformat.read(NB, 4)
+    assert all(c.source.lstrip().startswith("# [셀 목적]") for c in nb.cells if c.cell_type == "code")
+    text = "\n".join(c.source for c in nb.cells)
+    assert not re.search(r"\b(S3|E[1-9])\b", text)
