@@ -1,0 +1,208 @@
+path,eval_set,kind,pred,ok
+archive/garbage_classification/paper/paper1003.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper1008.jpg,val,글자 거의 없음,trash,False
+archive/garbage_classification/paper/paper1016.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper1018.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper1025.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper1032.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper1034.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper1035.jpg,val,글자 거의 없음,trash,False
+archive/garbage_classification/paper/paper104.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper1043.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper1044.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper1047.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper1050.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper107.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper108.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper109.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper113.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper119.jpg,val,글자 인쇄물,clothes,False
+archive/garbage_classification/paper/paper124.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper125.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper133.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper14.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper142.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper148.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper160.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper161.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper169.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper173.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper198.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper20.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper205.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper206.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper210.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper218.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper22.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper222.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper237.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper244.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper247.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper256.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper257.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper259.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper261.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper287.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper30.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper301.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper312.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper322.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper332.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper333.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper346.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper347.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper352.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper355.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper356.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper357.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper394.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper427.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper428.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper437.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper456.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper457.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper46.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper463.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper468.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper47.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper470.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper477.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper478.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper479.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper484.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper486.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper487.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper496.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper497.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper50.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper506.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper508.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper513.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper523.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper528.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper529.jpg,val,글자 인쇄물,shoes,False
+archive/garbage_classification/paper/paper532.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper54.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper541.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper550.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper559.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper560.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper562.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper569.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper576.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper583.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper593.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper6.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper607.jpg,val,글자 인쇄물,biological,False
+archive/garbage_classification/paper/paper61.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper615.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper618.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper626.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper628.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper631.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper637.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper646.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper659.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper665.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper67.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper671.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper672.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper677.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper684.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper699.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper712.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper731.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper742.jpg,val,글자 거의 없음,white-glass,False
+archive/garbage_classification/paper/paper745.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper747.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper748.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper753.jpg,val,글자 거의 없음,battery,False
+archive/garbage_classification/paper/paper757.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper760.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper761.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper764.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper770.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper774.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper797.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper799.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper804.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper817.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper821.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper825.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper845.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper850.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper858.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper863.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper868.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper871.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper875.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper883.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper886.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper90.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper900.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper904.jpg,val,글자 인쇄물,metal,False
+archive/garbage_classification/paper/paper92.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper920.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper930.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper934.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper950.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper954.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper958.jpg,val,글자 거의 없음,shoes,False
+archive/garbage_classification/paper/paper959.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper968.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper975.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper977.jpg,val,글자 거의 없음,paper,True
+archive/garbage_classification/paper/paper98.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper984.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper99.jpg,val,글자 인쇄물,paper,True
+archive/garbage_classification/paper/paper992.jpg,val,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_100.jpg,val_ext,글자 거의 없음,plastic,False
+realwaste/realwaste-main/RealWaste/Paper/Paper_107.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_119.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_126.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_129.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_156.jpg,val_ext,글자 거의 없음,cardboard,False
+realwaste/realwaste-main/RealWaste/Paper/Paper_160.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_162.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_168.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_183.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_190.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_193.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_210.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_239.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_255.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_266.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_274.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_288.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_29.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_351.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_384.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_4.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_40.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_401.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_42.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_424.jpg,val_ext,글자 인쇄물,cardboard,False
+realwaste/realwaste-main/RealWaste/Paper/Paper_433.jpg,val_ext,글자 거의 없음,plastic,False
+realwaste/realwaste-main/RealWaste/Paper/Paper_436.jpg,val_ext,글자 인쇄물,cardboard,False
+realwaste/realwaste-main/RealWaste/Paper/Paper_439.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_445.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_449.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_454.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_465.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_467.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_468.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_496.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_54.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_64.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_77.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_90.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_91.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_95.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_97.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_423.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_151.jpg,val_ext,글자 인쇄물,cardboard,False
+realwaste/realwaste-main/RealWaste/Paper/Paper_122.jpg,val_ext,글자 거의 없음,cardboard,False
+realwaste/realwaste-main/RealWaste/Paper/Paper_6.jpg,val_ext,글자 인쇄물,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_399.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_387.jpg,val_ext,글자 거의 없음,paper,True
+realwaste/realwaste-main/RealWaste/Paper/Paper_268.jpg,val_ext,글자 인쇄물,paper,True

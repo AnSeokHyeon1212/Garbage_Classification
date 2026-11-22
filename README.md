@@ -9,7 +9,7 @@
 | 클래스 (12) | battery, biological, brown-glass, cardboard, clothes, green-glass, metal, paper, plastic, shoes, trash, white-glass |
 | 모델 | SmallResNet (폭 48, 4단계 × BasicBlock 2개, 파라미터 6,289,212개), 입력 128×128, 사전학습 없음 |
 | 학습 데이터 | 9개 출처를 정리·혼합한 27,050장 |
-| 튜닝 | 한 번에 하나씩 바꾸는 실험 사다리 3차례 (1차 R1~R12, 2차 M1~M9, 3차 N1·N2) |
+| 튜닝 | 한 번에 하나씩 바꾸는 실험 사다리 (1차 R1~R12, 2차 M1~M9; 3차 N1·N2는 학습 중) |
 | 최종 모델 | **M8** (2차 사다리) — `01_coding/model/` |
 | **TEST 정확도** | **test 0.8823** (Kaggle 원본 2,328장) / **test_ext 0.9028** (외부 실사 360장) |
 | 더러운 사진 추가 평가 | 0.773 (원본 0.826 / 손상 0.720, 1,200장) |
@@ -23,10 +23,11 @@
 | `01_coding/notebooks/test.ipynb` | **최종 모델 성능 확인만**: TEST 정확도·혼동행렬·클래스별 정밀도/재현율 |
 | `01_coding/model/` | 최종 가중치 `final_model.pth`, 설정 `config.json`, 모델 설명 `README.md` |
 | `01_coding/RESULT/data_split/` | 학습·검증·테스트 사진 목록 CSV (이미지 자체는 Google Drive) |
-| `01_coding/RESULT/experiments/` | 모든 실험의 설정·학습 기록·지표 (`ladder*.csv`, `R*/`, `M*/`, `N*/`) |
+| `01_coding/RESULT/experiments/` | 모든 실험의 설정·학습 기록·지표 (`ladder.csv`·`R*/` 1차, `ladder_m.csv`·`M*/` 2차) |
 | `01_coding/RESULT/final_test/` | TEST 1회 평가 결과·혼동행렬, 더러운 사진 평가 예측 |
 | `01_coding/RESULT/figures/` | 이 보고서의 그림 |
-| `01_coding/tools/` | 데이터 수집·정리 스크립트 (기록용, 원본 196GB가 있어야 실행됨) |
+| `01_coding/RESULT/analysis/` | 보조 분석 (글자 없는 종이 점검) |
+| `01_coding/tools/` | 데이터 수집·정리 스크립트 (기록용, AI Hub 원본 zip 전체가 있어야 실행됨) |
 
 **실행 방법**: Colab에서 노트북만 열고 위에서부터 실행하면 Google Drive 공개 폴더에서 데이터를 받는다. 로컬은 `01_coding/notebooks/`에서 실행. 성능만 보려면 `test.ipynb`.
 
@@ -42,8 +43,8 @@
 ### 2-1. 출처
 | 데이터셋 | 출처 · 라이선스 | 사용 범위 | 학습 장수 |
 |---|---|---|---|
-| Garbage Classification (12 classes) — **원본** | Kaggle `mostafaabla/garbage-classification` | 12클래스. 고정 분할 70/15/15 (seed 42) | 9,584 |
-| AI Hub 「재활용품 분류 및 선별 데이터」 직접 촬영 | AI Hub 이용약관 (재배포 금지 → 저장소·공개 링크에 이미지 미포함) | battery, 유리병 3색, metal(캔). 여러 물체가 찍힌 영상 추출 이미지는 제외 | 5,320 |
+| Garbage Classification (12 classes) — **원본** | Kaggle `mostafaabla/garbage-classification` | 12클래스. 고정 분할 70/15/15 (seed 42); train 10,860장 중 클래스당 최대 1,000장(clothes는 2,835장) 사용 | 9,584 |
+| AI Hub 「재활용품 분류 및 선별 데이터」 직접 촬영 | AI Hub 이용약관 (재배포 금지 → 저장소에 이미지 미포함, Drive에서는 시연 기간에만 공개) | battery, 유리병 3색, metal(캔). 여러 물체가 찍힌 영상 추출 이미지는 제외 | 5,320 |
 | RealWaste | UCI ML Repository, CC BY-NC-SA 4.0 (Single et al., 2023) | cardboard, metal, paper, plastic, biological(Food Organics), trash(Misc) | 2,887 |
 | TrashBusters/combined — TriCascade | Hugging Face, MIT | biological(음식), cardboard, paper(신문), plastic | 2,645 |
 | Recyclable and Household Waste | Kaggle `alistairking` (라이선스 미표기) | 실제 환경 1,830 + 기본 배경 1,014: 스티로폼(trash), 플라스틱 용기, 골판지, 신문, 옷·신발 등 (사진을 보고 고름) | 2,844 |
@@ -99,7 +100,7 @@
 - 학습: AdamW(lr 0.001, weight decay 0.0001), batch 64, cosine 학습률, CrossEntropy, 혼합 정밀도(GPU), seed 42. 최대 60 epoch, 조기 종료 patience 10(기준 (val + val_ext)/2), 최고 epoch의 가중치를 저장.
 
 ## 5. 하이퍼파라미터 튜닝 과정
-한 단계에 한 가지만 바꾸고, 선택 지표가 현재 최고보다 **+0.01 이상** 오르면 채택했다.
+한 단계에 한 가지만 바꾸고, 선택 지표가 현재 최고보다 **+0.01 이상** 오르면 채택했다. 1차에만 "clothes·shoes의 val 정확도가 0.03 넘게 떨어지면 기각" 조건이 있었고, 이 조건 때문에 외부 데이터 혼합(R2)이 기각돼 2차에서 뺐다.
 
 ![튜닝 사다리](01_coding/RESULT/figures/ladder_val_avg.png)
 
@@ -107,13 +108,13 @@
 | 단계 | 바꾼 것 | val | val_ext | val_hard | val_avg | 판정 |
 |---|---|---|---|---|---|---|
 | R1 | 기준 (Kaggle만, 128px, 폭 32, 30 epoch) | 0.789 | 0.144 | 0.341 | 0.425 | 채택 |
-| R2 | 외부 데이터 혼합 | 0.746 | 0.772 | 0.478 | 0.666 | 기각 (당시 clothes·shoes 조건) |
+| R2 | 외부 데이터 혼합 | 0.746 | 0.772 | 0.478 | 0.666 | 기각 (1차 전용 조건: clothes·shoes val이 0.03 넘게 떨어짐) |
 | R3 | 어둡게·흐림 증강 | 0.789 | 0.154 | 0.402 | 0.448 | 채택 |
 | R5 | cosine 학습률 | 0.803 | 0.156 | 0.506 | 0.488 | 채택 |
 | R9 | 모델 폭 48 | 0.816 | 0.184 | 0.506 | 0.502 | 채택 |
 | R4·R6~R8·R10~R12 | 무작위 자르기, epoch 60·100, MLP 헤드, 160px, lr 3e-3, wd 5e-4 | | | | ≤ 0.498 | 기각 |
 
-→ **외부 사진을 학습하지 않으면 외부 사진 정확도가 0.14~0.18**에 그쳤다. 데이터를 정리·확장한 뒤 2차를 진행했다.
+→ **외부 사진을 학습하지 않으면 외부 사진 정확도가 0.14~0.19**에 그쳤다(R2처럼 외부 데이터를 섞으면 0.77). 데이터를 정리·확장한 뒤 2차를 진행했다.
 
 ### 2차 (M1~M9, 정리한 데이터 27,050장) — 최종 M8 val_avg 0.877
 | 단계 | 바꾼 것 | val | val_ext | val_hard | val_avg | 판정 |
@@ -129,12 +130,12 @@
 | M9 | 입력 160px | 0.885 | 0.914 | 0.782 | 0.860 | 기각 |
 
 **무엇이 효과가 있었나**
-1. **데이터**가 가장 컸다: 외부 실사 사진을 섞고 라벨이 틀린 사진을 걸러내자 val_ext 0.18 → 0.84.
+1. **데이터**가 가장 컸다: 1차에서 외부 데이터를 섞기만 해도 val_ext가 0.144 → 0.772로 올랐다(R2). 2차는 정리한 검증셋 기준이라 1차와 숫자를 직접 비교하지 않는다.
 2. 방향을 바꾸는 증강(반전·회전)은 효과가 있었고(+0.035), 색 변화·강한 무작위 변형은 이득이 없었다.
-3. 30 epoch은 부족했다(30 epoch 실험들은 마지막 epoch이 최고). 60 epoch에서 세 지표가 모두 올랐다(val_hard +0.043).
+3. 30 epoch은 부족했다(30 epoch 실험들은 대부분 마지막 몇 epoch(27~30)에서 최고 — 아직 오르는 중). 60 epoch에서 세 지표가 모두 올랐다(val_hard +0.043).
 4. 비율 유지는 흐림·어두운 사진(val_hard 0.766 → 0.640)에서, 160px는 흐림 사진(0.81 → 0.69)에서 손해였다.
 
-### 3차 (N1·N2, M8에서 출발, 진행 중)
+### 3차 (N1·N2, M8에서 출발 — 학습 중, 결과가 나오면 추가)
 - 목적: 노이즈에 강하고 배경에 덜 기대는 모델. 선택 지표 val_avg4 = (val + val_ext + val_hard + val_dirty) / 4.
 - **N1** = M8 + 손상 증강(잡음·JPEG·빛번짐·얼룩·저조도 중 하나, p 0.5)
 - **N2** = N1 + 배경 교란: 사진마다 물체 상자를 추정해 상자 바깥을 다른 학습 사진의 배경·잡음·흐림·단색으로 60~90% 섞는다. **클래스·출처와 무관하게 모든 사진에 같은 확률**로 걸어, 교란 자체가 정답 힌트가 되지 않게 했다.
@@ -145,7 +146,7 @@
 ![학습률](01_coding/RESULT/figures/lr_schedule.png)
 
 - 저장 epoch 50: train 0.982 / val 0.879 (차이 0.10). val loss는 epoch 26(0.477)에서 가장 낮고 이후 조금 오름(epoch 50 0.537).
-- val 정확도는 0.87~0.88을 유지 → **가벼운 과적합**(틀린 사진을 지나치게 확신). 정확도가 가장 좋은 epoch의 가중치를 쓴다.
+- epoch 30~60의 val 정확도는 약 0.85~0.88로 떨어지지 않음 → **가벼운 과적합**(틀린 사진을 지나치게 확신). 정확도가 가장 좋은 epoch의 가중치를 쓴다.
 - 과적합 억제: 데이터 다양화, 증강, weight decay, BatchNorm, 전역 평균 풀링(작은 헤드), 조기 종료·최고 epoch 저장. Dropout은 쓰지 않았다(MLP 헤드 R8이 이득 없음).
 
 ## 7. TEST 결과 (최종 모델 M8, 1회 평가)
@@ -158,26 +159,26 @@
 ![test 혼동행렬](01_coding/RESULT/figures/confusion_test.png)
 ![test_ext 혼동행렬](01_coding/RESULT/figures/confusion_test_ext.png)
 
-- 검증과 TEST가 비슷하다(test 0.882 vs val 0.879, test_ext 0.903 vs val_ext 0.922) → 검증셋에 맞춘 과적합은 작다.
+- 검증과 TEST가 비슷하다(test 0.882 vs val 0.879, test_ext 0.903 vs val_ext 0.922) → 검증셋에 맞춘 과적합은 작다. (TEST는 최종 모델 기준 1회 평가)
 - 클래스별 재현율을 똑같이 평균하면 0.868 → clothes(34%)가 점수를 크게 부풀리지 않았다.
 - 약한 클래스와 주요 혼동: white-glass → plastic(16장, 투명 유리 vs 투명 플라스틱), battery → metal(8장), clothes ↔ shoes(16·12장), trash → plastic(test_ext 5장). metal은 정밀도가 낮다(다른 물체를 metal로 예측).
-- 출처별: AI Hub 클래스는 160장 중 154장, RealWaste 클래스(매립지 실사)는 160장 중 133장(0.83).
+- 출처별(test_ext, metal 제외): AI Hub 클래스(battery·유리 3색) 160장 중 154장(0.96), RealWaste 클래스(cardboard·paper·plastic·trash, 매립지 실사) 160장 중 133장(0.83).
 
 ## 8. 강건성 — 더러운 사진·배경
 ![손상 종류별 정확도](01_coding/RESULT/figures/dirty_by_corruption.png)
 
-- 학습한 종류의 물체만 쓰고 어려움은 손상으로만 준 1,200장 평가: **0.773** (원본 0.826 / 손상 0.720, 같은 사진 집단에서 -10.6%p).
-- 학습 증강에 있던 어둡게·흔들림에는 버티지만, 학습에 없던 **강한 빛번짐(0.28)·저조도+잡음(0.51)·얼룩(0.60)** 에 약하다 → 3차 사다리의 근거.
+- 학습한 종류의 물체만 쓰고 어려움은 손상으로만 준 1,200장 평가: **0.773** (원본 0.826 / 손상 0.720, -10.6%p). 원본과 손상은 같은 클래스·출처 묶음 안의 서로 다른 사진이다.
+- 처음 만든 평가셋에는 학습 데이터에 없던 종류의 물체(잎·풀, 커피 찌꺼기, 옷 더미 등)가 섞여 평가 목적(같은 종류 물체 + 노이즈)과 맞지 않아, 대상 범위를 바로잡아 다시 구성했다. 이 평가는 모델 선택에 쓰지 않았다.
+- 학습 증강에 있던 어둡게와, 흔들림·JPEG에는 비교적 버티지만(0.75~0.86), 학습에 없던 **강한 빛번짐(0.28, 29장)·저조도+잡음(0.51)·얼룩(0.60, 30장)** 에 약하다. 학습에 있던 흐림도 강한 세기에서는 0.65 → 3차 사다리의 근거.
 - 배경 의존도: 물체 상자 바깥을 회색으로 지우면 val·val_ext 정확도가 0.122 떨어진다(배경 단서를 꽤 쓴다).
 
-![배경 의존도](01_coding/RESULT/figures/bg_dependency.png)
 
 ## 9. 한계와 향후 과제
 - seed 하나로 실험해 0.01 이내 차이는 우연과 구분하기 어렵다. 검증셋으로 채택과 최고 epoch을 함께 골라 검증 점수는 조금 낙관적이다.
-- 한 출처 비중이 큰 클래스: battery·유리(AI Hub 57~75%, 아스팔트 배경), shoes(흰 배경 제품 사진 54%), clothes(Kaggle 95%).
-- paper 학습 데이터의 75~80%가 글자 인쇄물이라, 글자 없는 종이는 정확도가 약 8.6%p 낮다(검증 사진 0.950 vs 0.864). → 글자 없는 종이 데이터 보강.
+- 한 출처 비중이 큰 클래스: battery·유리(AI Hub 57~75%, 주로 아스팔트·보도블록 위에서 촬영), shoes(흰 배경 제품 사진 54%), clothes(Kaggle 95%).
+- paper 학습 데이터는 신문·잡지 같은 글자 인쇄물이 대부분이다(출처별 표본을 눈으로 본 판단). 검증 사진의 paper 207장을 직접 '글자 인쇄물 / 글자 거의 없는 종이'로 나눠 보니 정확도가 0.950(141장) vs 0.864(66장)였다(`01_coding/RESULT/analysis/paper_plain_vs_printed.csv`). → 글자 없는 종이 데이터 보강.
 - AI Hub 라벨에는 물건 번호가 없어, 같은 물건을 다른 날 찍은 사진이 학습과 평가에 함께 있을 수 있다.
-- test_ext·더러운 사진 평가에 biological·clothes·shoes 외부 사진이 적거나 없다.
+- test_ext에는 biological·clothes·shoes 외부 사진이 없고, 더러운 사진 평가에는 clothes 외부 사진이 없다(paper 16장).
 
 ## 10. 재현
 1. Colab(GPU)에서 `01_coding/notebooks/final_model.ipynb`를 열고 실행 → Google Drive 공개 폴더(`19R4yPCNI2B204UuINfGlBx4IZ7N2j9XB`)에서 데이터 zip을 받아 `/content`에 푼다. 실험 결과는 저장된 것을 읽고, `RUN_EXPERIMENTS=True`면 끝나지 않은 실험만 학습한다.
