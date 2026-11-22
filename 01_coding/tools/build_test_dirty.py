@@ -32,29 +32,30 @@ SHORT = 384
 N_KAGGLE, N_EXT = 40, 60
 
 # Household 실제 환경(real_world) 카테고리 → 우리 클래스. 유리는 색을 사람이 보고 정한다
+# (v2: 학습에 없던 종류인 커피 찌꺼기·옷 더미·사무용지·금속 캔 웹 사진은 뺀다)
 HH_MAP = {
-    "food_waste": "biological", "eggshells": "biological", "coffee_grounds": "biological",
+    "food_waste": "biological", "eggshells": "biological",
     "cardboard_boxes": "cardboard", "cardboard_packaging": "cardboard",
-    "clothing": "clothes", "shoes": "shoes",
-    "newspaper": "paper", "office_paper": "paper",
+    "shoes": "shoes",
+    "newspaper": "paper",
     "plastic_water_bottles": "plastic", "plastic_soda_bottles": "plastic",
     "plastic_detergent_bottles": "plastic", "plastic_food_containers": "plastic",
     "styrofoam_cups": "trash", "styrofoam_food_containers": "trash",
-    "aluminum_soda_cans": "metal", "aluminum_food_cans": "metal", "steel_food_cans": "metal", "aerosol_cans": "metal",
     "glass_beverage_bottles": "glass", "glass_food_jars": "glass", "glass_cosmetic_containers": "glass",
 }
 # 클래스별 외부 60장의 출처 목표 (유리는 Household에서 색이 확실한 것을 먼저, 모자라면 AI Hub)
+# 학습한 종류의 물체만 쓴다. 옷은 외부 후보가 없어 Kaggle test로 채운다(finalize가 처리)
 PLAN = {
     "battery": {"aihub": 60},
     "brown-glass": {"aihub": 60}, "green-glass": {"aihub": 60},
-    "white-glass": {"household": 30, "aihub": 30},
-    "metal": {"household": 30, "aihub": 30},
+    "white-glass": {"aihub": 30, "household": 30},
+    "metal": {"aihub": 60},
     "plastic": {"realwaste": 40, "household": 20},
     "cardboard": {"tricascade": 60},
-    "trash": {"household": 30, "tb_trash": 30},
+    "trash": {"household": 50, "tb_trash": 10},
     "shoes": {"hf_shoes": 60},
-    "biological": {"household": 25, "realwaste": 35},
-    **{c: {"household": 60} for c in ["clothes", "paper"]},
+    "biological": {"tricascade": 60},
+    "paper": {"household": 60}, "clothes": {"household": 60},
 }
 CORRUPTIONS = ["noise", "jpeg", "motion_blur", "low_light_noise", "glare", "stain", "dark", "blur"]
 
@@ -116,13 +117,10 @@ def candidates():
     for f in sorted((RW / "Plastic").iterdir()):
         if rel(f) not in used:
             rows.append(dict(path=rel(f), label="plastic", source="realwaste", origin=f"Plastic/{f.name}"))
-    # biological 보충: RealWaste Vegetation(잎·풀·나뭇가지, 학습에 쓰지 않은 폴더)
-    for f in sorted((RW / "Vegetation").iterdir()):
-        rows.append(dict(path=rel(f), label="biological", source="realwaste", origin=f"Vegetation/{f.name}"))
     # Household 실제 환경 cardboard·스티로폼은 학습에 거의 다 써서, 2차 수집 때 꺼내 두고 쓰지 않은 사진으로 보충
     # (TrashBusters TriCascade 골판지, Household 스티로폼·골판지, ShoeSandalBoot 신발, V2 trash)
     for label, prefixes in {"cardboard": ["tricascade", "household"], "trash": ["household"], "shoes": ["hf_shoes"],
-                             "biological": ["tricascade", "household"]}.items():
+                             "biological": ["tricascade"]}.items():
         files = sorted((ROOT / "external_data" / "hf_extra" / label).glob("*.jpg"))
         if label == "shoes":   # 신발 사진은 1만 장이 넘어 300장만 무작위 후보로
             files = rng.sample([f for f in files if rel(f) not in used], 300)
@@ -132,15 +130,15 @@ def candidates():
                 src = "tricascade" if pre == "tricascade" else ("hf_shoes" if pre == "hf_shoes" else
                                                                "household_" + f.stem.split("_")[1])
                 rows.append(dict(path=rel(f), label=label, source=src, origin=f"hf_extra/{label}/{f.name}"))
-    # trash 보충: Household 기본 배경 스티로폼, TrashBusters의 trash 라벨(garbage_dataset·trashnet)
+    # trash 보충: Household 기본 배경 스티로폼, TrashBusters의 trash 라벨(garbage_dataset·trashnet; 마스크·칫솔만 쓰도록 사람이 시트에서 고름)
     with zipfile.ZipFile(HH_ZIP) as z:
         for n in z.namelist():
             p = n.split("/")
-            if len(p) >= 5 and p[-2] == "default" and p[-3] in ("styrofoam_cups", "styrofoam_food_containers", "clothing"):
+            if len(p) >= 5 and p[-2] == "default" and p[-3] in ("styrofoam_cups", "styrofoam_food_containers"):
                 dst = CAND / "household_default" / p[-3] / f"{Path(n).stem.split('_')[-1]}.jpg"
                 if not dst.exists():
                     save_small(Image.open(io.BytesIO(z.read(n))), dst)
-                rows.append(dict(path=rel(dst), label="clothes" if p[-3] == "clothing" else "trash", source="household_default",
+                rows.append(dict(path=rel(dst), label="trash", source="household_default",
                                  origin=f"RecyclableHousehold/{p[-3]}/default/{Path(n).name}"))
     import pyarrow.parquet as pq
     for f in sorted((ROOT / "download" / "hf_trashbusters").glob("*.parquet")):
@@ -151,10 +149,6 @@ def candidates():
             if not dst.exists():
                 save_small(Image.open(io.BytesIO(r.image["bytes"])), dst)
             rows.append(dict(path=rel(dst), label="trash", source="tb_trash", origin=f"TrashBusters/{r.source_dataset}/trash/{i}"))
-    for c in ["trash", "clothes", "paper"]:
-        for f in sorted((ROOT / "archive(1)" / "original" / c).iterdir()):
-            if rel(f) not in used:
-                rows.append(dict(path=rel(f), label=c, source="v2", origin=f"V2/{c}/{f.name}"))
     cand = pd.DataFrame(rows)
 
     # 학습·검증·테스트 사진과 같은 사진(phash hamming ≤ 4) 제외, 후보끼리 중복도 제외
