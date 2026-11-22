@@ -1,46 +1,597 @@
 {
-  "_설명": "test_dirty 후보 육안 검토 결과 (2026-11-22). 시트 번호 = 시트 사진 왼쪽 위 빨간 숫자. reject = 뺄 번호(라벨과 다름·물체를 알아볼 수 없음·다른 클래스가 섞임), accept = 쓸 번호만(대부분이 사람·광고·인포그래픽인 시트). Household 유리는 투명 유리만 골라 white-glass로 지정",
-  "sheets": {
-    "aihub_battery_0": {"reject": [66]},
-    "aihub_battery_1": {"reject": []},
-    "aihub_brown-glass_0": {"reject": [85, 26, 36, 11, 73, 19, 28, 64, 56, 98, 70, 112, 24, 45, 55]},
-    "aihub_brown-glass_1": {"reject": [54, 75, 3, 14, 51, 102, 90, 100, 20, 116, 107, 103, 6, 74]},
-    "aihub_green-glass_0": {"reject": [26, 53, 42, 10, 94, 47, 9, 24, 89, 65, 0, 80, 83, 84, 19, 18, 69, 110, 40]},
-    "aihub_green-glass_1": {"reject": [8, 88, 58, 97, 21, 20, 29, 82, 105, 96, 49, 81, 41, 51, 106, 90, 38, 50, 23, 60, 116, 100, 107, 25, 78, 113, 54, 108, 74, 32, 109]},
-    "aihub_white-glass_0": {"reject": [81, 16, 113, 78, 72, 112, 97, 88]},
-    "household_real_glass_0": {"accept": [448, 481, 503, 438, 132, 463, 39, 571, 557]},
-    "household_real_glass_1": {"accept": [580, 483, 536, 24, 60, 451, 174, 81, 499, 63, 513, 581, 584, 29]},
-    "household_real_glass_2": {"accept": [140, 606, 478, 429, 534, 493, 470, 495, 546]},
-    "aihub_metal_0": {"reject": [89, 90, 0, 67, 4]},
-    "household_real_metal_0": {"accept": [76, 210, 70, 86, 184, 176, 445, 109, 137, 204, 521, 158, 543, 595, 546, 380, 244, 577, 192, 2, 563, 211, 301, 260, 280, 443, 259, 377, 363, 602, 289, 541]},
-    "household_real_biological_0": {"reject": [19, 42, 24, 117, 98, 97, 69, 45, 51, 56, 165, 30, 18, 113, 75, 55, 66, 29, 31, 67, 90, 109, 38, 120, 159, 133, 173, 155, 85, 150, 136]},
-    "household_real_biological_1": {"reject": [78, 36, 11, 180, 6, 27, 4, 100, 10, 152, 141, 142, 79, 154, 140, 172, 73, 138, 144, 101, 44]},
-    "realwaste_biological_0": {"reject": []},
-    "tricascade_cardboard_0": {"reject": [104, 45, 114, 113, 127, 10, 201, 237, 192, 55, 227, 207, 193, 73, 204, 86, 150, 60, 153, 139, 112, 30, 182, 16]},
-    "tricascade_cardboard_1": {"reject": [95, 84, 194, 177, 111, 75, 159, 97, 65, 12, 35, 190, 215, 98, 137, 238, 132, 2, 173, 141, 124, 142, 85]},
-    "household_default_clothes_0": {"accept": [19, 90, 30, 122, 9, 125, 55, 67, 22]},
-    "household_default_clothes_1": {"accept": [40, 144, 111, 105, 47, 5, 7, 61, 10]},
-    "household_default_clothes_2": {"accept": [6, 129, 99, 102, 14, 100, 74, 121, 58, 88]},
-    "household_real_clothes_0": {"accept": [96, 82]},
-    "household_real_clothes_1": {"accept": [117]},
-    "household_real_clothes_2": {"accept": [158]},
-    "household_real_paper_0": {"accept": [82, 45, 63, 304, 198, 279, 206]},
-    "household_real_paper_1": {"accept": [132, 68, 37, 233, 175, 225, 301, 79]},
-    "household_real_paper_2": {"accept": [172, 31, 300, 291, 231, 74, 29, 65, 260, 85]},
-    "household_real_plastic_0": {"reject": [274, 318, 462, 375, 101, 411, 172, 447, 431, 415, 471, 302, 320, 427, 467, 225, 336, 321, 227, 18]},
-    "realwaste_plastic_0": {"reject": [19, 153, 56, 169, 38, 60]},
-    "household_default_trash_0": {"reject": [22, 39, 48]},
-    "household_default_trash_1": {"reject": [18, 57, 51]},
-    "tb_trash_trash_0": {"reject": [30, 17, 11, 21, 23, 12, 35]},
-    "hf_shoes_shoes_0": {"reject": []}
+ "_설명": "v2 검토(2026-11-22): 학습(Kaggle)에 있는 종류의 물체만 남김 — AI Hub 유리는 라벨 색과 맞고 판단 가능한 크기만, Household 유리는 투명 단지·병 1~2개짜리만(white-glass), plastic은 병·용기 1~3개, cardboard는 상자·골판지(사람 주인공·인포그래픽 제외), biological은 과일·채소·음식, paper는 신문·종이가 주인공인 사진만, trash는 스티로폼 컵·용기(종이컵·음식 위주 제외)와 TrashBusters 중 마스크·칫솔만. 목록에 없는 시트의 사진은 쓰지 않는다.",
+ "sheets": {
+  "aihub_battery_0": {
+   "reject": [
+    66
+   ]
   },
-  "household_glass_color": {
-    "448": "white-glass", "481": "white-glass", "503": "white-glass", "438": "white-glass", "132": "white-glass",
-    "463": "white-glass", "39": "white-glass", "571": "white-glass", "557": "white-glass",
-    "580": "white-glass", "483": "white-glass", "536": "white-glass", "24": "white-glass", "60": "white-glass",
-    "451": "white-glass", "174": "white-glass", "81": "white-glass", "499": "white-glass", "63": "white-glass",
-    "513": "white-glass", "581": "white-glass", "584": "white-glass", "29": "white-glass",
-    "140": "white-glass", "606": "white-glass", "478": "white-glass", "429": "white-glass", "534": "white-glass",
-    "493": "white-glass", "470": "white-glass", "495": "white-glass", "546": "white-glass"
+  "aihub_battery_1": {
+   "reject": [
+    61,
+    63
+   ]
+  },
+  "aihub_brown-glass_0": {
+   "reject": [
+    4,
+    53,
+    42,
+    85,
+    72,
+    36,
+    11,
+    40,
+    26,
+    112,
+    76,
+    68,
+    115,
+    69,
+    24,
+    56,
+    65,
+    73,
+    33,
+    110,
+    28,
+    45,
+    64,
+    34,
+    70,
+    19,
+    98
+   ]
+  },
+  "aihub_brown-glass_1": {
+   "accept": [
+    25,
+    8,
+    49,
+    13,
+    38,
+    88,
+    114,
+    50,
+    78,
+    46,
+    81,
+    61,
+    113,
+    79,
+    91,
+    75,
+    32,
+    109,
+    59,
+    63,
+    97,
+    37,
+    29,
+    1,
+    52,
+    21,
+    2,
+    23,
+    99,
+    87,
+    105,
+    86,
+    82,
+    60,
+    106
+   ]
+  },
+  "aihub_green-glass_0": {
+   "reject": [
+    53,
+    42,
+    10,
+    85,
+    72,
+    94,
+    11,
+    40,
+    26,
+    104,
+    18,
+    0,
+    112,
+    76,
+    89,
+    69,
+    24,
+    65,
+    80,
+    30,
+    47,
+    9,
+    33,
+    110,
+    28,
+    83,
+    84,
+    39,
+    64,
+    27,
+    19
+   ]
+  },
+  "aihub_green-glass_1": {
+   "accept": [
+    13,
+    3,
+    17,
+    6,
+    114,
+    46,
+    79,
+    91,
+    75,
+    63,
+    37,
+    2,
+    99,
+    87,
+    86,
+    14,
+    102
+   ]
+  },
+  "aihub_white-glass_0": {
+   "reject": [
+    112,
+    88,
+    97,
+    55,
+    81,
+    62,
+    72,
+    47,
+    49,
+    16,
+    113,
+    78
+   ]
+  },
+  "aihub_white-glass_1": {
+   "reject": [
+    25,
+    38,
+    93,
+    46,
+    80,
+    109,
+    115,
+    79,
+    58,
+    59,
+    63,
+    99,
+    82,
+    71,
+    106,
+    14,
+    1,
+    111
+   ]
+  },
+  "aihub_metal_0": {
+   "reject": [
+    4,
+    53,
+    24,
+    113,
+    67
+   ]
+  },
+  "aihub_metal_1": {
+   "reject": [
+    104,
+    50,
+    109,
+    75,
+    52,
+    82,
+    111,
+    60,
+    51
+   ]
+  },
+  "household_real_glass_0": {
+   "accept": [
+    448,
+    481,
+    503,
+    212,
+    558,
+    438,
+    257,
+    463,
+    132,
+    39,
+    557,
+    571,
+    30,
+    148
+   ]
+  },
+  "household_real_glass_1": {
+   "accept": [
+    580,
+    483,
+    589,
+    536,
+    24,
+    456,
+    513,
+    60,
+    451,
+    174,
+    29,
+    499,
+    81,
+    63,
+    584,
+    581,
+    227,
+    585
+   ]
+  },
+  "household_real_glass_2": {
+   "accept": [
+    140,
+    606,
+    470,
+    478,
+    495,
+    429,
+    559,
+    83,
+    534,
+    390,
+    493,
+    546
+   ]
+  },
+  "realwaste_plastic_0": {
+   "reject": [
+    19,
+    42,
+    153,
+    45,
+    56,
+    142,
+    30,
+    9,
+    60,
+    148,
+    31,
+    38,
+    169,
+    147,
+    26,
+    46
+   ]
+  },
+  "realwaste_plastic_1": {
+   "reject": [
+    164,
+    22,
+    146,
+    11,
+    32,
+    95,
+    10,
+    0,
+    27,
+    64,
+    138,
+    25,
+    23,
+    84,
+    47,
+    62,
+    122,
+    53
+   ]
+  },
+  "household_real_plastic_0": {
+   "accept": [
+    469,
+    33,
+    131,
+    78,
+    113,
+    9,
+    30,
+    440,
+    0,
+    93,
+    277,
+    195,
+    55,
+    75,
+    39,
+    79,
+    304,
+    203,
+    173,
+    76,
+    73,
+    390,
+    175,
+    82
+   ]
+  },
+  "household_real_plastic_1": {
+   "accept": [
+    77,
+    63,
+    153,
+    70,
+    15,
+    19,
+    56,
+    210,
+    324,
+    42,
+    296,
+    117,
+    126,
+    155,
+    57,
+    124,
+    400,
+    24,
+    17,
+    66,
+    86,
+    31
+   ]
+  },
+  "tricascade_cardboard_0": {
+   "accept": [
+    24,
+    6,
+    109,
+    172,
+    9,
+    143,
+    168,
+    230,
+    15,
+    125,
+    153,
+    176,
+    96,
+    228,
+    18,
+    69,
+    79,
+    175,
+    235,
+    156,
+    66,
+    165,
+    38,
+    60,
+    186,
+    224,
+    209,
+    219,
+    136
+   ]
+  },
+  "tricascade_cardboard_1": {
+   "accept": [
+    126,
+    120,
+    67,
+    101,
+    68,
+    108,
+    117,
+    82,
+    5,
+    56,
+    164,
+    212,
+    208,
+    31,
+    28,
+    42,
+    148,
+    161,
+    51,
+    41,
+    76,
+    146,
+    78,
+    0,
+    100,
+    119,
+    144,
+    90,
+    158
+   ]
+  },
+  "tricascade_cardboard_2": {
+   "accept": [
+    140,
+    118,
+    196,
+    33,
+    234,
+    147,
+    4,
+    32,
+    138,
+    170,
+    62,
+    135,
+    216,
+    183,
+    154,
+    40,
+    178,
+    197,
+    47,
+    94,
+    181,
+    145,
+    3,
+    105,
+    217,
+    184,
+    49,
+    34,
+    7,
+    171,
+    110,
+    91,
+    83
+   ]
+  },
+  "tricascade_biological_0": {
+   "reject": [
+    42,
+    98,
+    75,
+    66,
+    146,
+    30,
+    35,
+    60,
+    16,
+    9,
+    159,
+    68
+   ]
+  },
+  "tricascade_biological_1": {
+   "reject": [
+    27,
+    93,
+    132,
+    0,
+    70,
+    64,
+    152,
+    23,
+    79,
+    33,
+    77
+   ]
+  },
+  "household_real_paper_0": {
+   "accept": [
+    31,
+    29,
+    82,
+    27,
+    85,
+    56,
+    65
+   ]
+  },
+  "household_real_paper_1": {
+   "accept": [
+    39,
+    68,
+    53,
+    43,
+    132,
+    79,
+    41,
+    50
+   ]
+  },
+  "household_real_paper_2": {
+   "accept": [
+    48,
+    32,
+    74
+   ]
+  },
+  "household_default_trash_0": {
+   "reject": [
+    25,
+    48,
+    62,
+    54,
+    24,
+    39,
+    10,
+    22
+   ]
+  },
+  "household_default_trash_1": {
+   "accept": [
+    18,
+    38,
+    20,
+    60,
+    14
+   ]
+  },
+  "tb_trash_trash_0": {
+   "accept": [
+    13,
+    18
+   ]
+  },
+  "hf_shoes_shoes_0": {
+   "reject": []
+  },
+  "hf_shoes_shoes_1": {
+   "reject": []
   }
+ },
+ "household_glass_color": {
+  "448": "white-glass",
+  "481": "white-glass",
+  "503": "white-glass",
+  "212": "white-glass",
+  "558": "white-glass",
+  "438": "white-glass",
+  "257": "white-glass",
+  "463": "white-glass",
+  "132": "white-glass",
+  "39": "white-glass",
+  "557": "white-glass",
+  "571": "white-glass",
+  "30": "white-glass",
+  "148": "white-glass",
+  "580": "white-glass",
+  "483": "white-glass",
+  "589": "white-glass",
+  "536": "white-glass",
+  "24": "white-glass",
+  "456": "white-glass",
+  "513": "white-glass",
+  "60": "white-glass",
+  "451": "white-glass",
+  "174": "white-glass",
+  "29": "white-glass",
+  "499": "white-glass",
+  "81": "white-glass",
+  "63": "white-glass",
+  "584": "white-glass",
+  "581": "white-glass",
+  "227": "white-glass",
+  "585": "white-glass",
+  "140": "white-glass",
+  "606": "white-glass",
+  "470": "white-glass",
+  "478": "white-glass",
+  "495": "white-glass",
+  "429": "white-glass",
+  "559": "white-glass",
+  "83": "white-glass",
+  "534": "white-glass",
+  "390": "white-glass",
+  "493": "white-glass",
+  "546": "white-glass"
+ }
 }
