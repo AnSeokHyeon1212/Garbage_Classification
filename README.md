@@ -1,14 +1,14 @@
 # 쓰레기 이미지 분류 해커톤 (12 classes)
 
-> 전체 현황판 — **팀장만 수정**. 마지막 갱신: 2026-11-20(금)
+> 전체 현황판 — **팀장만 수정**. 마지막 갱신: 2026-11-22(일)
 
-## 현재 상태 (11/20 재연구 2차 진행 중)
+## 현재 상태 (11/22 재연구 2차 튜닝 완료, 최종 TEST 전)
 - 대회 규칙상 사전학습 모델 미세조정이 허용되지 않아, ImageNet 사전학습 ResNet18로 진행한 이전 연구를 **전부 폐기**했다 (`00_lead/decisions.md` D34).
 - 작은 ResNet을 `torch.nn`으로 직접 구현하고 Colab GPU에서 **처음부터 학습**하는 재연구를 진행 중이다. 계획: [`docs/superpowers/plans/2026-11-19-scratch-cnn-research.md`](docs/superpowers/plans/2026-11-19-scratch-cnn-research.md)
 - **1차 튜닝(R1~R12, 정리 전 데이터, 학습 12,000장)**: 최고 R9 val_avg 0.502 (val 0.816 / val_ext 0.184 / val_hard 0.506). 외부 데이터를 섞은 R2는 val_ext가 0.144에서 0.772로 올랐지만 clothes·shoes 조건 때문에 기각했다.
 - **데이터 정리**: 사진을 직접 확인해 라벨과 맞지 않는 사진을 걸러내고 외부 데이터를 더 모았다. 정리 후 학습 27,050 / val_ext 498 / test_ext 360 / val_hard 1,198장 (`01_coding/RESULT/data_split/clean_report.csv`, `extra_counts.csv`). 정리 도구는 기록용으로 `01_coding/tools/`에 있다.
-- **2차 튜닝 계획(M1~M9, 실행 전)**: 채택 규칙에서 clothes·shoes 조건 제거(val_avg +0.01 이상만 채택), 비율 유지(letterbox) 전처리, 증강(좌우·상하 반전, 회전, 색상, TrivialAugmentWide, 어둡게·흐림; 무작위 자르기는 미사용), 클래스 가중치, 배경 외우기 점검 지표. Colab에서 실행할 예정이다.
-- 최종 TEST는 아직 하지 않았다 (2차 사다리가 끝난 뒤 최종 모델로 1회).
+- **2차 튜닝(M1~M9, 완료)**: 채택 규칙에서 clothes·shoes 조건을 빼고(val_avg +0.01 이상만 채택) 비율 유지(letterbox) 전처리, 증강(좌우·상하 반전, 회전, 색상, TrivialAugmentWide, 어둡게·흐림; 무작위 자르기는 미사용), 클래스 가중치, 라벨 스무딩, epoch, 입력 크기를 비교했다. M1(정리한 데이터) → M3(반전·회전) → M8(epoch 60) 순으로 채택했고 **최종 설정은 M8** (val_avg 0.877; val 0.879 / val_ext 0.922 / val_hard 0.830). 가벼운 과적합(train 0.982 vs val 0.879, epoch 26 이후 val loss 상승)이 있지만 val 정확도는 유지됐다. 해석은 노트북 10절 끝.
+- 최종 TEST는 아직 하지 않았다 (최종 모델 M8로 1회).
 - 최종 노트북: [`01_coding/notebooks/final_model.ipynb`](01_coding/notebooks/final_model.ipynb) (데이터 준비 → 모델 → 학습 → 튜닝 과정 → 최종 평가)
 - 데이터: Google Drive 공개 폴더 https://drive.google.com/drive/folders/19R4yPCNI2B204UuINfGlBx4IZ7N2j9XB (AI Hub 폴더는 약관상 비공개)
 

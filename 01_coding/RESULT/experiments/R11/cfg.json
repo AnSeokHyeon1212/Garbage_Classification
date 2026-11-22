@@ -1,0 +1,18 @@
+{
+ "width": 48,
+ "hidden": [],
+ "img_size": 128,
+ "aug": [
+  "dark_blur"
+ ],
+ "train_data": "kaggle",
+ "max_per_class": 1000,
+ "epochs": 30,
+ "patience": 7,
+ "batch": 64,
+ "lr": 0.003,
+ "weight_decay": 0.0001,
+ "scheduler": "cosine",
+ "label_smoothing": 0.0,
+ "seed": 42
+}

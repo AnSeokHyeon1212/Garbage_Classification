@@ -1,4 +1,5 @@
 """Task 1: 사전학습 코드·이전 결과가 지워졌고, 고정 분할 CSV는 남아 있는지 확인"""
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -22,7 +23,13 @@ def test_no_pretrained_code():
 
 
 def test_old_results_removed():
-    assert not list((ROOT / "01_coding/RESULT/experiments").glob("*"))
+    """experiments/에는 직접 만든 CNN 사다리 결과(R1~R12, M1~M9와 ladder 표)만 있어야 한다 (사전학습 시절 결과 없음)"""
+    import re
+    exp = ROOT / "01_coding/RESULT/experiments"
+    for p in exp.glob("*"):
+        assert re.fullmatch(r"[RM]\d+|ladder(_m)?\.csv", p.name), p
+        if p.is_dir():
+            assert set(json.load(open(p / "cfg.json", encoding="utf-8"))) >= {"width", "aug", "train_data"}, p
     assert not (ROOT / "01_coding/RESULT/ensemble").exists()
     assert not (ROOT / "01_coding/RESULT/final_test/final_test.json").exists()
 

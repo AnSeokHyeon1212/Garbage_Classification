@@ -1,0 +1,45 @@
+{
+ "val": 0.8792436613665664,
+ "val_ext": 0.9216867469879518,
+ "val_hard": 0.8297161936560935,
+ "val_avg": 0.8768822006702038,
+ "per_class_val": {
+  "battery": 0.7816901408450704,
+  "biological": 0.918918918918919,
+  "brown-glass": 0.9340659340659341,
+  "cardboard": 0.8721804511278195,
+  "clothes": 0.9374217772215269,
+  "green-glass": 0.968421052631579,
+  "metal": 0.8448275862068966,
+  "paper": 0.9426751592356688,
+  "plastic": 0.7829457364341085,
+  "shoes": 0.8141891891891891,
+  "trash": 0.8666666666666667,
+  "white-glass": 0.6724137931034483
+ },
+ "by_corruption": {
+  "blur": 0.8120300751879699,
+  "dark": 0.801980198019802,
+  "glare": 0.8759493670886076
+ },
+ "val_ext_by_source": {
+  "aihub": 0.9511111111111111,
+  "realwaste": 0.8974358974358975
+ },
+ "aihub_metal_as_glass_battery": 0.12,
+ "per_class_val_ext": {
+  "battery": 0.98,
+  "biological": 1.0,
+  "brown-glass": 0.98,
+  "cardboard": 0.9,
+  "green-glass": 1.0,
+  "metal": 0.84,
+  "paper": 0.86,
+  "plastic": 0.9,
+  "trash": 0.8367346938775511,
+  "white-glass": 0.92
+ },
+ "best_epoch": 50,
+ "epochs_run": 60,
+ "minutes": 98.89
+}
