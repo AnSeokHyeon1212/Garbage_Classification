@@ -76,6 +76,8 @@ def save_small(img: Image.Image, dst: Path):
 def used_paths() -> set:
     used = set()
     for f in SPLIT.glob("*.csv"):
+        if f.name == "test_dirty.csv":   # v1 결과는 폐기 대상이라 v2 후보를 가리지 않는다
+            continue
         df = pd.read_csv(f)
         if "path" in df.columns:
             used |= set(df["path"])
