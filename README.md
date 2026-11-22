@@ -9,6 +9,7 @@
 - **데이터 정리**: 사진을 직접 확인해 라벨과 맞지 않는 사진을 걸러내고 외부 데이터를 더 모았다. 정리 후 학습 27,050 / val_ext 498 / test_ext 360 / val_hard 1,198장 (`01_coding/RESULT/data_split/clean_report.csv`, `extra_counts.csv`). 정리 도구는 기록용으로 `01_coding/tools/`에 있다.
 - **2차 튜닝(M1~M9, 완료)**: 채택 규칙에서 clothes·shoes 조건을 빼고(val_avg +0.01 이상만 채택) 비율 유지(letterbox) 전처리, 증강(좌우·상하 반전, 회전, 색상, TrivialAugmentWide, 어둡게·흐림; 무작위 자르기는 미사용), 클래스 가중치, 라벨 스무딩, epoch, 입력 크기를 비교했다. M1(정리한 데이터) → M3(반전·회전) → M8(epoch 60) 순으로 채택했고 **최종 설정은 M8** (val_avg 0.877; val 0.879 / val_ext 0.922 / val_hard 0.830). 가벼운 과적합(train 0.982 vs val 0.879, epoch 26 이후 val loss 상승)이 있지만 val 정확도는 유지됐다. 해석은 노트북 10절 끝.
 - **최종 TEST (M8, 1회)**: **test 0.882** (Kaggle 원본 2,328장, 12클래스) / **test_ext 0.903** (외부 실사 360장, 9클래스). 검증(val 0.879 / val_ext 0.922)과 비슷해 검증셋 과적합은 작다. 약점: white-glass(→plastic), battery(→metal), clothes↔shoes, trash(→plastic). 결과 `01_coding/RESULT/final_test/`, 결론은 노트북 13절.
+- **더러운 사진 추가 평가 (M8, 1회)**: 1,200장(Kaggle test 543 + 학습에 쓰지 않은 외부 실사 657, 절반은 잡음·빛번짐·얼룩 등 손상) → **0.753**. 원본 0.803 / 손상 0.704. 학습에 없던 강한 빛번짐(0.31)·저조도+잡음(0.46)과 처음 보는 종류의 쓰레기(옷 더미, 잎·풀, 과자 봉지·휴지)에 약하다. 목록 `01_coding/RESULT/data_split/test_dirty.csv`, 결과 `01_coding/RESULT/final_test/dirty_test_predictions.csv`, 노트북 12-2절.
 - 최종 노트북: [`01_coding/notebooks/final_model.ipynb`](01_coding/notebooks/final_model.ipynb) (데이터 준비 → 모델 → 학습 → 튜닝 과정 → 최종 평가)
 - 데이터: Google Drive 공개 폴더 https://drive.google.com/drive/folders/19R4yPCNI2B204UuINfGlBx4IZ7N2j9XB (AI Hub 폴더는 약관상 비공개)
 
