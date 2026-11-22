@@ -1,0 +1,10 @@
+﻿정답,battery,biological,brown-glass,cardboard,clothes,green-glass,metal,paper,plastic,shoes,trash,white-glass
+battery,40,0,0,0,0,0,0,0,0,0,0,0
+brown-glass,0,0,39,0,0,0,1,0,0,0,0,0
+cardboard,0,1,0,33,0,0,1,2,2,0,1,0
+green-glass,0,0,0,0,0,40,0,0,0,0,0,0
+metal,0,0,1,0,0,0,38,0,1,0,0,0
+paper,0,0,0,0,0,0,1,36,0,0,3,0
+plastic,0,0,0,0,0,0,5,0,33,0,2,0
+trash,0,2,0,1,0,0,1,0,5,0,31,0
+white-glass,2,0,1,0,0,0,2,0,0,0,0,35

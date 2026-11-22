@@ -31,7 +31,8 @@ def test_old_results_removed():
         if p.is_dir():
             assert set(json.load(open(p / "cfg.json", encoding="utf-8"))) >= {"width", "aug", "train_data"}, p
     assert not (ROOT / "01_coding/RESULT/ensemble").exists()
-    assert not (ROOT / "01_coding/RESULT/final_test/final_test.json").exists()
+    if (ROOT / "01_coding/RESULT/final_test/final_test.json").exists():   # TEST는 2차 사다리가 끝난 뒤에만
+        assert (exp / "ladder_m.csv").exists()
 
 
 def test_fixed_splits_kept():

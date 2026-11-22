@@ -1,0 +1,13 @@
+﻿정답,battery,biological,brown-glass,cardboard,clothes,green-glass,metal,paper,plastic,shoes,trash,white-glass
+battery,111,0,2,4,1,3,8,1,6,4,2,0
+biological,0,127,3,1,0,1,7,0,3,4,1,1
+brown-glass,0,1,87,0,0,0,2,0,0,0,1,0
+cardboard,1,0,0,126,3,0,0,0,1,1,2,0
+clothes,2,10,0,6,739,2,6,8,4,16,3,3
+green-glass,1,2,0,0,0,88,0,0,2,1,0,0
+metal,2,0,2,2,0,0,98,5,2,0,2,2
+paper,0,0,0,1,2,0,2,144,4,3,2,0
+plastic,1,2,0,1,0,0,4,2,108,2,3,7
+shoes,3,8,2,3,12,2,7,6,1,253,0,0
+trash,0,3,1,3,2,0,1,1,3,4,84,2
+white-glass,0,1,0,0,1,0,4,2,16,1,2,89

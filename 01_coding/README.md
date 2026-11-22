@@ -38,7 +38,7 @@
 - [11/19] ⚠️ **사전학습 미세조정 금지 → 이전 연구(E1~E9) 전부 폐기 (D34).** 아래 E1~E9·T-06 보고는 폐기된 기록. 재연구 계획: `docs/superpowers/plans/2026-11-19-scratch-cnn-research.md`
 
 - [11/20] 2차 튜닝 준비 (D35): 데이터 정리(`tools/`, `RESULT/data_split/*_clean.csv`) → 학습 27,050 / val_ext 498 / test_ext 360 / val_hard 1,198. 채택 규칙에서 clothes·shoes 조건 제거(val_avg +0.01 이상), letterbox 전처리·증강·클래스 가중치·배경 점검 지표, 사다리 M1~M9(`ladder_m.csv`). Colab에서 실행 예정, 최종 TEST는 아직 하지 않음
-- [11/22] 2차 튜닝 완료 (D36): 최종 설정 M8 (epoch 60; val_avg 0.877 = val 0.879 / val_ext 0.922 / val_hard 0.830). 다음: 최종 TEST 1회 → 13절 결론 작성
+- [11/22] 2차 튜닝 완료 (D36): 최종 설정 M8 (epoch 60; val_avg 0.877 = val 0.879 / val_ext 0.922 / val_hard 0.830). 최종 TEST 1회(로컬 CPU, 학습 없이 평가만): test 0.882 (2,328) / test_ext 0.903 (360). 13절 결론 작성
 
 ## 📤 작업 보고
 - [11/16] T-01: ✅ 완료 — `notebooks/01_data.py`(marimo), 실행 결과 `results/01_data.html`
