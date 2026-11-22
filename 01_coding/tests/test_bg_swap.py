@@ -104,10 +104,17 @@ def test_bg_swap_is_label_free(tmp_path):
 
 
 def test_bg_swap_speed(tmp_path):
-    df = _fake_df(tmp_path, 64)
+    """배경 교란이 학습 변환 시간을 40% 넘게 늘리면 안 된다 (Colab은 이미지 처리 CPU가 병목)"""
+    df = _fake_df(tmp_path, 128)
     tf = NS["build_transforms"](128, ["hflip", "dark_blur", "robust"])[0]
-    ds = NS["GarbageDataset"](df, tf, bg_swap=True)
-    t = time.perf_counter()
-    for i in range(64):
-        ds[i]
-    assert time.perf_counter() - t <= 2.0
+
+    def per_image(bg):
+        random.seed(0)
+        ds = NS["GarbageDataset"](df, tf, bg_swap=bg)
+        t = time.perf_counter()
+        for i in range(len(ds)):
+            ds[i]
+        return (time.perf_counter() - t) / len(ds)
+    per_image(False)                                   # 파일 캐시 데우기
+    base, with_bg = per_image(False), per_image(True)
+    assert with_bg <= base * 1.4, (base, with_bg)
