@@ -1,6 +1,7 @@
 """더러운 사진 추가 평가셋(test_dirty) 만들기 — 기록용 (원본 zip·AI Hub 원본이 있어야 실행됨)
 
 구성: 12클래스 × 100장 = 1,200장. 클래스마다 Kaggle test 40장 + 학습·검증·테스트에 쓰지 않은 외부 실사 60장.
+외부 사진은 학습한 종류의 물체만 쓰고(사람이 시트를 보고 거름), 외부가 60장에 못 미치면 모자란 만큼 Kaggle test로 채운다.
 각 묶음의 절반은 원본 그대로, 절반은 손상(학습 증강에 없던 종류 포함, 약·강)을 고정 seed로 적용해 저장한다.
 
 단계
@@ -32,6 +33,8 @@ SHORT = 384
 N_KAGGLE, N_EXT = 40, 60
 
 # Household 실제 환경(real_world) 카테고리 → 우리 클래스. 유리는 색을 사람이 보고 정한다
+# 아래 food_waste·eggshells·cardboard_*·shoes는 계획(PLAN)에서 쓰지 않는다. 지우면 후보끼리 중복 제거 결과가
+# 달라질 수 있어(이미 검토한 시트와 번호가 어긋날 위험) 후보 목록 재현을 위해 그대로 둔다.
 # (v2: 학습에 없던 종류인 커피 찌꺼기·옷 더미·사무용지·금속 캔 웹 사진은 뺀다)
 HH_MAP = {
     "food_waste": "biological", "eggshells": "biological",
@@ -120,7 +123,8 @@ def candidates():
         if rel(f) not in used:
             rows.append(dict(path=rel(f), label="plastic", source="realwaste", origin=f"Plastic/{f.name}"))
     # Household 실제 환경 cardboard·스티로폼은 학습에 거의 다 써서, 2차 수집 때 꺼내 두고 쓰지 않은 사진으로 보충
-    # (TrashBusters TriCascade 골판지, Household 스티로폼·골판지, ShoeSandalBoot 신발, V2 trash)
+    # (TrashBusters TriCascade 골판지, Household 스티로폼·골판지, ShoeSandalBoot 신발)
+    # "household" 접두어(cardboard)는 계획에서 쓰지 않지만, 위 HH_MAP과 같은 이유로 후보 목록 재현을 위해 둔다.
     for label, prefixes in {"cardboard": ["tricascade", "household"], "trash": ["household"], "shoes": ["hf_shoes"],
                              "biological": ["tricascade"]}.items():
         files = sorted((ROOT / "external_data" / "hf_extra" / label).glob("*.jpg"))
@@ -247,7 +251,6 @@ def corrupt(img: Image.Image, kind: str, strong: bool, rng: np.random.Generator)
 def finalize():
     rev = json.loads(REVIEW.read_text(encoding="utf-8"))
     cand = pd.read_csv(OUT / "candidates.csv")
-    key = cand.source + "/" + cand.label + "/" + cand.sheet_id.astype(str)
     # 사람이 본 시트의 사진만 사용. 시트마다 "reject"(빼는 번호) 또는 "accept"(쓸 번호만) 중 하나
     idx = pd.read_csv(OUT / "sheet_index.csv").merge(cand[["path", "sheet_id"]], on="path")
     ok = set()
