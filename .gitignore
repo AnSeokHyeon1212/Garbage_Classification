@@ -1,6 +1,7 @@
 data/
 *.zip
 *.pth
+!01_coding/model/final_model.pth
 *.pt
 __pycache__/
 .ipynb_checkpoints/

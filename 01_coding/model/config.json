@@ -1,0 +1,50 @@
+{
+ "exp_id": "M8",
+ "classes": [
+  "battery",
+  "biological",
+  "brown-glass",
+  "cardboard",
+  "clothes",
+  "green-glass",
+  "metal",
+  "paper",
+  "plastic",
+  "shoes",
+  "trash",
+  "white-glass"
+ ],
+ "img_size": 128,
+ "cache_size": 192,
+ "resize": "squash",
+ "mean": [
+  0.6448,
+  0.6212,
+  0.5932
+ ],
+ "std": [
+  0.2607,
+  0.2642,
+  0.2837
+ ],
+ "width": 48,
+ "hidden": [],
+ "aug": [
+  "dark_blur",
+  "hflip",
+  "vflip",
+  "rot"
+ ],
+ "train_data": "mix2",
+ "epochs": 60,
+ "patience": 10,
+ "batch": 64,
+ "lr": 0.001,
+ "weight_decay": 0.0001,
+ "scheduler": "cosine",
+ "label_smoothing": 0.0,
+ "class_weight": null,
+ "seed": 42,
+ "best_epoch": 50,
+ "n_params": 6289212
+}
