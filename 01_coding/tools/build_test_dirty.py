@@ -43,7 +43,7 @@ HH_MAP = {
     "styrofoam_cups": "trash", "styrofoam_food_containers": "trash",
     "glass_beverage_bottles": "glass", "glass_food_jars": "glass", "glass_cosmetic_containers": "glass",
 }
-# 클래스별 외부 60장의 출처 목표 (유리는 Household에서 색이 확실한 것을 먼저, 모자라면 AI Hub)
+# 클래스별 외부 60장의 출처 목표 (갈색·녹색 유리는 AI Hub만, white-glass는 AI Hub 30 + Household 투명 단지 30)
 # 학습한 종류의 물체만 쓴다. 옷은 외부 후보가 없어 Kaggle test로 채운다(finalize가 처리)
 PLAN = {
     "battery": {"aihub": 60},

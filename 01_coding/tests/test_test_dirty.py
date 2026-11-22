@@ -51,3 +51,15 @@ def test_only_trained_kinds():
     tb = ext[ext.origin.str.contains("TrashBusters/", regex=False)]
     assert (tb.label == "trash").all()
     assert (ext[ext.source == "realwaste"].label == "plastic").all()
+    # 출처마다 학습한 종류에 해당하는 클래스만 허용
+    by_source = {
+        "aihub": {"battery", "brown-glass", "green-glass", "white-glass", "metal"},
+        "realwaste": {"plastic"},
+        "tricascade": {"cardboard", "biological"},
+        "household_real": {"plastic", "paper", "white-glass", "trash"},
+        "household_default": {"trash"},
+        "hf_shoes": {"shoes"},
+        "tb_trash": {"trash"},
+    }
+    for src, g in ext.groupby("source"):
+        assert set(g.label) <= by_source[src], (src, set(g.label) - by_source[src])
