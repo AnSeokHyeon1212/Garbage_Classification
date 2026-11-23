@@ -591,22 +591,54 @@ def slide_09_model(prs):
 
 
 def slide_10_result(prs):
-    s = new_slide(prs, "결과와 과적합 점검", "fact_check",
-                  "최종 TEST는 한 번만 했고, test 0.8823, 외부 실사 test_ext 0.9028이 나왔습니다. 과적합을 점검해 보면, "
-                  "저장한 epoch에서 train이 0.982, val 0.879, test 0.882로 약 0.10 차이가 나서 가벼운 과적합은 있습니다. "
-                  "하지만 검증과 TEST 점수가 거의 같아서 처음 보는 사진에도 일반화는 유지됩니다. 외부 사진은 val_ext 0.922에서 "
-                  "test_ext 0.903으로 약 0.02 낮지만 큰 차이는 아닙니다.")
-    bn_w, bn_h = 3.9, 1.75
-    card(s, M, TOP, bn_w, bn_h)
-    text(s, M + 0.3, TOP + 0.15, bn_w - 0.6, 1.0, ["0.8823"], size=T_BIG, color=PRI_D, bold=True,
+    s = new_slide(prs, "결과", "fact_check",
+                  "최종 TEST는 한 번만 했고, test 0.8823, 외부 실사 test_ext 0.9028이 나왔습니다. test_ext는 학습과 검증에 "
+                  "쓰지 않은 외부 실사 사진 360장입니다. 검증과 TEST 점수가 거의 같아서 처음 보는 사진에도 성능이 유지됩니다. "
+                  "외부 사진은 val_ext 0.922에서 test_ext 0.903으로 약 0.02 낮지만 큰 차이는 아닙니다.")
+    lw, bn_h = 5.0, 1.9
+    card(s, M, TOP, lw, bn_h)
+    text(s, M + 0.3, TOP + 0.2, lw - 0.6, 1.05, ["0.8823"], size=T_BIG, color=PRI_D, bold=True,
          anchor=MSO_ANCHOR.MIDDLE)
-    text(s, M + 0.3, TOP + 1.2, bn_w - 0.6, 0.3, ["test, 2,328장 1회 평가"], size=T_CAP, color=INK3)
-    keywords(s, M + bn_w + 0.5, TOP + 0.05, CW - bn_w - 0.5,
-             ["test_ext 0.9028", "train−val 차이 0.10 → 가벼운 과적합", "검증 ≈ TEST → 일반화 유지"], gap=6)
-    ry = TOP + bn_h + 0.3
-    rw = (CW - 0.3) / 2
-    image_card(s, FS / "final_curve_gap.png", M, ry, rw, BOT - ry)
-    image_card(s, FS / "test_scores.png", M + rw + 0.3, ry, rw, BOT - ry)
+    text(s, M + 0.3, TOP + 1.35, lw - 0.6, 0.3, ["test (Kaggle 사진 2,328장, 1회 평가)"], size=T_CAP, color=INK3)
+    keyword_block(s, M, TOP + bn_h + 0.4, lw, [
+        ("test_ext 0.9028", ["학습·검증에 안 쓴 외부 실사 사진 360장"]),
+        ("검증 ≈ TEST", ["val 0.879 / test 0.882, val_ext 0.922 / test_ext 0.903", "처음 보는 사진에서도 성능 유지"]),
+    ], gap_pt=20)
+    fx = M + lw + 0.4
+    image_card(s, FS / "test_scores.png", fx, TOP, M + CW - fx, BOT - TOP)
+
+
+OVERFIT_NOTES = ("과적합을 세 가지로 점검했습니다. 학습 정확도와 검증 정확도는 0.10 차이가 나서 과적합이 조금 있습니다. "
+                 "검증 손실은 26 epoch에서 가장 낮고 이후 조금 오르는데, 정확도는 떨어지지 않아서 틀린 사진을 더 확신하게 되는 "
+                 "가벼운 과적합으로 봤습니다. 그래서 정확도가 가장 높았던 50 epoch의 가중치를 저장했고, 검증과 TEST 점수가 "
+                 "거의 같아 처음 보는 사진에서도 성능이 유지됩니다. 참고로 60 epoch으로 늘리면서 차이는 M3의 0.069보다 "
+                 "커졌지만, 검증 점수 자체가 0.848에서 0.877로 올라 이 설정을 택했습니다.")
+
+
+def slide_11_overfit(prs):
+    s = new_slide(prs, "과적합 점검: 가볍게 있지만 일반화는 유지", "query_stats", OVERFIT_NOTES)
+    checks = [("정확도 차이 0.10", "epoch 50: train 0.982 vs val 0.879", "학습 사진을 더 잘 맞힘 → 과적합은 있다"),
+              ("val loss는 epoch 26부터 상승", "epoch 26 (0.477) 최저 → epoch 50 0.537", "정확도는 유지 → 가벼운 과적합"),
+              ("검증 ≈ TEST", "val 0.879 / test 0.882", "처음 보는 사진에서도 성능 유지 → 일반화는 됨")]
+    gap, ch = 0.3, 2.15
+    cw = (CW - 2 * gap) / 3
+    for i, (kw, ev, why) in enumerate(checks):
+        x = M + i * (cw + gap)
+        card(s, x, TOP, cw, ch)
+        text(s, x + 0.25, TOP + 0.18, cw - 0.5, 0.25, [f"{i + 1:02d}"], size=T_CAP, color=INK3)
+        text(s, x + 0.25, TOP + 0.42, cw - 0.5, 0.8, [kw], size=T_KEY)
+        text(s, x + 0.25, TOP + 1.22, cw - 0.5, 0.85,
+             [[(ev, {"size": T_REASON, "color": INK2})], [(why, {"size": T_REASON, "color": INK})]], space_after=2)
+    text(s, M, TOP + ch + 0.12, CW, 0.28,
+         ["막은 방법: 데이터 다양화 · 반전/회전 증강 · weight decay · BatchNorm · 작은 출력층 · 최고 epoch 저장"],
+         size=T_CAP, color=INK2)
+    fy = TOP + ch + 0.55
+    fw = (CW - gap) / 2
+    for j, (fn, cap) in enumerate([("loss_curve.png", "val loss 최저 epoch 26 (0.477) → 저장 epoch 50 (0.537)"),
+                                   ("final_curve_gap.png", "epoch 50: train 0.982 vs val 0.879")]):
+        x = M + j * (fw + gap)
+        image_card(s, FS / fn, x, fy, fw, BOT - 0.32 - fy, pad=0.1)
+        text(s, x, BOT - 0.25, fw, 0.25, [cap], size=T_CAP, color=INK2, align=PP_ALIGN.CENTER)
 
 
 def slide_confusion(prs):
@@ -633,19 +665,24 @@ def slide_confusion(prs):
 
 def slide_conclusion(prs):
     s = new_slide(prs, "결론: 배운 점과 한계", "lightbulb",
-                  "가장 크게 도움이 된 건 데이터를 다양하게 모은 것이었고, 그 다음이 증강, 그리고 충분한 epoch이었습니다. "
-                  "한계도 있습니다. 더러운 사진 평가에서는 0.773으로, 특히 학습에 없던 강한 빛번짐 0.28, 저조도와 잡음 0.51, "
-                  "얼룩 0.60에 약했고, 배경을 지우면 0.122 떨어져 배경에도 기대고 있었습니다. 그래서 지금은 노이즈 증강과 "
-                  "배경 교란 증강을 실험하고 있습니다. 감사합니다.")
+                  "정리하면, 사전학습 없이 직접 만든 작은 CNN으로 test 0.882, 외부 실사 test_ext 0.903을 얻었습니다. "
+                  "가장 크게 도움이 된 건 실제 환경 사진을 섞어 데이터를 다양하게 만든 것이었고, 그 다음이 반전·회전 증강 "
+                  "+0.035, 충분한 학습 epoch 60 +0.029였습니다. 한계도 있습니다. 더러운 사진 평가에서는 0.773으로, 특히 "
+                  "학습에 없던 강한 빛번짐 0.28, 저조도와 잡음 0.51, 얼룩 0.60에 약했고, 배경을 지우면 0.122 떨어져 배경에도 "
+                  "기대고 있었습니다. 그래서 지금은 노이즈 증강과 배경 교란 증강을 실험하고 있습니다. 감사합니다.")
     fig_h = BOT - TOP - 0.45
     fig_w = fig_h * 1473 / 1314 + 0.1
     fig_x = M + CW - fig_w
     R = {"color": WARN}
-    text(s, M, TOP + 0.3, fig_x - M - 0.4, 3.0, [
-        "데이터 다양화 > 증강 > epoch",
-        [("약점: 빛번짐 ", {}), ("0.28", R), (" · 저조도 ", {}), ("0.51", R), (" · 얼룩 ", {}), ("0.60", R)],
-        "다음: 노이즈·배경 증강(실험 중)",
-    ], size=T_KEY, space_after=18)
+    reason = {"size": T_REASON, "color": INK2}
+    keyword_block(s, M, TOP + 0.1, fig_x - M - 0.4, [
+        ("01 성과", "test 0.882 · 외부 실사 test_ext 0.903", ["사전학습 없이 직접 만든 작은 CNN으로 달성"]),
+        ("02 배운 점", "데이터 다양화 → 반전·회전 → 충분한 학습",
+         ["실제 환경 사진을 섞은 것이 가장 컸고, 증강 +0.035, epoch 60 +0.029"]),
+        ("03 한계와 다음 과제", [("강한 빛번짐 ", {}), ("0.28", R), (" · 배경 의존", {})],
+         [[("배경을 지우면 정확도 ", reason), ("−0.122", {**reason, "color": WARN}),
+           (" → 노이즈·배경 증강 실험 중", reason)]]),
+    ], gap_pt=22)
     image_card(s, FS / "dirty_by_corruption.png", fig_x, TOP, fig_w, fig_h)
     text(s, fig_x, TOP + fig_h + 0.12, fig_w, 0.3,
          ["더러운 사진 0.773 (원본 0.826 / 손상 0.720) · 배경을 지우면 −0.122"],
@@ -715,25 +752,25 @@ def tuning_table(s, x, y, w, h, col_w, size):
 
 def slide_spare(prs):
     s = new_slide(prs, "예비 자료", "inventory_2",
-                  "(질문이 나올 때만) 전체 튜닝 표와 외부 사진 혼동행렬입니다. 출력층을 은닉층 두 개로 키워 봐도 0.875로 "
-                  "Linear 하나의 0.878보다 낫지 않아서, 작은 출력층을 유지했습니다.")
-    tw = 7.4
+                  "(질문이 나올 때만) 전체 튜닝 표입니다. 출력층을 은닉층 두 개로 키우면 train은 0.996에서 0.998로 오르지만 "
+                  "검증은 0.878에서 0.875로 낮아져서, 모델을 키우면 더 외운다고 보고 작은 출력층을 유지했습니다.")
+    tw = 8.0
     text(s, M, TOP, tw, 0.45, ["M1~M9 전체 표"], size=T_KEY, anchor=MSO_ANCHOR.MIDDLE)
     ty = TOP + 0.65
-    tuning_table(s, M, ty, tw, BOT - ty, [0.65, 2.35, 0.85, 0.9, 0.95, 0.9, 0.8], T_CAP)
+    tuning_table(s, M, ty, tw, BOT - ty, [0.7, 2.6, 0.9, 0.95, 1.0, 0.95, 0.9], T_REASON)
     rx = M + tw + 0.4
     rw = M + CW - rx
-    text(s, rx, TOP, rw, 0.45, ["test_ext 혼동행렬"], size=T_KEY, anchor=MSO_ANCHOR.MIDDLE)
-    image_card(s, FG / "confusion_test_ext.png", rx, ty, rw, 2.75)
-    oy = ty + 2.75 + 0.3
-    card(s, rx, oy, rw, BOT - oy)
-    text(s, rx + 0.25, oy + 0.2, rw - 0.5, 0.8, ["출력층: Linear 0.878", "vs 은닉층 2개 0.875"], size=T_KEY)
-    text(s, rx + 0.25, BOT - 0.42, rw - 0.5, 0.3, ["→ 작은 출력층 유지"], size=T_CAP, color=INK2)
+    card(s, rx, ty, rw, BOT - ty)
+    keyword_block(s, rx + 0.25, ty + 0.25, rw - 0.5, [
+        ("출력층: Linear 0.878 vs 은닉층 2개 0.875",
+         ["→ 작은 출력층 유지", "은닉층 2개로 키우면 train은 오르고(0.996 → 0.998) 검증은 낮아짐(0.878 → 0.875)",
+          "모델을 키우면 더 외운다"]),
+    ])
 
 
 SLIDES = [slide_01_cover, slide_02_toc, slide_03_data, slide_04_preprocess, slide_05_augment,
           slide_06_tuning_method, slide_07_tuning_result, slide_08_curves, slide_09_model, slide_10_result,
-          slide_confusion, slide_conclusion, slide_spare]
+          slide_11_overfit, slide_confusion, slide_conclusion, slide_spare]
 
 
 def build(out: Path = OUT) -> Path:

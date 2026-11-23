@@ -115,6 +115,11 @@ REQUIRED = {
     8: ["차이 0.168 → 반전·회전을 넣은 M3는 0.069로 줄어듦", "검증 점수((val+val_ext)/2)가 가장 높았던 epoch의 가중치를 저장"],
     9: ["사진은 점점 작아지고, 특징(채널)은 점점 많아진다", "128×128", "8×8", "1~4단계는 각각 잔차 블록 2개",
         "2~4단계 첫 블록에서 크기 절반·채널 두 배"],
+    10: ["test (Kaggle 사진 2,328장, 1회 평가)", "학습·검증에 안 쓴 외부 실사 사진 360장"],
+    11: ["epoch 50: train 0.982 vs val 0.879", "epoch 26 (0.477) 최저 → epoch 50 0.537",
+         "데이터 다양화 · 반전/회전 증강 · weight decay · BatchNorm · 작은 출력층 · 최고 epoch 저장"],
+    13: ["사전학습 없이 직접 만든 작은 CNN으로 달성", "더러운 사진 0.773"],
+    14: ["은닉층 2개로 키우면 train은 오르고(0.996 → 0.998) 검증은 낮아짐(0.878 → 0.875)", "모델을 키우면 더 외운다"],
 }
 
 # 이유 줄: 14pt #707070 런이어야 하는 문구
@@ -168,3 +173,32 @@ def test_flowchart_branches(deck):
     for c in gray:      # 가지 상자 사이를 잇는 선이 없음
         ends = [b for b in boxes.values() if abs(min(c.begin_x, c.end_x) - (b.left + b.width)) <= tol]
         assert not ends, c.name
+
+
+TITLES = ["쓰레기 사진 12종 분류", "목차", "데이터: 9개 출처를 모으다", "전처리 ① 정리와 크기 맞춤",
+          "전처리 ② 증강: 쓴 것과 뺀 것", "튜닝 ① 한 번에 하나씩", "튜닝 ② 두 번 크게 올랐다", "튜닝 ③ 학습 곡선으로 본 변화",
+          "모델: SmallResNet 직접 구현(사전학습 없음)", "결과", "과적합 점검: 가볍게 있지만 일반화는 유지",
+          "결과: 비슷한 쌍을 헷갈렸다", "결론: 배운 점과 한계", "예비 자료"]
+
+
+def test_slide_titles(deck):
+    got = [next(sh.text_frame.text for sh in s.shapes if sh.name == "Title") for s in deck.slides]
+    assert got == TITLES
+
+
+def test_warn_color_only_conclusion(deck):
+    hits = {(i, r.text) for i, s in enumerate(deck.slides, 1) for _, r in runs(s) if run_color(r) == "FF2201"}
+    assert hits == {(13, "0.28"), (13, "−0.122")}
+
+
+def test_overfit_notes(deck):
+    spec = (ROOT / "docs/presentation/revision_prompt.md").read_text(encoding="utf-8")
+    script = next(l.strip()[2:] for l in spec.splitlines() if l.strip().startswith("> 과적합을 세 가지로"))
+    assert notes(deck.slides[10]).strip() == script
+
+
+def test_spare_has_no_ext_confusion(deck):
+    s = deck.slides[13]
+    assert "test_ext 혼동행렬" not in slide_text(s)
+    pics = [sh for sh in s.shapes if sh.shape_type == 13]
+    assert len(pics) == 1           # 제목 아이콘만
