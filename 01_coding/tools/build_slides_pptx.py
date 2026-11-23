@@ -181,7 +181,7 @@ def image_card(slide, path, x, y, w, h, pad=0.15, border=LINE):
     return image_fit(slide, path, x + pad, y + pad, w - 2 * pad, h - 2 * pad)
 
 
-def arrow(slide, x1, y1, x2, y2, color=PRI, width=1.5, dash=False, head=True, name=None):
+def arrow(slide, x1, y1, x2, y2, color=PRI, width=1.5, dash=False, head=True, name=None, small=False):
     c = slide.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x1), Inches(y1), Inches(x2), Inches(y2))
     strip_style(c)
     c.line.color.rgb = rgb(color)
@@ -191,8 +191,8 @@ def arrow(slide, x1, y1, x2, y2, color=PRI, width=1.5, dash=False, head=True, na
     if head:
         te = etree.SubElement(c.line._get_or_add_ln(), qn("a:tailEnd"))
         te.set("type", "triangle")
-        te.set("w", "med")
-        te.set("len", "med")
+        te.set("w", "sm" if small else "med")
+        te.set("len", "sm" if small else "med")
     if name:
         c.name = name
     return c
@@ -452,83 +452,142 @@ def slide_05_augment(prs):
         y += h + 0.2
 
 
+CHECK = {"size": T_CAP, "color": PRI_D, "font": SYMBOL_FONT}
+CROSS = {"size": T_CAP, "color": INK3, "font": SYMBOL_FONT}
+
+
 def slide_06_tuning_method(prs):
     s = new_slide(prs, "튜닝 ① 한 번에 하나씩", "tune",
                   "튜닝은 한 단계에 한 가지만 바꿨고, 점수가 지금까지 최고보다 0.01 이상 오를 때만 반영했습니다. "
                   "점수는 val_avg로, Kaggle 검증 사진, 학습에 안 쓴 외부 실사 사진, 그리고 흐림·어둡게·빛번짐을 입힌 "
-                  "어려운 사진, 이 세 셋의 평균입니다. 그림에서 초록 실선이 반영된 단계, 회색 점선이 시험만 하고 버린 단계입니다.")
-    left_w = 5.2
-    keywords(s, M, TOP, left_w, ["한 번에 하나만 바꾼다", "val_avg +0.01 이상이면 반영", "val_avg = 세 검증 셋 평균"], gap=12)
-    cards = ["val: Kaggle 검증 2,327장", "val_ext: 학습에 안 쓴 외부 실사 498장", "val_hard: 흐림·어둡게·빛번짐 1,198장"]
-    ch_, cg = 0.72, 0.2
+                  "어려운 사진, 이 세 셋의 평균입니다. 그림에서 초록 실선이 반영된 단계, 회색 점선이 시험만 하고 버린 단계입니다. "
+                  "M4부터 M7은 모두 M3 설정에서 하나씩 따로 바꿔 본 것입니다.")
+    left_w = 4.9
+    rule = {"size": T_REASON, "color": INK}
+    keyword_block(s, M, TOP, left_w, [
+        ("val_avg = (val + val_ext + val_hard) ÷ 3",
+         ["깨끗한 사진, 실제 환경 사진, 흐리거나 어두운 사진을 모두 잘 맞혀야 점수가 오름. 한 가지에만 맞춘 설정을 걸러냄",
+          [("한 번에 하나만 바꾸고, val_avg가 지금까지 최고보다 ", rule), ("0.01 이상", {**rule, "bold": True}),
+           (" 오르면 반영", rule)]]),
+    ])
+    cards = [("val (2,327장)", "Kaggle 원본 검증용 → 기본 실력"),
+             ("val_ext (498장)", "학습에 안 쓴 외부 실사 → 다른 촬영 환경"),
+             ("val_hard (1,198장)", "흐림·어둡게·빛번짐 → 어려운 사진")]
+    ch_, cg = 0.72, 0.15
     cy0 = BOT - 3 * ch_ - 2 * cg
-    for i, t in enumerate(cards):
+    for i, (a, b) in enumerate(cards):
         yy = cy0 + i * (ch_ + cg)
         card(s, M, yy, left_w, ch_)
-        text(s, M + 0.25, yy, left_w - 0.5, ch_, [t], size=T_CAP, color=INK2, anchor=MSO_ANCHOR.MIDDLE)
-    stem = ["출발 설정", "M1 0.813", "M3 0.848", "M8 0.877", "최종 M8"]
-    sx, sw_, sh_ = 6.2, 1.8, 0.6
-    gap_y = (BOT - TOP - 5 * sh_) / 4
-    ys = [TOP + i * (sh_ + gap_y) for i in range(5)]
-    bx0, bw, bg = 8.4, 0.98, 0.13
-    branches = {1: ["M2 0.776"], 2: ["M4 0.845", "M5 0.836", "M6 0.842", "M7 0.857"], 3: ["M9 0.860"]}
-    for k, labs in branches.items():
-        yc = ys[k] + sh_ / 2
-        xend = bx0 + (len(labs) - 1) * (bw + bg) + bw / 2
-        arrow(s, sx + sw_, yc, xend, yc, color=OFF, width=1.0, dash=True, head=False)
-    for i in range(4):
-        arrow(s, sx + sw_ / 2, ys[i] + sh_, sx + sw_ / 2, ys[i + 1], color=PRI, width=1.5)
-    for i, lab in enumerate(stem):
-        b = card(s, sx, ys[i], sw_, sh_, border=PRI_D if i == 4 else PRI, width_pt=1.5 if i == 4 else 1.0, radius=0.1)
-        box_text(b, [lab], size=14, color=INK)
-    for k, labs in branches.items():
-        for j, lab in enumerate(labs):
-            b = card(s, bx0 + j * (bw + bg), ys[k] + 0.06, bw, sh_ - 0.12, border=OFF, dash=True, radius=0.08)
-            box_text(b, [lab], size=T_CAP, color=INK2)
+        text(s, M + 0.25, yy, left_w - 0.5, ch_, [[(a, {"size": T_REASON})], [(b, {"size": T_CAP, "color": INK2})]],
+             anchor=MSO_ANCHOR.MIDDLE)
+
+    # 줄기(반영): 중심 x, 각 상자 (중심 y, 높이, 줄들)
+    cx, sw_ = 7.2, 2.6
+    stem = [(1.85, 0.8, ["출발 설정", "폭 48 · cosine 학습률 · 어둡게/흐림 증강 · 30 epoch"]),
+            (2.85, 0.6, ["M1 정리한 혼합 데이터", [("0.813 ", {}), ("✓", CHECK)]]),
+            (4.15, 0.6, ["M3 반전·회전", [("0.848 ", {}), ("✓", CHECK)]]),
+            (5.5, 0.6, ["M8 epoch 30→60", [("0.877 ", {}), ("✓", CHECK)]]),
+            (6.45, 0.5, ["최종 M8"])]
+    for (y1, h1, _), (y2, h2, _) in zip(stem, stem[1:]):
+        arrow(s, cx, y1 + h1 / 2, cx, y2 - h2 / 2, color=PRI, width=1.5)
+    for i, (yc, h, lines) in enumerate(stem):
+        last = i == len(stem) - 1
+        b = card(s, cx - sw_ / 2, yc - h / 2, sw_, h, border=PRI_D if last else PRI, width_pt=1.5 if last else 1.0,
+                 radius=0.1)
+        box_text(b, lines, size=T_CAP, color=INK)
+
+    # 가지(반영 안 함): 회색 점선, 상자마다 따로
+    bx, bw, bh, spine = 8.9, 2.9, 0.42, 8.65
+    right = cx + sw_ / 2
+
+    def branch(yc, label, score):
+        b = card(s, bx, yc - bh / 2, bw, bh, border=OFF, dash=True, radius=0.08)
+        box_text(b, [[(f"{label} {score} ", {}), ("✗", CROSS)]], size=T_CAP, color=INK2)
+
+    def dash(x1, y1, x2, y2):
+        arrow(s, x1, y1, x2, y2, color=OFF, width=1.0, dash=True, head=False)
+
+    for yc, label, score in [(2.85, "M2 비율 유지(letterbox)", "0.776"), (5.5, "M9 입력 160px", "0.860")]:
+        dash(right, yc, bx, yc)
+        branch(yc, label, score)
+    m3 = [(3.37, "M4 밝기·색 변화", "0.845"), (3.89, "M5 TrivialAugment", "0.836"),
+          (4.41, "M6 클래스 가중치", "0.842"), (4.93, "M7 라벨 스무딩", "0.857")]
+    dash(right, 4.15, spine, 4.15)
+    dash(spine, m3[0][0], spine, m3[-1][0])
+    for yc, label, score in m3:
+        dash(spine, yc, bx, yc)
+        branch(yc, label, score)
 
 
 def slide_07_tuning_result(prs):
     s = new_slide(prs, "튜닝 ② 두 번 크게 올랐다", "bar_chart",
                   "막대에서 초록이 반영된 단계입니다. 가장 크게 오른 건 M3의 반전·회전 증강으로 +0.035, "
                   "그 다음이 M8에서 epoch을 30에서 60으로 늘린 +0.029였습니다. 라벨 스무딩 같은 나머지 시도는 "
-                  "0.01 기준에 못 미치거나 오히려 떨어져서 기각했습니다.")
-    kw = 3.4
-    keywords(s, M, TOP + 0.3, kw, ["M3 반전·회전 +0.035", "M8 epoch 30→60 +0.029", "나머지는 기각"], gap=18)
-    image_card(s, FS / "ladder_val_avg.png", M + kw + 0.3, TOP, CW - kw - 0.3, BOT - TOP)
+                  "0.01 기준에 못 미치거나 오히려 떨어져서 기각했습니다. M1은 출발점이라 회색으로 표시했습니다.")
+    kw = 4.2
+    keyword_block(s, M, TOP + 0.3, kw, [
+        ("M3 반전·회전 +0.035", ["사진을 외우던 문제가 줄어듦"]),
+        ("M8 epoch 30→60 +0.029", ["30 epoch에서는 아직 오르는 중이었음"]),
+        ("나머지는 기각", ["0.01 기준에 못 미치거나 하락"]),
+    ], gap_pt=20)
+    fx = M + kw + 0.3
+    image_card(s, FS / "ladder_val_avg.png", fx, TOP, M + CW - fx, BOT - TOP - 0.35)
+    text(s, fx, BOT - 0.25, M + CW - fx, 0.25, ["y축은 0.70부터 시작"], size=T_CAP, color=INK3, align=PP_ALIGN.RIGHT)
 
 
 def slide_08_curves(prs):
     s = new_slide(prs, "튜닝 ③ 학습 곡선으로 본 변화", "show_chart",
                   "왼쪽 M1은 학습 정확도가 1.0까지 오르는데 val은 0.83에서 멈춥니다. 사진을 통째로 외운 겁니다. "
                   "반전·회전을 넣은 M3부터는 학습과 검증이 함께 오르고, M8은 60 epoch 중 기준 점수가 가장 좋았던 "
-                  "epoch 50의 가중치를 저장했습니다.")
-    keyword_band(s, TOP, ["M1: train 1.0 / val 0.83 → 외움", "M3부터 함께 오름", "M8은 epoch 50 저장"])
-    image_card(s, FS / "curves_m1_m3_m8.png", M, TOP + 0.75, CW, BOT - TOP - 0.75)
+                  "epoch 50의 가중치를 저장했습니다. M1의 train과 val 차이는 0.168이었는데 M3에서는 0.069로 줄어, "
+                  "증강이 과적합을 줄였다는 근거가 됩니다.")
+    bottom = keyword_columns(s, TOP, [
+        [("M1: train 1.0 / val 0.83 → 외움", ["차이 0.168 → 반전·회전을 넣은 M3는 0.069로 줄어듦"])],
+        [("M3부터 함께 오름", ["반전·회전 증강으로 train과 val이 같이 오름"])],
+        [("M8은 epoch 50 저장", ["검증 점수((val+val_ext)/2)가 가장 높았던 epoch의 가중치를 저장"])],
+    ], weights=[1, 1, 1])
+    cy = bottom + 0.3
+    image_card(s, FS / "curves_m1_m3_m8.png", M, cy, CW, BOT - cy)
 
 
 def slide_09_model(prs):
     s = new_slide(prs, "모델: SmallResNet 직접 구현(사전학습 없음)", "account_tree",
                   "모델은 작은 ResNet을 torch로 직접 만들었고, 사전학습 가중치는 쓰지 않았습니다. 잔차 블록 네 단계를 지나며 "
                   "채널이 48에서 384까지 늘고, 평균 풀링 뒤 Linear 하나로 12개 클래스 점수를 냅니다. 파라미터는 "
-                  "6,289,212개이고, AdamW와 cosine 학습률로 학습해 가장 좋은 epoch을 저장했습니다.")
-    keywords(s, M, TOP, CW, ["파라미터 629만 개", "잔차 블록 4단계 48→384", "AdamW · cosine"], gap=12)
-    blocks = [(["입력", "3×128×128"], 1.1), (["줄기", "48"], 1.1), (["1단계", "48"], 1.2), (["2단계", "96"], 1.4),
-              (["3단계", "192"], 1.6), (["4단계", "384"], 1.8), (["평균 풀링"], 1.1), (["Linear", "12"], 1.1)]
-    bws = [1.6] + [1.2] * 7
-    bg = 0.26
-    x0 = M + (CW - (sum(bws) + 7 * bg)) / 2
-    yc = 4.6
-    for i, (lines, h) in enumerate(blocks):
-        x = x0 + sum(bws[:i]) + i * bg
-        bw = bws[i]
+                  "6,289,212개이고, AdamW와 cosine 학습률로 학습해 가장 좋은 epoch을 저장했습니다. "
+                  "사진 크기는 128에서 8까지 작아지고, 채널은 3에서 384까지 늘어납니다.")
+    bottom = keyword_columns(s, TOP, [
+        [("파라미터 629만 개", ["처음부터 학습하므로 작게 설계"])],
+        [("잔차 블록 4단계 48→384", ["2~4단계마다 크기는 절반, 채널은 두 배"])],
+        [("AdamW · cosine", ["학습률을 점점 줄여 마지막에 안정적으로 수렴"])],
+    ], weights=[1, 1, 1])
+    text(s, M, bottom + 0.25, CW, 0.45, ["사진은 점점 작아지고, 특징(채널)은 점점 많아진다"], size=T_KEY,
+         anchor=MSO_ANCHOR.MIDDLE)
+    # (한 변 in, 채움, 테두리 pt, 라벨 줄들) — 크기가 작아질수록 상자는 작게, 채널이 많을수록 진하게
+    blocks = [(2.0, "FFFFFF", 0.75, ["입력", "128×128 × 3 (RGB)"]),
+              (1.75, "FAFAFA", 1.0, ["줄기", "3×3 합성곱, stride 2", "64×64 × 48"]),
+              (1.75, "FAFAFA", 1.0, ["1단계", "64×64 × 48"]),
+              (1.5, "DFDFDF", 1.25, ["2단계", "32×32 × 96"]),
+              (1.25, "C7C7C7", 1.5, ["3단계", "16×16 × 192"]),
+              (1.0, "9A9A9A", 2.0, ["4단계", "8×8 × 384"]),
+              (0.9, "9A9A9A", 2.0, ["평균 풀링", "1×1 × 384"]),
+              (0.9, "FFFFFF", 1.5, ["Linear", "12", "(클래스 점수)"])]
+    gap = 0.15
+    x = M + (CW - (sum(b[0] for b in blocks) + gap * (len(blocks) - 1))) / 2
+    base = BOT - 0.45 - 0.1 - 0.7          # 상자 아래 끝 y
+    ay = base - 0.45
+    for i, (side, fill, bw_, label) in enumerate(blocks):
         last = i == len(blocks) - 1
-        b = card(s, x, yc - h / 2, bw, h, border=PRI if last else LINE, width_pt=1.5 if last else 0.75, radius=0.12)
-        box_text(b, lines, size=14, color=INK)
+        card(s, x, base - side, side, side, border=PRI if last else INK2, fill=fill, width_pt=bw_, radius=0.08)
+        lw = max(side, 1.05)
+        text(s, x + side / 2 - lw / 2, base + 0.08, lw, 0.7, [[(t, {"color": INK if j == 0 else INK2})]
+                                                             for j, t in enumerate(label)],
+             size=T_CAP, align=PP_ALIGN.CENTER)
         if not last:
-            arrow(s, x + bw + 0.03, yc, x + bw + bg - 0.03, yc, color=INK3, width=1.0)
-    st_x = x0 + sum(bws[:2]) + 2 * bg
-    text(s, st_x, yc + 1.05, 4 * 1.2 + 3 * bg, 0.3, ["BasicBlock ×2, 잔차 연결"], size=T_CAP, color=INK2,
-         align=PP_ALIGN.CENTER)
+            arrow(s, x + side + 0.02, ay, x + side + gap - 0.02, ay, color=INK3, width=1.0, small=True)
+        x += side + gap
+    text(s, M, BOT - 0.45, CW, 0.45, ["1~4단계는 각각 잔차 블록 2개", "2~4단계 첫 블록에서 크기 절반·채널 두 배"],
+         size=T_CAP, color=INK2)
 
 
 def slide_10_result(prs):

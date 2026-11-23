@@ -109,6 +109,12 @@ REQUIRED = {
         "아스팔트·매립지·실내 등 촬영 환경이 다른 사진을 섞음", "clothes 5,325 vs brown-glass 607", "AI Hub 직접 촬영"],
     4: ["중복 제거", "라벨 오류 제거", "192 → 128px 크기 통일", "정규화", "정규화 후: 모델이 보는 값(색이 조금 달라 보임)"],
     5: ["유리병 3색(갈색·초록·흰색)은 색이 정답 단서라 색을 흔들면 헷갈림", "letterbox: 비율 유지 + 빈 곳 채움 (신발 사진)"],
+    6: ["val_avg = (val + val_ext + val_hard) ÷ 3", "M2 비율 유지(letterbox)", "M5 TrivialAugment", "M9 입력 160px",
+        "폭 48 · cosine 학습률 · 어둡게/흐림 증강 · 30 epoch", "val (2,327장)", "→ 기본 실력"],
+    7: ["y축은 0.70부터 시작", "30 epoch에서는 아직 오르는 중이었음"],
+    8: ["차이 0.168 → 반전·회전을 넣은 M3는 0.069로 줄어듦", "검증 점수((val+val_ext)/2)가 가장 높았던 epoch의 가중치를 저장"],
+    9: ["사진은 점점 작아지고, 특징(채널)은 점점 많아진다", "128×128", "8×8", "1~4단계는 각각 잔차 블록 2개",
+        "2~4단계 첫 블록에서 크기 절반·채널 두 배"],
 }
 
 # 이유 줄: 14pt #707070 런이어야 하는 문구
@@ -116,6 +122,9 @@ REASONS = {
     3: ["Kaggle 사진은 단색 배경 → 바닥·매립지 사진을 거의 못 맞힘", "아스팔트·매립지·실내 등 촬영 환경이 다른 사진을 섞음"],
     4: ["같은 사진이 학습과 테스트에 함께 있으면 점수가 부풀려짐", "값의 범위가 일정해야 학습이 안정적이고 빠름"],
     5: ["그늘·실내 사진, 초점이 안 맞은 사진 대비", "변형이 너무 강해 오히려 하락 (0.848 → 0.836)"],
+    7: ["사진을 외우던 문제가 줄어듦", "0.01 기준에 못 미치거나 하락"],
+    8: ["반전·회전 증강으로 train과 val이 같이 오름"],
+    9: ["처음부터 학습하므로 작게 설계", "학습률을 점점 줄여 마지막에 안정적으로 수렴"],
 }
 
 
@@ -141,3 +150,21 @@ def test_cover_has_no_result(deck):
     assert "0.8823" not in t and "정확도" not in t
     pics = [sh for sh in s.shapes if sh.shape_type == 13]
     assert len(pics) >= 13          # 클래스 사진 12 + 아이콘
+
+
+def test_flowchart_branches(deck):
+    """6번: M4~M7 은 M3 에서 각각 갈라진다 — 회색 점선이 각 상자 왼쪽 끝에 닿고, 상자끼리 잇는 선은 없다."""
+    s = deck.slides[5]
+    boxes = {sh.text_frame.text[:2]: sh for sh in s.shapes
+             if sh.has_text_frame and sh.text_frame.text[:2] in ("M4", "M5", "M6", "M7")}
+    assert set(boxes) == {"M4", "M5", "M6", "M7"}
+    lines = [sh for sh in s.shapes if sh.shape_type == 9 or sh.__class__.__name__ == "Connector"]
+    gray = [c for c in lines if str(c.line.color.rgb) == "C7C7C7" and c.line.dash_style is not None]
+    tol = Pt(2)
+    for k, b in boxes.items():
+        mid = b.top + b.height // 2
+        assert any(abs(max(c.begin_x, c.end_x) - b.left) <= tol and abs(c.begin_y - mid) <= tol
+                   and abs(c.end_y - mid) <= tol for c in gray), k
+    for c in gray:      # 가지 상자 사이를 잇는 선이 없음
+        ends = [b for b in boxes.values() if abs(min(c.begin_x, c.end_x) - (b.left + b.width)) <= tol]
+        assert not ends, c.name
