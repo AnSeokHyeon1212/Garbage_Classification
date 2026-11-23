@@ -1,4 +1,4 @@
-"""발표 PPTX를 만든다: docs/presentation/slides.md(설계) + revision_prompt.md(1차 수정).
+﻿"""발표 PPTX를 만든다: docs/presentation/slides.md(설계) + revision_prompt.md(1차 수정).
 
 실행: python 01_coding/tools/build_slides_pptx.py  ->  docs/presentation/slides.pptx
 그림은 01_coding/RESULT/figures*/ 의 PNG, 아이콘·잘라 낸 사진은 01_coding/RESULT/slide_assets/ 를 쓴다.
@@ -99,6 +99,7 @@ def style_run(run, size, color=INK, bold=False, font=FONT):
     f.color.rgb = rgb(color)
     f.name = font
     rPr = run._r.get_or_add_rPr()
+    rPr.set("lang", "ko-KR")      # 한글을 단어 단위로 줄바꿈
     prev = rPr.find(qn("a:latin"))
     for tag in ("a:ea", "a:cs"):
         el = rPr.find(qn(tag))
@@ -314,8 +315,8 @@ def pick_cover_photos() -> dict:
 SOURCE_BOXES = [(42, 83, 152, 230), (200, 108, 373, 205), (403, 83, 549, 230), (615, 80, 715, 232),
                 (788, 115, 923, 198), (11, 292, 184, 389), (225, 275, 340, 405), (403, 285, 548, 405),
                 (578, 276, 752, 404), (799, 268, 909, 414)]
-SOURCE_NAMES = ["Kaggle 원본", "AI Hub 직접 촬영", "RealWaste 매립지", "TriCascade", "생활 쓰레기(실제 환경)",
-                "Garbage V2", "신발 제품 사진", "생활 쓰레기(기본 배경)", "다양한 금속", "clothing 옷·신발"]
+SOURCE_NAMES = ["Kaggle 원본", "AI Hub\n직접 촬영", "RealWaste\n매립지", "TriCascade", "생활 쓰레기\n(실제 환경)",
+                "Garbage V2", "신발 제품 사진", "생활 쓰레기\n(기본 배경)", "다양한 금속", "clothing\n옷·신발"]
 
 
 def crop_source_photos() -> list:
@@ -385,7 +386,7 @@ def slide_03_data(prs):
         [("9개 출처 27,050장", ["아스팔트·매립지·실내 등 촬영 환경이 다른 사진을 섞음"])],
         [("불균형 8.8배 → 2.4배", ["가장 많은 클래스와 적은 클래스의 차이를 줄임",
                                  "(clothes 5,325 vs brown-glass 607 → 외부 데이터로 보충)"])],
-    ], weights=[1.3, 1, 1.2])
+    ], weights=[1.7, 0.9, 1.2])
     cy = bottom + 0.3
     cw = (CW - 0.3) / 2
     ch = BOT - cy
@@ -397,7 +398,7 @@ def slide_03_data(prs):
         x = M + pad + (i % 5) * cell_w
         y = cy + pad + (i // 5) * cell_h
         image_fit(s, ph, x + 0.06, y + 0.04, cell_w - 0.12, cell_h - cap - 0.08)
-        text(s, x, y + cell_h - cap, cell_w, cap, [nm], size=T_CAP, color=INK2, align=PP_ALIGN.CENTER)
+        text(s, x, y + cell_h - cap, cell_w, cap, nm.split("\n"), size=T_CAP, color=INK2, align=PP_ALIGN.CENTER)
     image_card(s, FS / "class_counts.png", M + cw + 0.3, cy, cw, ch)
 
 
@@ -434,21 +435,34 @@ def slide_05_augment(prs):
     rejected = [("색 변화(M4)", ["유리병 3색(갈색·초록·흰색)은 색이 정답 단서라 색을 흔들면 헷갈림"]),
                 ("letterbox(M2)", ["흐리거나 어두운 사진 정확도(val_hard) 0.766 → 0.640으로 하락"]),
                 ("TrivialAugment(M5)", ["변형이 너무 강해 오히려 하락 (0.848 → 0.836)"])]
-    lw, tw, pad, gap_pt = 0.75, 5.6, 0.15, 6
-    th = [block_height(b, tw, gap_pt) + 2 * pad for b in (used, rejected)]
+    # 그림 안 칸 제목은 너무 작아서 칸마다 슬라이드 글자 라벨을 다시 단다(칸: 왼쪽 10px, 폭 172px, 간격 189.3px)
+    panels = {"쓴 것": ["원본", "좌우 반전", "상하 반전", "회전(±20°)", "어둡게", "흐림"],
+              "뺀 것": ["원본", "letterbox(M2)", "색 변화(M4)", "TrivialAugment(M5)"]}
+    lw, tw, pad, gap_pt, lab_h = 0.7, 4.6, 0.15, 6, 0.28
+    ix = M + 0.2 + lw + tw + 0.3
+    iw = M + CW - 0.2 - ix
+    rows = []
+    for lab, items, img, bd in [("쓴 것", used, crop_top(FG / "aug_used.png", "aug_used"), PRI),
+                                ("뺀 것", rejected, aug_rejected_4(), LINE)]:
+        W, H = Image.open(img).size
+        extra = lab_h * (2 if lab == "뺀 것" else 1)
+        h = max(block_height(items, tw, gap_pt), iw * H / W + extra) + 2 * pad
+        rows.append((lab, items, img, bd, h, W, extra))
     y = TOP
-    for (lab, items, img, bd), h in zip([("쓴 것", used, crop_top(FG / "aug_used.png", "aug_used"), PRI),
-                                          ("뺀 것", rejected, aug_rejected_4(), LINE)], th):
+    for lab, items, img, bd, h, W, extra in rows:
         card(s, M, y, CW, h, border=bd)
         text(s, M + 0.2, y + pad + 0.08, lw, 0.3, [lab], size=T_CAP, color=INK2)
         keyword_block(s, M + 0.2 + lw, y + pad, tw, items, gap_pt=gap_pt)
-        ix = M + 0.2 + lw + tw + 0.3
-        cap_h = 0.3 if lab == "뺀 것" else 0
-        px, py, pw, ph = image_fit(s, img, ix, y + pad, M + CW - 0.2 - ix, h - 2 * pad - cap_h)
-        if lab == "뺀 것":       # letterbox 칸(4칸 중 2번째) 아래 캡션
-            cx = px + pw * (285 / 760)
-            text(s, cx - 1.6, py + ph + 0.04, 3.2, 0.25, ["letterbox: 비율 유지 + 빈 곳 채움 (신발 사진)"],
-                 size=T_CAP, color=INK2, align=PP_ALIGN.CENTER)
+        px, py, pw, ph = image_fit(s, img, ix, y + pad, iw, h - 2 * pad - extra)
+        sc = pw / W
+        for i, name in enumerate(panels[lab]):
+            cx = px + (10 + 86 + 189.3 * i) * sc
+            text(s, cx - 0.6, py + ph + 0.03, 1.2, lab_h - 0.03, [name], size=T_CAP, color=INK2,
+                 align=PP_ALIGN.CENTER)
+        if lab == "뺀 것":       # letterbox 칸(4칸 중 2번째) 설명
+            cx = px + (10 + 86 + 189.3) * sc
+            text(s, cx - 1.8, py + ph + lab_h + 0.02, 3.6, lab_h - 0.03,
+                 ["letterbox: 비율 유지 + 빈 곳 채움 (신발 사진)"], size=T_CAP, color=INK3, align=PP_ALIGN.CENTER)
         y += h + 0.2
 
 
@@ -462,7 +476,7 @@ def slide_06_tuning_method(prs):
                   "점수는 val_avg로, Kaggle 검증 사진, 학습에 안 쓴 외부 실사 사진, 그리고 흐림·어둡게·빛번짐을 입힌 "
                   "어려운 사진, 이 세 셋의 평균입니다. 그림에서 초록 실선이 반영된 단계, 회색 점선이 시험만 하고 버린 단계입니다. "
                   "M4부터 M7은 모두 M3 설정에서 하나씩 따로 바꿔 본 것입니다.")
-    left_w = 4.9
+    left_w = 5.2
     rule = {"size": T_REASON, "color": INK}
     keyword_block(s, M, TOP, left_w, [
         ("val_avg = (val + val_ext + val_hard) ÷ 3",
@@ -482,7 +496,7 @@ def slide_06_tuning_method(prs):
              anchor=MSO_ANCHOR.MIDDLE)
 
     # 줄기(반영): 중심 x, 각 상자 (중심 y, 높이, 줄들)
-    cx, sw_ = 7.2, 2.6
+    cx, sw_ = 7.45, 2.6
     stem = [(1.85, 0.8, ["출발 설정", "폭 48 · cosine 학습률 · 어둡게/흐림 증강 · 30 epoch"]),
             (2.85, 0.6, ["M1 정리한 혼합 데이터", [("0.813 ", {}), ("✓", CHECK)]]),
             (4.15, 0.6, ["M3 반전·회전", [("0.848 ", {}), ("✓", CHECK)]]),
@@ -497,7 +511,7 @@ def slide_06_tuning_method(prs):
         box_text(b, lines, size=T_CAP, color=INK)
 
     # 가지(반영 안 함): 회색 점선, 상자마다 따로
-    bx, bw, bh, spine = 8.9, 2.9, 0.42, 8.65
+    bx, bw, bh, spine = 9.1, 2.8, 0.42, 8.92
     right = cx + sw_ / 2
 
     def branch(yc, label, score):
@@ -682,7 +696,7 @@ def slide_conclusion(prs):
         ("03 한계와 다음 과제", [("강한 빛번짐 ", {}), ("0.28", R), (" · 배경 의존", {})],
          [[("배경을 지우면 정확도 ", reason), ("−0.122", {**reason, "color": WARN}),
            (" → 노이즈·배경 증강 실험 중", reason)]]),
-    ], gap_pt=22)
+    ], gap_pt=40)
     image_card(s, FS / "dirty_by_corruption.png", fig_x, TOP, fig_w, fig_h)
     text(s, fig_x, TOP + fig_h + 0.12, fig_w, 0.3,
          ["더러운 사진 0.773 (원본 0.826 / 손상 0.720) · 배경을 지우면 −0.122"],

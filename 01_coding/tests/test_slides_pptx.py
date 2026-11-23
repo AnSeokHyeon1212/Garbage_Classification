@@ -106,7 +106,7 @@ def test_fonts_are_noto(deck):
 REQUIRED = {
     1: ["쓰레기 사진 12종 분류", "사전학습 없이 직접 만든 CNN(SmallResNet)"],
     3: ["깨끗한 배경만 학습하면 실제 사진은 14~19%", "Kaggle 사진은 단색 배경 → 바닥·매립지 사진을 거의 못 맞힘",
-        "아스팔트·매립지·실내 등 촬영 환경이 다른 사진을 섞음", "clothes 5,325 vs brown-glass 607", "AI Hub 직접 촬영"],
+        "아스팔트·매립지·실내 등 촬영 환경이 다른 사진을 섞음", "clothes 5,325 vs brown-glass 607", "AI Hub\n직접 촬영"],
     4: ["중복 제거", "라벨 오류 제거", "192 → 128px 크기 통일", "정규화", "정규화 후: 모델이 보는 값(색이 조금 달라 보임)"],
     5: ["유리병 3색(갈색·초록·흰색)은 색이 정답 단서라 색을 흔들면 헷갈림", "letterbox: 비율 유지 + 빈 곳 채움 (신발 사진)"],
     6: ["val_avg = (val + val_ext + val_hard) ÷ 3", "M2 비율 유지(letterbox)", "M5 TrivialAugment", "M9 입력 160px",
