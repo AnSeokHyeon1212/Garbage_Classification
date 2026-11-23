@@ -59,9 +59,11 @@ def class_counts():
 
 def ladder_val_avg():
     d = pd.read_csv(ROOT / "experiments/ladder_m.csv")
-    short = {"M1": "정리 데이터", "M2": "비율 유지", "M3": "반전·회전", "M4": "밝기·색",
-             "M5": "trivial", "M6": "클래스\n가중치", "M7": "라벨\n스무딩", "M8": "epoch 60", "M9": "160px"}
-    cols = [DEEP if i == "M8" else MAIN if a else GRAY for i, a in zip(d["id"], d["adopted"])]
+    short = {"M1": "정리한\n혼합 데이터", "M2": "비율 유지\n(letterbox)", "M3": "반전·회전", "M4": "밝기·색\n변화",
+             "M5": "Trivial\nAugment", "M6": "클래스\n가중치", "M7": "라벨\n스무딩", "M8": "epoch\n30→60",
+             "M9": "입력\n160px"}
+    # M1은 출발점(진회색), 반영된 단계 M3·M8만 초록
+    cols = [SUB if i == "M1" else DEEP if i == "M8" else MAIN if i == "M3" else GRAY for i in d["id"]]
     fig, ax = plt.subplots(figsize=FULL)
     x = np.arange(len(d))
     ax.bar(x, d["val_avg"], color=cols, width=0.65)
@@ -198,7 +200,32 @@ def dirty_by_corruption():
     return d.ok.mean(), clean, d[d.corruption != "none"].ok.mean()
 
 
+def loss_curve():
+    """M8 train·val 손실: val loss 최저 epoch와 저장한 epoch 50을 표시 (과적합 점검)"""
+    h = pd.read_csv(ROOT / "experiments/M8/history.csv")
+    i = h["val_loss"].idxmin()
+    lo_ep, lo = int(h.loc[i, "epoch"]), h.loc[i, "val_loss"]
+    s = h[h["epoch"] == 50].iloc[0]
+    fig, ax = plt.subplots(figsize=HALF)
+    ax.plot(h["epoch"], h["train_loss"], color=TEXT, lw=2, label="train loss")
+    ax.plot(h["epoch"], h["val_loss"], color=DEEP, lw=2, label="val loss")
+    ax.scatter([lo_ep], [lo], color=DEEP, s=60, zorder=3)
+    ax.annotate(f"최저 epoch {lo_ep}\n{lo:.3f}", (lo_ep, lo), xytext=(lo_ep - 4, lo + 0.45),
+                ha="center", fontsize=FS, color=TEXT, arrowprops=dict(arrowstyle="-", color=TERT))
+    ax.axvline(50, color=TERT, ls=":", lw=1.8)
+    ax.annotate(f"저장 epoch 50\nval {s.val_loss:.3f}", (50, s.val_loss), xytext=(48.5, s.val_loss + 0.55),
+                ha="right", fontsize=FS, color=SUB, arrowprops=dict(arrowstyle="-", color=TERT))
+    ax.set_xlabel("epoch")
+    ax.set_ylabel("손실 (loss)")
+    ax.set_ylim(0, max(h["train_loss"].max(), h["val_loss"].max()) * 1.05)
+    ax.legend(frameon=False, fontsize=FS, loc="upper center")
+    style_axes(ax)
+    save(fig, "loss_curve.png")
+    return lo_ep, lo, s.val_loss
+
+
 if __name__ == "__main__":
+    print("M8 val loss min epoch/value, ep50", [round(float(x), 3) for x in loss_curve()])
     print("class total", class_counts())
     print("val_avg", {k: round(v, 3) for k, v in ladder_val_avg().items()})
     curves_m1_m3_m8()
