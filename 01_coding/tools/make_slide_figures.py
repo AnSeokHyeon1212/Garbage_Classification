@@ -38,7 +38,7 @@ def style_axes(ax, grid="y"):
 
 def save(fig, name):
     OUT.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT / name, dpi=200, bbox_inches="tight")
+    fig.savefig(OUT / name, dpi=200, bbox_inches="tight", pad_inches=0.25)
     plt.close(fig)
 
 
@@ -128,7 +128,7 @@ def confusion_test():
     ax.set_xticks(range(len(c.columns)), c.columns, rotation=45, ha="right")
     ax.set_yticks(range(len(c.index)), c.index)
     ax.set_xlabel("예측")
-    ax.set_ylabel("정답")
+    ax.set_ylabel("정답", labelpad=10)
     ax.tick_params(labelsize=FS, length=0)
     for s in ax.spines.values():
         s.set_color(LINE)
@@ -157,22 +157,45 @@ def test_scores():
     return mj["val"], mj["val_ext"], tj["test"]["acc"], tj["test_ext"]["acc"]
 
 
+KO = {"dark": "어둡게", "blur": "흐림", "motion_blur": "흔들림", "jpeg": "JPEG 압축",
+      "glare": "빛번짐", "low_light_noise": "저조도+잡음", "stain": "얼룩", "noise": "잡음"}
+
+
 def dirty_by_corruption():
+    from matplotlib.patches import Patch
     d = pd.read_csv(ROOT / "final_test/dirty_test_predictions.csv")
-    g = d.groupby("corruption")["ok"].mean().sort_values()
-    cols = [DEEP if k == "none" else WARN if v < 0.6 else GRAY for k, v in g.items()]
-    fig, ax = plt.subplots(figsize=HALF)
-    ax.barh(["원본" if k == "none" else k for k in g.index], g.values, color=cols, height=0.7)
-    for i, v in enumerate(g.values):
-        ax.text(v + 0.01, i, f"{v:.3f}", va="center", fontsize=FS)
+    clean = d[d.corruption == "none"].ok.mean()
+    p = d[d.corruption != "none"].groupby(["corruption", "severity"])["ok"].mean().unstack()
+    p = p.sort_values("strong", ascending=False)  # 위에서 아래로: 강한 손상에 강한 순
+    fig, ax = plt.subplots(figsize=(7.2, 6.4))
+    h = 0.38
+    ys, labels = [], []
+    ax.barh(0, clean, color=DEEP, height=0.6)
+    ax.text(clean + 0.01, 0, f"{clean:.3f}", va="center", fontsize=FS)
+    ys.append(0)
+    labels.append("원본")
+    for i, (k, r) in enumerate(p.iterrows(), start=1):
+        y = i * 1.2 + 0.2
+        sc = WARN if round(r["strong"], 3) <= 0.60 else SUB
+        ax.barh(y - h / 2, r["mild"], color=GRAY, height=h)
+        ax.barh(y + h / 2, r["strong"], color=sc, height=h)
+        ax.text(r["mild"] + 0.01, y - h / 2, f"{r['mild']:.3f}", va="center", fontsize=12)
+        ax.text(r["strong"] + 0.01, y + h / 2, f"{r['strong']:.3f}", va="center", fontsize=12)
+        ys.append(y)
+        labels.append(KO.get(k, k))
+    ax.set_yticks(ys, labels)
+    ax.invert_yaxis()
     ax.set_xlim(0, 1.0)
     ax.set_xlabel("정확도")
     style_axes(ax, "x")
     ax.spines["left"].set_visible(False)
+    ax.legend(handles=[Patch(color=GRAY, label="약"), Patch(color=SUB, label="강"),
+                       Patch(color=WARN, label="강 (0.60 이하)")],
+              frameon=False, fontsize=FS, loc="upper center", bbox_to_anchor=(0.45, -0.14), ncol=3,
+              handlelength=1.2, columnspacing=1.2)
     save(fig, "dirty_by_corruption.png")
-    clean = d[d.corruption == "none"].ok.mean()
-    dirty = d[d.corruption != "none"].ok.mean()
-    return d.ok.mean(), clean, dirty
+    print(p.round(3).to_string())
+    return d.ok.mean(), clean, d[d.corruption != "none"].ok.mean()
 
 
 if __name__ == "__main__":
