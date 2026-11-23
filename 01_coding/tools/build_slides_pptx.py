@@ -237,25 +237,105 @@ def _est_lines(s, w_in, size_pt):
     return max(1, int(em / w_in * 1.04) + 1) if em > w_in * 0.96 else 1
 
 
+def _item(it):
+    return it if len(it) == 3 else (None, *it)
+
+
+def block_height(items, w, gap_pt=14):
+    """keyword_block 이 차지할 높이(in) 추정."""
+    h = 0.0
+    for it in items:
+        label, kw, reasons = _item(it)
+        h += (0.26 if label else 0) + 0.38 * _est_lines(kw, w, T_KEY)
+        h += sum(0.26 * _est_lines(r, w, T_REASON) for r in reasons) + gap_pt / 72
+    return h - gap_pt / 72
+
+
 def keyword_block(slide, x, y, w, items, gap_pt=14):
     """items: (kw, [reason...]) 또는 (label, kw, [reason...]).
     kw는 20pt #171717, reason은 14pt #707070, label은 12pt #9A9A9A. 항목마다 텍스트 상자 하나.
     마지막 상자의 아래 y(in)를 돌려준다."""
     for it in items:
-        label, kw, reasons = it if len(it) == 3 else (None, *it)
-        paras, h = [], 0.0
+        label, kw, reasons = _item(it)
+        paras = []
         if label:
             paras.append([(label, {"size": T_CAP, "color": INK3})])
-            h += 0.26
         paras.append(kw)
-        h += 0.42 * _est_lines(kw, w, T_KEY)
         for r in reasons:
             paras.append([(r, {"size": T_REASON, "color": INK2})] if isinstance(r, str) else r)
-            h += 0.29 * _est_lines(r, w, T_REASON)
+        h = block_height([it], w)
         tb = text(slide, x, y, w, h, paras, size=T_KEY, space_after=2)
-        tb.text_frame.paragraphs[0 if not label else 1].space_after = Pt(4)
+        tb.text_frame.paragraphs[1 if label else 0].space_after = Pt(4)
         y += h + gap_pt / 72
     return y - gap_pt / 72
+
+
+def keyword_columns(slide, y, columns, weights, gap=0.3):
+    """여러 칸의 keyword_block 을 가로로 놓고, 가장 낮은 칸의 아래 y를 돌려준다."""
+    unit = (CW - gap * (len(columns) - 1)) / sum(weights)
+    x, bottom = M, y
+    for items, wt in zip(columns, weights):
+        bottom = max(bottom, keyword_block(slide, x, y, unit * wt, items))
+        x += unit * wt + gap
+    return bottom
+
+
+# ---- 표지·출처 사진 ------------------------------------------------------------
+CLASSES = ["battery", "biological", "brown-glass", "cardboard", "clothes", "green-glass",
+           "metal", "paper", "plastic", "shoes", "trash", "white-glass"]
+COVER_OVERRIDE: dict = {}      # {"battery": "archive/.../x.jpg"} 처럼 지정하면 그 사진을 씀
+
+
+def square_crop(src, out, px=400):
+    im = Image.open(src).convert("RGB")
+    w, h = im.size
+    k = min(w, h)
+    im = im.crop(((w - k) // 2, (h - k) // 2, (w - k) // 2 + k, (h - k) // 2 + k)).resize((px, px), Image.LANCZOS)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    im.save(out)
+    return out
+
+
+def pick_cover_photos() -> dict:
+    """클래스마다 Kaggle 학습 사진 1장을 정사각형 400px로 ASSETS/cover/{label}.png 에 저장(있으면 재사용)."""
+    import pandas as pd
+    outs = {c: ASSETS / "cover" / f"{c}.png" for c in CLASSES}
+    if all(o.exists() for o in outs.values()):
+        return outs
+    d = pd.read_csv(RESULT / "data_split/train_mix_clean.csv")
+    d = d[(d["split"] == "train") & (d["source"] == "kaggle")]
+    for c in CLASSES:
+        src = COVER_OVERRIDE.get(c) or d[d["label"] == c].iloc[0]["path"]
+        square_crop(ROOT / src, outs[c])
+    return outs
+
+
+# source_examples.png 안의 사진 10장(영문 라벨 제외) 픽셀 상자: 위 줄 왼→오, 아래 줄 왼→오
+SOURCE_BOXES = [(42, 83, 152, 230), (200, 108, 373, 205), (403, 83, 549, 230), (615, 80, 715, 232),
+                (788, 115, 923, 198), (11, 292, 184, 389), (225, 275, 340, 405), (403, 285, 548, 405),
+                (578, 276, 752, 404), (799, 268, 909, 414)]
+SOURCE_NAMES = ["Kaggle 원본", "AI Hub 직접 촬영", "RealWaste 매립지", "TriCascade", "생활 쓰레기(실제 환경)",
+                "Garbage V2", "신발 제품 사진", "생활 쓰레기(기본 배경)", "다양한 금속", "clothing 옷·신발"]
+
+
+def crop_source_photos() -> list:
+    im = Image.open(FG / "source_examples.png").convert("RGB")
+    outs = []
+    for i, b in enumerate(SOURCE_BOXES):
+        o = ASSETS / "sources" / f"{i:02d}.png"
+        o.parent.mkdir(parents=True, exist_ok=True)
+        im.crop(b).save(o)
+        outs.append(o)
+    return outs
+
+
+def aug_rejected_4() -> Path:
+    """aug_rejected.png 에서 제목 줄과 마지막(두 번째 TrivialAugment) 칸을 잘라 4칸으로."""
+    src = crop_top(FG / "aug_rejected.png", "aug_rejected")
+    im = Image.open(src)
+    o = ASSETS / "aug_rejected_4.png"
+    im.crop((0, 0, 760, im.size[1])).save(o)
+    return o
 
 
 # ==========================================================================
@@ -263,17 +343,22 @@ def keyword_block(slide, x, y, w, items, gap_pt=14):
 def slide_01_cover(prs):
     s = new_slide(prs, "", "recycling",
                   "안녕하세요. 저희는 쓰레기 사진 한 장을 보고 12종류 중 무엇인지 맞히는 모델을 만들었습니다. "
-                  "사전학습 모델 없이 작은 ResNet을 직접 구현해서 처음부터 학습했고, 최종 test 정확도는 0.8823입니다.",
+                  "사전학습 모델 없이 작은 CNN인 SmallResNet을 직접 구현해서 처음부터 학습했습니다.",
                   centered=True)
-    isz = 0.7
-    s.shapes.add_picture(str(icon_png("recycling")), Inches((SW - isz) / 2), Inches(1.15), Inches(isz), Inches(isz))
-    text(s, M, 2.0, CW, 0.7, ["쓰레기 사진 12종 분류"], size=T_TITLE, bold=True, align=PP_ALIGN.CENTER,
+    isz = 0.6
+    s.shapes.add_picture(str(icon_png("recycling")), Inches((SW - isz) / 2), Inches(0.7), Inches(isz), Inches(isz))
+    text(s, M, 1.45, CW, 0.7, ["쓰레기 사진 12종 분류"], size=T_TITLE, bold=True, align=PP_ALIGN.CENTER,
          anchor=MSO_ANCHOR.MIDDLE, name="Title")
-    text(s, M, 2.85, CW, 1.0, ["사전학습 없이 처음부터 학습", "직접 만든 작은 ResNet"], size=T_KEY, color=INK2,
-         align=PP_ALIGN.CENTER, space_after=4)
-    text(s, M, 4.15, CW, 1.1, ["0.8823"], size=T_BIG, color=PRI_D, bold=True, align=PP_ALIGN.CENTER,
-         anchor=MSO_ANCHOR.MIDDLE)
-    text(s, M, 5.3, CW, 0.3, ["test 정확도"], size=T_CAP, color=INK3, align=PP_ALIGN.CENTER)
+    text(s, M, 2.2, CW, 0.45, ["사전학습 없이 직접 만든 CNN(SmallResNet)"], size=T_KEY, color=INK2,
+         align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    photos = pick_cover_photos()
+    sq, gap, cap = 1.25, 0.2, 0.35
+    x0 = (SW - (6 * sq + 5 * gap)) / 2
+    for i, c in enumerate(CLASSES):
+        x = x0 + (i % 6) * (sq + gap)
+        y = 3.0 + (i // 6) * (sq + cap + gap)
+        s.shapes.add_picture(str(photos[c]), Inches(x), Inches(y), Inches(sq), Inches(sq))
+        text(s, x - 0.1, y + sq + 0.06, sq + 0.2, 0.25, [c], size=T_CAP, color=INK3, align=PP_ALIGN.CENTER)
 
 
 def slide_02_toc(prs):
@@ -295,23 +380,47 @@ def slide_03_data(prs):
                   "처음에는 Kaggle 사진만 학습했는데, 대부분 깨끗한 배경 위 물건이라 바닥이나 매립지에서 찍은 외부 사진은 "
                   "0.14에서 0.19밖에 맞히지 못했습니다. 그래서 촬영 환경이 다른 9개 출처를 모아 27,050장으로 정리했습니다. "
                   "덕분에 가장 많은 클래스와 적은 클래스의 차이도 8.8배에서 2.4배로 줄었습니다.")
-    keyword_band(s, TOP, ["Kaggle만 학습 → 외부 0.14~0.19", "9개 출처 27,050장", "불균형 8.8배 → 2.4배"],
-                 weights=[1.5, 1, 1])
-    cy = TOP + 0.75
+    bottom = keyword_columns(s, TOP, [
+        [("깨끗한 배경만 학습하면 실제 사진은 14~19%", ["Kaggle 사진은 단색 배경 → 바닥·매립지 사진을 거의 못 맞힘"])],
+        [("9개 출처 27,050장", ["아스팔트·매립지·실내 등 촬영 환경이 다른 사진을 섞음"])],
+        [("불균형 8.8배 → 2.4배", ["가장 많은 클래스와 적은 클래스의 차이를 줄임",
+                                 "(clothes 5,325 vs brown-glass 607 → 외부 데이터로 보충)"])],
+    ], weights=[1.3, 1, 1.2])
+    cy = bottom + 0.3
     cw = (CW - 0.3) / 2
-    image_card(s, crop_top(FG / "source_examples.png", "source_examples"), M, cy, cw, BOT - cy)
-    image_card(s, FS / "class_counts.png", M + cw + 0.3, cy, cw, BOT - cy)
+    ch = BOT - cy
+    card(s, M, cy, cw, ch)
+    pad, cap = 0.15, 0.42
+    cell_w = (cw - 2 * pad) / 5
+    cell_h = (ch - 2 * pad) / 2
+    for i, (ph, nm) in enumerate(zip(crop_source_photos(), SOURCE_NAMES)):
+        x = M + pad + (i % 5) * cell_w
+        y = cy + pad + (i // 5) * cell_h
+        image_fit(s, ph, x + 0.06, y + 0.04, cell_w - 0.12, cell_h - cap - 0.08)
+        text(s, x, y + cell_h - cap, cell_w, cap, [nm], size=T_CAP, color=INK2, align=PP_ALIGN.CENTER)
+    image_card(s, FS / "class_counts.png", M + cw + 0.3, cy, cw, ch)
 
 
 def slide_04_preprocess(prs):
     s = new_slide(prs, "전처리 ① 정리와 크기 맞춤", "cleaning_services",
                   "먼저 사진마다 지문을 만들어 거의 같은 사진을 지웠습니다. 같은 사진이 학습과 테스트에 함께 있으면 "
                   "점수가 부풀려지기 때문입니다. 라벨과 맞지 않는 사진도 직접 보고 뺐고, 모든 사진을 192px로 맞춘 뒤 "
-                  "모델에는 128px로 넣고 정규화했습니다.")
-    fw = CW * 0.6
-    fx = M + CW - fw
-    keywords(s, M, TOP + 0.3, fx - M - 0.4, ["중복 제거(사진 지문 비교)", "라벨 오류 제거", "192→128px · 정규화"], gap=18)
-    image_card(s, crop_top(FG / "preprocess_steps.png", "preprocess_steps"), fx, TOP, fw, BOT - TOP)
+                  "모델에는 128px로 넣고 정규화했습니다. 정규화 값은 사전학습을 쓰지 않으므로 ImageNet 값 대신 "
+                  "우리 학습 사진 27,050장의 평균과 표준편차를 썼습니다. 우리 데이터는 밝은 배경이 많아 평균이 높습니다"
+                  "(평균 0.645, 0.621, 0.593).")
+    half = (CW - 0.4) / 2
+    keyword_block(s, M, TOP, half, [
+        ("중복 제거 (사진 지문 비교)", ["같은 사진이 학습과 테스트에 함께 있으면 점수가 부풀려짐"]),
+        ("라벨 오류 제거 (직접 보고 제외)", ["틀린 정답으로 학습하면 모델이 헷갈림. 예: 우유팩이 섞인 cardboard"]),
+        ("192 → 128px 크기 통일", ["크기가 같아야 묶어서 학습 · 128px는 속도와 정확도의 균형",
+                                  "160px(M9)은 흐린 사진에서 오히려 낮았음"]),
+        ("정규화 (색 값을 평균 0, 퍼짐 1 근처로)", ["값의 범위가 일정해야 학습이 안정적이고 빠름",
+                                           "ImageNet 값 대신 우리 학습 사진 27,050장의 평균·표준편차 사용"]),
+    ], gap_pt=16)
+    fx = M + half + 0.4
+    image_card(s, crop_top(FG / "preprocess_steps.png", "preprocess_steps"), fx, TOP, half, BOT - TOP - 0.4)
+    text(s, fx, BOT - 0.28, half, 0.28, ["정규화 후: 모델이 보는 값(색이 조금 달라 보임)"], size=T_CAP, color=INK2,
+         align=PP_ALIGN.CENTER)
 
 
 def slide_05_augment(prs):
@@ -319,15 +428,28 @@ def slide_05_augment(prs):
                   "증강은 학습할 때만 사진마다 무작위로 넣었습니다. 쓰레기는 어느 방향으로든 놓이니까 반전과 회전을 넣었고, "
                   "그늘이나 초점이 안 맞은 사진에 대비해 어둡게와 흐림을 넣었습니다. 반대로 색 변화는 뺐는데, "
                   "유리병 세 종류는 색이 바로 정답 단서이기 때문입니다. 비율을 유지하는 letterbox도 val_hard가 "
-                  "0.766에서 0.640으로 떨어져서 뺐습니다.")
-    keyword_band(s, TOP, ["쓴 것: 반전 · 회전 · 어둡게/흐림", "뺀 것: 색 변화(색이 정답 단서)", "뺀 것: letterbox 0.766→0.640"])
-    y1 = TOP + 0.75
-    hh = (BOT - y1 - 0.25) / 2
-    for j, (lab, fn, bd) in enumerate([("쓴 것", "aug_used", PRI), ("뺀 것", "aug_rejected", LINE)]):
-        yy = y1 + j * (hh + 0.25)
-        card(s, M, yy, CW, hh, border=bd)
-        text(s, M + 0.25, yy + 0.2, 0.8, 0.3, [lab], size=T_CAP, color=INK2)
-        image_fit(s, crop_top(FG / f"{fn}.png", fn), M + 1.1, yy + 0.15, CW - 1.35, hh - 0.3)
+                  "0.766에서 0.640으로 떨어져서 뺐습니다. TrivialAugment는 변형이 너무 강해 0.848에서 0.836으로 떨어져서 뺐습니다.")
+    used = [("반전·회전(±20°)", ["쓰레기는 어느 방향으로든 놓임. 사진을 외우지 않게 함 (M3에서 +0.035)"]),
+            ("어둡게·흐림(둘 중 하나, 50%)", ["그늘·실내 사진, 초점이 안 맞은 사진 대비"])]
+    rejected = [("색 변화(M4)", ["유리병 3색(갈색·초록·흰색)은 색이 정답 단서라 색을 흔들면 헷갈림"]),
+                ("letterbox(M2)", ["흐리거나 어두운 사진 정확도(val_hard) 0.766 → 0.640으로 하락"]),
+                ("TrivialAugment(M5)", ["변형이 너무 강해 오히려 하락 (0.848 → 0.836)"])]
+    lw, tw, pad, gap_pt = 0.75, 5.6, 0.15, 6
+    th = [block_height(b, tw, gap_pt) + 2 * pad for b in (used, rejected)]
+    y = TOP
+    for (lab, items, img, bd), h in zip([("쓴 것", used, crop_top(FG / "aug_used.png", "aug_used"), PRI),
+                                          ("뺀 것", rejected, aug_rejected_4(), LINE)], th):
+        card(s, M, y, CW, h, border=bd)
+        text(s, M + 0.2, y + pad + 0.08, lw, 0.3, [lab], size=T_CAP, color=INK2)
+        keyword_block(s, M + 0.2 + lw, y + pad, tw, items, gap_pt=gap_pt)
+        ix = M + 0.2 + lw + tw + 0.3
+        cap_h = 0.3 if lab == "뺀 것" else 0
+        px, py, pw, ph = image_fit(s, img, ix, y + pad, M + CW - 0.2 - ix, h - 2 * pad - cap_h)
+        if lab == "뺀 것":       # letterbox 칸(4칸 중 2번째) 아래 캡션
+            cx = px + pw * (285 / 760)
+            text(s, cx - 1.6, py + ph + 0.04, 3.2, 0.25, ["letterbox: 비율 유지 + 빈 곳 채움 (신발 사진)"],
+                 size=T_CAP, color=INK2, align=PP_ALIGN.CENTER)
+        y += h + 0.2
 
 
 def slide_06_tuning_method(prs):
