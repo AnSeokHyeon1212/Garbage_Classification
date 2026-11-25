@@ -1,0 +1,110 @@
+"""쓰레기 이미지 12종 분류 — F3+와 S1 앙상블(좌우 반전 TTA) 제출용 모델 정의.
+
+규칙: 모델 구조는 torch.nn 으로 직접 정의했다(사전학습 모델·가중치 사용 안 함).
+      torchvision.transforms 는 전처리에만 쓴다.
+
+가중치: F3+(F3P_30ep)와 S1의 best.pth를 f3p.*, s1.* 이름으로 합친 파일(같은 폴더의 weights.pt). 둘 다 직접 학습했다
+평가 서버가 호출하는 함수는 load_model, get_transform 두 개다.
+"""
+
+import torch
+from torch import nn
+from torchvision import transforms
+
+# 모델 출력 인덱스 순서 (학습 때와 같은 알파벳 순)
+CLASSES = [
+    "battery", "biological", "brown-glass", "cardboard", "clothes", "green-glass",
+    "metal", "paper", "plastic", "shoes", "trash", "white-glass",
+]
+
+WIDTH = 48          # 첫 단계 채널 수 (단계별 48 → 96 → 192 → 384)
+DEPTHS = (2, 2, 3, 3)   # 단계별 블록 수 (총 22층)
+WEAK_CLASSES = ["trash", "white-glass", "metal", "plastic"]   # S1에서 손실을 2배로 준 클래스
+W_WEAK, W_OTHER = 0.4, 0.3   # S1의 비율 (약한 클래스, 나머지) — 검증 사진 절반에서 고름
+TEMPERATURE = 0.8            # 확률을 조금 선명하게 (예측 클래스는 바뀌지 않음)
+CACHE_SIZE = 192    # 학습 때 원본을 먼저 192×192로 줄여 저장했다
+IMG_SIZE = 128      # 모델 입력 크기
+MEAN = [0.6448, 0.6212, 0.5932]   # 학습 데이터에서 구한 정규화 통계
+STD = [0.2607, 0.2642, 0.2837]
+
+
+class BasicBlock(nn.Module):
+    """3×3 합성곱 2개 + 지름길(identity, 크기·채널이 바뀌면 1×1 합성곱)"""
+
+    def __init__(self, cin, cout, stride):
+        super().__init__()
+        self.conv1 = nn.Conv2d(cin, cout, 3, stride, 1, bias=False)
+        self.bn1 = nn.BatchNorm2d(cout)
+        self.conv2 = nn.Conv2d(cout, cout, 3, 1, 1, bias=False)
+        self.bn2 = nn.BatchNorm2d(cout)
+        self.shortcut = nn.Sequential()
+        if stride != 1 or cin != cout:
+            self.shortcut = nn.Sequential(nn.Conv2d(cin, cout, 1, stride, bias=False), nn.BatchNorm2d(cout))
+
+    def forward(self, x):
+        out = torch.relu(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(out))
+        return torch.relu(out + self.shortcut(x))
+
+
+class SmallResNet(nn.Module):
+    """줄기(3×3, stride 2) → 4단계(채널 w, 2w, 4w, 8w, BasicBlock 2·2·3·3개) → 전역 풀링 → Linear(12). avgmax=True면 평균·최대 풀링을 이어 붙임"""
+
+    def __init__(self, width=WIDTH, num_classes=12, avgmax=False):
+        super().__init__()
+        self.stem = nn.Sequential(nn.Conv2d(3, width, 3, 2, 1, bias=False), nn.BatchNorm2d(width), nn.ReLU())
+        blocks, cin = [], width
+        for i, mult in enumerate([1, 2, 4, 8]):
+            for j in range(DEPTHS[i]):
+                blocks.append(BasicBlock(cin, width * mult, 2 if (j == 0 and i > 0) else 1))
+                cin = width * mult
+        self.layers = nn.Sequential(*blocks)
+        self.avgmax = avgmax
+        self.pool = nn.AdaptiveAvgPool2d(1)
+        self.maxpool = nn.AdaptiveMaxPool2d(1)
+        self.fc = nn.Sequential(nn.Linear(cin * (2 if avgmax else 1), num_classes))   # 학습 때 키 이름(fc.0.*)과 맞춤
+
+    def logits(self, x):
+        f = self.layers(self.stem(x))
+        p = torch.flatten(self.pool(f), 1)
+        if self.avgmax:
+            p = torch.cat([p, torch.flatten(self.maxpool(f), 1)], dim=1)
+        return self.fc(p)
+
+    def forward(self, x):
+        # 좌우 반전 TTA: 원본과 좌우로 뒤집은 사진의 logits 평균
+        return (self.logits(x) + self.logits(torch.flip(x, [3]))) / 2
+
+
+class Ensemble(nn.Module):
+    """클래스별 확률 = (1 - w) × F3+ + w × S1 → 로그를 온도로 나눠 logits로 출력 (softmax를 적용하면 확률)"""
+
+    def __init__(self):
+        super().__init__()
+        self.f3p = SmallResNet()
+        self.s1 = SmallResNet(avgmax=True)
+        w = [W_WEAK if c in WEAK_CLASSES else W_OTHER for c in CLASSES]
+        self.register_buffer("w", torch.tensor(w), persistent=False)
+
+    def forward(self, x):
+        q = (1 - self.w) * torch.softmax(self.f3p(x), 1) + self.w * torch.softmax(self.s1(x), 1)
+        return torch.log(q.clamp_min(1e-12)) / TEMPERATURE
+
+
+def load_model(weights_path, device):
+    model = Ensemble()
+    state = torch.load(weights_path, map_location=device, weights_only=True)
+    state = {k.removeprefix("module."): v for k, v in state.items()}
+    model.load_state_dict(state)
+    return model.to(device)
+
+
+def get_transform():
+    # 학습·검증과 같은 전처리: 192×192로 맞춤(비율 무시) → 128×128 → Tensor → 정규화
+    # 입력: PIL 이미지 1장(RGB) → 출력: Tensor [3, 128, 128]
+    return transforms.Compose([
+        transforms.Resize((CACHE_SIZE, CACHE_SIZE)),
+        transforms.Resize((IMG_SIZE, IMG_SIZE)),
+        transforms.ToTensor(),
+        transforms.Normalize(MEAN, STD),
+    ])

@@ -1,0 +1,14 @@
+{
+ "w_weak": 0.4,
+ "w_other": 0.3,
+ "temperature": 0.8,
+ "weak_classes": [
+  "trash",
+  "white-glass",
+  "metal",
+  "plastic"
+ ],
+ "n_A": 1381,
+ "n_B": 1444,
+ "note": "val·val_ext를 경로 해시(crc32('half:'+path)%2)로 절반씩 나눔. A에서 0~1(0.1 간격) 121개 조합 중 원본·50% 자르기 평균 정확도가 가장 높은 비율 선택, B에서 평가. 사진은 192px로 줄인 뒤 자름"
+}

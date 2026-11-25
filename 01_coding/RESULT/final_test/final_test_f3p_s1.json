@@ -1,0 +1,45 @@
+{
+ "model": "F3P_30ep + S1 ensemble (hflip TTA)",
+ "w_weak": 0.4,
+ "w_other": 0.3,
+ "temperature": 0.8,
+ "test": {
+  "n": 2328,
+  "correct": 2123,
+  "accuracy": 0.9119415807560137,
+  "loss": 0.327409029006958,
+  "macro_accuracy": 0.902185536878834,
+  "per_class": {
+   "battery": 0.823943661971831,
+   "biological": 0.8716216216216216,
+   "brown-glass": 0.967032967032967,
+   "cardboard": 0.9402985074626866,
+   "clothes": 0.9449311639549437,
+   "green-glass": 0.9574468085106383,
+   "metal": 0.9217391304347826,
+   "paper": 0.9493670886075949,
+   "plastic": 0.8846153846153846,
+   "shoes": 0.8855218855218855,
+   "trash": 0.9038461538461539,
+   "white-glass": 0.7758620689655172
+  }
+ },
+ "test_ext": {
+  "n": 360,
+  "correct": 328,
+  "accuracy": 0.9111111111111111,
+  "loss": 0.2859271466732025,
+  "macro_accuracy": 0.911111111111111,
+  "per_class": {
+   "battery": 1.0,
+   "brown-glass": 1.0,
+   "cardboard": 0.825,
+   "green-glass": 1.0,
+   "metal": 0.975,
+   "paper": 0.85,
+   "plastic": 0.825,
+   "trash": 0.85,
+   "white-glass": 0.875
+  }
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "width": 48,
+ "hidden": [],
+ "depths": [
+  2,
+  2,
+  3,
+  3
+ ],
+ "pool": "avgmax",
+ "img_size": 128,
+ "aug": [
+  "dark_blur",
+  "hflip",
+  "vflip",
+  "rot",
+  "rrc_wide"
+ ],
+ "batch_mix": true,
+ "train_data": "mix2",
+ "max_per_class": 1000,
+ "epochs": 60,
+ "patience": 60,
+ "batch": 64,
+ "lr": 0.001,
+ "weight_decay": 0.0001,
+ "scheduler": "cosine",
+ "label_smoothing": 0.1,
+ "seed": 7,
+ "select": "last",
+ "weak_weight": 2.0,
+ "weak_classes": [
+  "trash",
+  "white-glass",
+  "metal",
+  "plastic"
+ ]
+}
