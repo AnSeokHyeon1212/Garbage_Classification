@@ -73,17 +73,19 @@ flowchart LR
 - **TEST는 모델마다 한 번만**: 튜닝과 모델 선택은 검증 데이터로만 했다. TEST는 M8을 정한 뒤 1회, 최종 모델을 정한 뒤 1회 평가했다(6-2절).
 
 ### 1-2. 어디서 가져왔나
-| 데이터셋 | 어떤 사진인가 | 사용한 클래스 | 학습 장수 |
+| 데이터셋 (바로가기) | 어떤 사진인가 | 사용한 클래스 | 학습 장수 |
 |---|---|---|---|
-| Kaggle Garbage Classification (원본) | 단색 배경 위 물건, 웹 사진 | 12개 전부 | 9,584 |
-| AI Hub 재활용품 분류 및 선별 데이터 | 아스팔트·보도블록 위에서 직접 찍은 사진 | battery, 유리병 3색, metal(캔) | 5,320 |
-| RealWaste (UCI) | 매립지에서 찍은 실제 쓰레기 사진 | cardboard, metal, paper, plastic, biological, trash | 2,887 |
-| TrashBusters TriCascade (Hugging Face) | 음식·골판지·신문·플라스틱 사진 | biological, cardboard, paper, plastic | 2,645 |
-| Recyclable and Household Waste (Kaggle) | 생활 쓰레기 실제 환경·기본 배경 사진 | trash(스티로폼), plastic, cardboard, paper, clothes, shoes 등 | 2,844 |
-| Garbage Classification V2 (Kaggle) | 생활 쓰레기 사진 | metal, paper, plastic, trash, biological | 1,640 |
-| ShoeSandalBoot (Hugging Face) | 흰 배경 신발 제품 사진 | shoes | 1,631 |
-| TrashBusters 다양한 금속 | 냄비·호일·스프레이 캔 등 | metal | 474 |
-| clothing-dataset-small | 옷·신발 사진 (대부분 원본과 중복이라 일부만) | clothes, shoes | 25 |
+| [Kaggle Garbage Classification (12 classes)](https://www.kaggle.com/datasets/mostafaabla/garbage-classification) (원본) | 단색 배경 위 물건, 웹 사진 | 12개 전부 | 9,584 |
+| [AI Hub 재활용품 분류 및 선별 데이터](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=71362) | 아스팔트·보도블록 위에서 직접 찍은 사진 | battery, 유리병 3색, metal(캔) | 5,320 |
+| [RealWaste (UCI)](https://archive.ics.uci.edu/dataset/908/realwaste) | 매립지에서 찍은 실제 쓰레기 사진 | cardboard, metal, paper, plastic, biological, trash | 2,887 |
+| [TrashBusters combined](https://huggingface.co/datasets/TrashBusters/combined)의 TriCascade (Hugging Face) | 음식·골판지·신문·플라스틱 사진 | biological, cardboard, paper, plastic | 2,645 |
+| [Recyclable and Household Waste Classification (Kaggle)](https://www.kaggle.com/datasets/alistairking/recyclable-and-household-waste-classification) | 생활 쓰레기 실제 환경·기본 배경 사진 | trash(스티로폼), plastic, cardboard, paper, clothes, shoes 등 | 2,844 |
+| [Garbage Classification V2 (Kaggle)](https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2) | 생활 쓰레기 사진 | metal, paper, plastic, trash, biological | 1,640 |
+| [ShoeSandalBootimages (Hugging Face)](https://huggingface.co/datasets/Andyrasika/ShoeSandalBootimages) | 흰 배경 신발 제품 사진 | shoes | 1,631 |
+| [TrashBusters combined](https://huggingface.co/datasets/TrashBusters/combined)의 다양한 금속 | 냄비·호일·스프레이 캔 등 | metal | 474 |
+| [clothing-dataset-small (GitHub)](https://github.com/alexeygrigorev/clothing-dataset-small) | 옷·신발 사진 (대부분 원본과 중복이라 일부만) | clothes, shoes | 25 |
+
+각 데이터셋의 이용 조건은 바로가기 페이지를 따른다. AI Hub 사진은 이용약관(재배포 금지)에 따라 저장소와 공개 폴더에 넣지 않았다.
 
 **왜 외부 데이터를 섞었나**: Kaggle 사진은 대부분 깨끗한 배경 위의 물건이다. 이것만 학습하면 실제 환경(바닥·매립지·실내)에서 찍은 사진을 거의 맞히지 못했다(사전 실험에서 외부 사진 정확도 0.14~0.19, 부록 참고). 그래서 촬영 환경이 다른 출처를 섞었다.
 
